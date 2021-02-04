@@ -37,8 +37,12 @@ bool PhysicsProjectApp::startup() {
 	m_physicsScene->SetTimeStep(0.01f);
 
 	Sphere* ball;
-	ball = new Sphere(glm::vec2(-40, 0), glm::vec2(10, 30), 3.f, 1, glm::vec4(1, 0, 0, 1));
+	ball = new Sphere(glm::vec2(-40, 0), glm::vec2(10, 3), 3.f, 1, glm::vec4(1, 0, 0, 1));
 	m_physicsScene->AddActor(ball);
+
+	Sphere* anotherBall;
+	anotherBall = new Sphere(glm::vec2(40, 0), glm::vec2(-10, 3), 3.f, 1, glm::vec4(1, 0, 0, 1));
+	m_physicsScene->AddActor(anotherBall);
 
 	return true;
 }
@@ -50,7 +54,7 @@ void PhysicsProjectApp::shutdown() {
 }
 
 void PhysicsProjectApp::update(float deltaTime) {
-
+	
 	// input example
 	aie::Input* input = aie::Input::getInstance();
 
@@ -59,10 +63,15 @@ void PhysicsProjectApp::update(float deltaTime) {
 	m_physicsScene->Update(deltaTime);
 	m_physicsScene->Draw();
 	
+	if (input->isKeyDown(aie::INPUT_KEY_SPACE))
+	{
+		
+	}
 
 	// exit the application
 	if (input->isKeyDown(aie::INPUT_KEY_ESCAPE))
 		quit();
+
 }
 
 void PhysicsProjectApp::draw() {

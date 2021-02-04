@@ -13,6 +13,8 @@ enum ShapeType {
 class PhysicsObject
 {
 public:
+	PhysicsObject();
+	~PhysicsObject();
 
 	virtual void FixedUpdate(glm::vec2 a_gravity, float a_timeStep) = 0;
 	
