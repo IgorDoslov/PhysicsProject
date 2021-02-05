@@ -4,6 +4,17 @@
 #include "Rigidbody.h"
 #include <iostream>
 
+// Function pointer array for handling our collisions
+typedef bool(*fn)(PhysicsObject*, PhysicsObject*);
+
+static fn collisionFunctionArray[] = 
+{
+	PhysicsScene::Plane2Plane, 
+	PhysicsScene::Plane2Sphere, 
+	PhysicsScene::Sphere2Plane,
+	PhysicsScene::Sphere2Sphere,
+};
+
 PhysicsScene::PhysicsScene() : m_timeStep(0.01f), m_gravity(glm::vec2(0, 0))
 {
 }
@@ -56,7 +67,7 @@ void PhysicsScene::Update(float dt)
 					continue;
 
 				Rigidbody* pRigid = dynamic_cast<Rigidbody*>(pActor);
-				if (pRigid->CheckCollision(pOther) == true)
+				if (pRigid != nullptr && pRigid->CheckCollision(pOther) == true)
 				{
 					pRigid->ApplyForceToOther(dynamic_cast<Rigidbody*>(pOther),
 						pRigid->GetVelocity()* pRigid->GetMass());
@@ -88,4 +99,48 @@ void PhysicsScene::DebugScene()
 		pActor->Debug();
 		count++;
 	}
+}
+
+void PhysicsScene::CheckForCollision()
+{
+	int actorCount = m_actors.size();
+
+	for (int outer = 0; outer < actorCount - 1; outer++)
+	{
+		for (int inner = outer + 1; inner < actorCount; inner++)
+		{
+			PhysicsObject* objOuter = m_actors[outer];
+			PhysicsObject* objInner = m_actors[inner];
+			int shapeID_out = objOuter->GetShapeID();
+			int shapeID_out = objInner->GetShapeID();
+
+			int functionIndex = (shapeID_out * SHAPE_COUNT) + shapeID_out;
+			fn collisionFunctionPtr = collisionFunctionArray[functionIndex];
+			if (collisionFunctionPtr != nullptr)
+			{
+				collisionFunctionPtr(objOuter, objInner);
+			}
+
+		}
+	}
+}
+
+bool PhysicsScene::Plane2Plane(PhysicsObject*, PhysicsObject*)
+{
+	return false;
+}
+
+bool PhysicsScene::Plane2Sphere(PhysicsObject* obj1, PhysicsObject* obj2)
+{
+	return Sphere2Plane();
+}
+
+bool PhysicsScene::Sphere2Plane(PhysicsObject*, PhysicsObject*)
+{
+	return false;
+}
+
+bool PhysicsScene::Sphere2Sphere(PhysicsObject*, PhysicsObject*)
+{
+	return false;
 }

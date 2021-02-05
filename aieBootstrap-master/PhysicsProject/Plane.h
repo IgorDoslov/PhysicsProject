@@ -1,5 +1,9 @@
 #pragma once
 #include "PhysicsObject.h"
+
+// This is a one-sided object that extends infinitely along both its
+// edge and backwards from its normal direction
+
 class Plane : public PhysicsObject
 {
 public:
@@ -9,12 +13,18 @@ public:
 
 	virtual void FixedUpdate(glm::vec2 a_gravity, float a_timeStep);
 	virtual void Draw();
+	virtual void Debug();
 	virtual void ResetPosition();
+	virtual void MakeGizmo();
 
 	glm::vec2 GetNormal() { return m_normal; }
 	float GetDistance() { return m_distanceToOrigin; }
+	glm::vec4 GetColor() { return m_colour; }
+
 protected:
+
 	glm::vec2 m_normal;
 	float m_distanceToOrigin;
+	glm::vec4 m_colour;
 };
 
