@@ -136,6 +136,27 @@ void PhysicsScene::CheckForCollision()
 
 		}
 	}
+
+	/*int pCount = m_particles.size();
+
+	for (int outer = 0; outer < pCount - 1; outer++)
+	{
+		for (int inner = outer + 1; inner < pCount; inner++)
+		{
+			PhysicsObject* objOuter = m_particles[outer];
+			PhysicsObject* objInner = m_particles[inner];
+			int shapeID_out = objOuter->GetShapeID();
+			int shapeID_in = objInner->GetShapeID();
+
+			int functionIndex = (shapeID_out * SHAPE_COUNT) + shapeID_in;
+			fn collisionFunctionPtr = collisionFunctionArray[functionIndex];
+			if (collisionFunctionPtr != nullptr)
+			{
+				collisionFunctionPtr(objOuter, objInner);
+			}
+
+		}
+	}*/
 }
 
 bool PhysicsScene::Plane2Plane(PhysicsObject*, PhysicsObject*)

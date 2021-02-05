@@ -59,6 +59,10 @@ bool PhysicsProjectApp::startup() {
 	plane = new Plane();
 	m_physicsScene->AddActor(plane);
 
+	/*Plane* plane2;
+	plane2 = new Plane();
+	m_physicsScene->m_particles.push_back(plane2);*/
+
 	return true;
 }
 
