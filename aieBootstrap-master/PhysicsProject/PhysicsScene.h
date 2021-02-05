@@ -41,11 +41,11 @@ public:
 	static bool Sphere2Sphere(PhysicsObject*, PhysicsObject*);
 
 
+	std::vector<PhysicsObject*> m_particles;
 protected:
 	glm::vec2 m_gravity;
 	float m_timeStep;
 
 	std::vector<PhysicsObject*> m_actors;
-	std::vector<PhysicsObject*> m_particles;
 };
 

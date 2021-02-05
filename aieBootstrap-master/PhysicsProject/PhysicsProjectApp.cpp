@@ -5,6 +5,8 @@
 #include "glm\ext.hpp"
 #include <Gizmos.h>
 #include "Plane.h"
+#include "PhysicsScene.h"
+#include <vector>
 //#include "Sphere.h"
 
 PhysicsProjectApp::PhysicsProjectApp() {
@@ -29,7 +31,7 @@ bool PhysicsProjectApp::startup() {
 
 	m_physicsScene = new PhysicsScene();
 
-	m_physicsScene->SetGravity(glm::vec2(0, -10));
+	m_physicsScene->SetGravity(glm::vec2(0, 0));
 
 	// Lower the value, the more accurate the simulation will be;
 	// but it will increase the processing time required. If it
@@ -38,14 +40,14 @@ bool PhysicsProjectApp::startup() {
 	m_physicsScene->SetTimeStep(0.01f);
 
 	//Sphere* ball;
-	ball = new Sphere(glm::vec2(0, 30), glm::vec2(0, 0), 3.f, 10, glm::vec4(1, 0, 0, 1));
+	ball = new Sphere(glm::vec2(0, 10), glm::vec2(0, 1), 3.f, 10, glm::vec4(1, 0, 0, 1));
 	m_physicsScene->AddActor(ball);
 
-	//Sphere* anotherBall;
+	Sphere* anotherBall;
 	anotherBall = new Sphere(glm::vec2(0, 20), glm::vec2(0, 0), 3.f, 1, glm::vec4(0, 1, 0, 1));
 	m_physicsScene->AddActor(anotherBall);
 
-	ball->ApplyForce(glm::vec2(0, -30));
+	//ball->ApplyForce(glm::vec2(0, -30));
 	anotherBall->ApplyForce(glm::vec2(0, -30));
 
 
@@ -62,9 +64,7 @@ void PhysicsProjectApp::shutdown() {
 	delete m_2dRenderer;
 }
 
-	float timer = 0.0f;
 void PhysicsProjectApp::update(float deltaTime) {
-	timer += deltaTime;
 	// input example
 	aie::Input* input = aie::Input::getInstance();
 
@@ -78,12 +78,7 @@ void PhysicsProjectApp::update(float deltaTime) {
 		ball->ApplyForce({ 0,10 });
 	}
 
-	if (timer >= 0.2f)
-	{
-		//Sphere* particle;
-		//ball->ApplyForceToOther(anotherBall, anotherBall->GetVelocity() * anotherBall->GetMass());
-		timer = 0.0f;
-	}
+	
 
 	// exit the application
 	if (input->isKeyDown(aie::INPUT_KEY_ESCAPE))

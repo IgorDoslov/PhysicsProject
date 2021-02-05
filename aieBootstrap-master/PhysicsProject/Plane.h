@@ -12,7 +12,7 @@ public:
 	~Plane();
 
 	virtual void FixedUpdate(glm::vec2 a_gravity, float a_timeStep);
-	virtual void Draw();
+	
 	virtual void Debug();
 	virtual void ResetPosition();
 	virtual void MakeGizmo();

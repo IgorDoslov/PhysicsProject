@@ -27,6 +27,10 @@ PhysicsScene::~PhysicsScene()
 	{
 		delete pActor;
 	}
+	for (auto particle : m_particles)
+	{
+		delete particle;
+	}
 }
 
 void PhysicsScene::AddActor(PhysicsObject* a_actor)
@@ -42,10 +46,12 @@ void PhysicsScene::RemoveActor(PhysicsObject* a_actor)
 		m_actors.erase(it);
 	}
 }
+float timer = 0.0f;
 
 void PhysicsScene::Update(float dt)
 {
-	
+	timer += dt;
+
 	static float accumulatedTime = 0.f;
 	accumulatedTime += dt;
 
@@ -56,14 +62,36 @@ void PhysicsScene::Update(float dt)
 			pActor->FixedUpdate(m_gravity, m_timeStep);
 		}
 
+		for (auto pParticles : m_particles)
+		{
+			pParticles->FixedUpdate(m_gravity, m_timeStep);
+		}
+
 		accumulatedTime -= m_timeStep;
 
 		CheckForCollision();
+	}
+
+	
+	Rigidbody* rb = dynamic_cast<Rigidbody*>(m_actors[0]);
+
+	if (timer >= 0.2f)
+	{
+		Sphere* particle;
+		particle = new Sphere(dynamic_cast<Rigidbody*>(rb)->GetPosition(), glm::vec2(0, -10), 3.f, 1, glm::vec4(0, 1, 0, 1));
+		m_particles.push_back(particle);
+
+		particle->ApplyForceToOther(rb, rb->GetVelocity() * rb->GetMass());
+		timer = 0.0f;
 	}
 }
 
 void PhysicsScene::Draw()
 {
+	for (auto pParticle : m_particles)
+	{
+		pParticle->MakeGizmo();
+	}
 	for (auto pActor : m_actors)
 	{
 		pActor->MakeGizmo();
