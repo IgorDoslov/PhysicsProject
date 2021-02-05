@@ -5,14 +5,15 @@
 #include <iostream>
 #include "Sphere.h"
 #include "Plane.h"
+#include "Input.h"
 
 // Function pointer array for handling our collisions
 typedef bool(*fn)(PhysicsObject*, PhysicsObject*);
 
-static fn collisionFunctionArray[] = 
+static fn collisionFunctionArray[] =
 {
-	PhysicsScene::Plane2Plane, 
-	PhysicsScene::Plane2Sphere, 
+	PhysicsScene::Plane2Plane,
+	PhysicsScene::Plane2Sphere,
 	PhysicsScene::Sphere2Plane,
 	PhysicsScene::Sphere2Sphere,
 };
@@ -50,6 +51,8 @@ float timer = 0.0f;
 
 void PhysicsScene::Update(float dt)
 {
+	aie::Input* input = aie::Input::getInstance();
+
 	timer += dt;
 
 	static float accumulatedTime = 0.f;
@@ -72,18 +75,20 @@ void PhysicsScene::Update(float dt)
 		CheckForCollision();
 	}
 
-	
-	Rigidbody* rb = dynamic_cast<Rigidbody*>(m_actors[0]);
 
-	if (timer >= 0.2f)
+	Rigidbody* rb = dynamic_cast<Rigidbody*>(m_actors[0]);
+	if (input->isKeyDown(aie::INPUT_KEY_SPACE))	
+	//if (timer >= 0.2f)
 	{
 		Sphere* particle;
-		particle = new Sphere(dynamic_cast<Rigidbody*>(rb)->GetPosition(), glm::vec2(0, -10), 3.f, 1, glm::vec4(0, 1, 0, 1));
+		particle = new Sphere(rb->GetPosition(), glm::vec2(0, -1), 1.f, 1, glm::vec4(0, 1, 0, 1));
 		m_particles.push_back(particle);
 
 		particle->ApplyForceToOther(rb, rb->GetVelocity() * rb->GetMass());
 		timer = 0.0f;
 	}
+	std::cout << std::endl << "x: " << rb->GetPosition().x;
+	std::cout << std::endl << "y: " << rb->GetPosition().y << std::endl;
 }
 
 void PhysicsScene::Draw()
@@ -165,7 +170,26 @@ bool PhysicsScene::Sphere2Plane(PhysicsObject* objSphere, PhysicsObject* objPlan
 	return false;
 }
 
-bool PhysicsScene::Sphere2Sphere(PhysicsObject*, PhysicsObject*)
+bool PhysicsScene::Sphere2Sphere(PhysicsObject* obj1, PhysicsObject* obj2)
 {
+	Sphere* sphere1 = dynamic_cast<Sphere*>(obj1);
+	Sphere* sphere2 = dynamic_cast<Sphere*>(obj2);
+
+	if (sphere1 != nullptr && sphere2 != nullptr)
+	{
+		float dist = glm::distance(sphere1->GetPosition(), sphere2->GetPosition());
+		float penetration = sphere1->GetRadius() + sphere2->GetRadius() - dist;
+
+		if (penetration > 0)
+		{
+			sphere1->ResolveCollision(sphere2);
+			return true;
+		}
+
+	}
+
+
+
+
 	return false;
 }
