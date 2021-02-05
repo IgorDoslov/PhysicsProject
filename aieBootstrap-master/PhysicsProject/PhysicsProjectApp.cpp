@@ -29,7 +29,7 @@ bool PhysicsProjectApp::startup() {
 
 	m_physicsScene = new PhysicsScene();
 
-	m_physicsScene->SetGravity(glm::vec2(0, 0));
+	m_physicsScene->SetGravity(glm::vec2(0, -10));
 
 	// Lower the value, the more accurate the simulation will be;
 	// but it will increase the processing time required. If it
@@ -38,15 +38,19 @@ bool PhysicsProjectApp::startup() {
 	m_physicsScene->SetTimeStep(0.01f);
 
 	//Sphere* ball;
-	ball = new Sphere(glm::vec2(0, 15), glm::vec2(0, 10), 3.f, 10, glm::vec4(1, 0, 0, 1));
+	ball = new Sphere(glm::vec2(0, 30), glm::vec2(0, 0), 3.f, 10, glm::vec4(1, 0, 0, 1));
 	m_physicsScene->AddActor(ball);
 
 	//Sphere* anotherBall;
-	anotherBall = new Sphere(glm::vec2(0, 0), glm::vec2(0, -10), 3.f, 1, glm::vec4(0, 1, 0, 1));
+	anotherBall = new Sphere(glm::vec2(0, 20), glm::vec2(0, 0), 3.f, 1, glm::vec4(0, 1, 0, 1));
 	m_physicsScene->AddActor(anotherBall);
 
+	ball->ApplyForce(glm::vec2(0, -30));
+	anotherBall->ApplyForce(glm::vec2(0, -30));
+
+
 	Plane* plane;
-	plane = new Plane(glm::vec2(0, 1), -30);
+	plane = new Plane();
 	m_physicsScene->AddActor(plane);
 
 	return true;

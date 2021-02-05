@@ -45,7 +45,7 @@ void PhysicsScene::RemoveActor(PhysicsObject* a_actor)
 
 void PhysicsScene::Update(float dt)
 {
-	//static std::list<PhysicsObject*> dirty; // MUST REMOVE
+	
 	static float accumulatedTime = 0.f;
 	accumulatedTime += dt;
 
@@ -94,7 +94,7 @@ void PhysicsScene::CheckForCollision()
 			int shapeID_out = objOuter->GetShapeID();
 			int shapeID_in = objInner->GetShapeID();
 
-			int functionIndex = (shapeID_out * SHAPE_COUNT) + shapeID_out;
+			int functionIndex = (shapeID_out * SHAPE_COUNT) + shapeID_in;
 			fn collisionFunctionPtr = collisionFunctionArray[functionIndex];
 			if (collisionFunctionPtr != nullptr)
 			{
