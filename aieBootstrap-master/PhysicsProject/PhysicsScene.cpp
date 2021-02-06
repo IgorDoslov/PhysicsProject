@@ -75,18 +75,79 @@ void PhysicsScene::Update(float dt)
 		CheckForCollision();
 	}
 
-
+	
 	Rigidbody* rb = dynamic_cast<Rigidbody*>(m_actors[0]);
-	if (input->isKeyDown(aie::INPUT_KEY_SPACE))	
+	Rigidbody* rb2 = dynamic_cast<Rigidbody*>(m_actors[1]);
+
+	
+	if (input->wasKeyPressed(aie::INPUT_KEY_SPACE))	
 	//if (timer >= 0.2f)
 	{
 		Sphere* particle;
-		particle = new Sphere(rb->GetPosition(), glm::vec2(0, -1), 1.f, 1, glm::vec4(0, 1, 0, 1));
+		particle = new Sphere((rb->GetPosition()), glm::vec2(0, -10), 1.f, 1, glm::vec4(0, 1, 0, 1));
 		m_particles.push_back(particle);
 
 		particle->ApplyForceToOther(rb, rb->GetVelocity() * rb->GetMass());
 		timer = 0.0f;
 	}
+
+	// Move down
+	if (input->isKeyDown(aie::INPUT_KEY_W))
+	{
+		rb->ApplyForce(glm::vec2(0, 1));
+	}
+	// Move up
+	if (input->isKeyDown(aie::INPUT_KEY_S))
+	{
+		rb->ApplyForce(glm::vec2(0, -1));
+	}
+	// Move right
+	if (input->isKeyDown(aie::INPUT_KEY_D))
+	{
+		rb->ApplyForce(glm::vec2(1, 0));
+	}
+	// Move left
+	if (input->isKeyDown(aie::INPUT_KEY_A))
+	{
+		rb->ApplyForce(glm::vec2(-1, 0));
+	}
+	// Stop
+	if (input->isKeyDown(aie::INPUT_KEY_E))
+	{
+		rb->ApplyForce(-rb->GetVelocity());
+	}
+
+
+
+
+
+	// Move up
+	if (input->isKeyDown(aie::INPUT_KEY_UP))
+	{
+		rb2->ApplyForce(glm::vec2(0, 1));
+	}
+	// Move down
+	if (input->isKeyDown(aie::INPUT_KEY_DOWN))
+	{
+		rb2->ApplyForce(glm::vec2(0, -1));
+	}
+	// Move right
+	if (input->isKeyDown(aie::INPUT_KEY_RIGHT))
+	{
+		rb2->ApplyForce(glm::vec2(1, 0));
+	}
+	// Move left
+	if (input->isKeyDown(aie::INPUT_KEY_LEFT))
+	{
+		rb2->ApplyForce(glm::vec2(-1, 0));
+	}
+	// Stop
+	if (input->isKeyDown(aie::INPUT_KEY_KP_0))
+	{
+		rb2->ApplyForce(-rb2->GetVelocity());
+	}
+
+
 	std::cout << std::endl << "x: " << rb->GetPosition().x;
 	std::cout << std::endl << "y: " << rb->GetPosition().y << std::endl;
 }
