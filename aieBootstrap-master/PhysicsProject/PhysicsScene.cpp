@@ -15,8 +15,21 @@ static fn collisionFunctionArray[] =
 {
 	PhysicsScene::Plane2Plane,
 	PhysicsScene::Plane2Sphere,
+	PhysicsScene::Plane2Box,
+
 	PhysicsScene::Sphere2Plane,
 	PhysicsScene::Sphere2Sphere,
+	PhysicsScene::Sphere2Box,
+
+	PhysicsScene::Box2Plane,
+	PhysicsScene::Box2Sphere,
+	PhysicsScene::Box2Box,
+
+
+
+
+
+
 };
 
 PhysicsScene::PhysicsScene() : m_timeStep(0.01f), m_gravity(glm::vec2(0, 0))
@@ -77,8 +90,8 @@ void PhysicsScene::Update(float dt)
 	}
 
 	
-	//Rigidbody* rb = dynamic_cast<Rigidbody*>(m_actors[0]);
-	//Rigidbody* rb2 = dynamic_cast<Rigidbody*>(m_actors[1]);
+	Rigidbody* rb = dynamic_cast<Rigidbody*>(m_actors[0]);
+	Rigidbody* rb2 = dynamic_cast<Rigidbody*>(m_actors[1]);
 
 	
 	//if (input->wasKeyPressed(aie::INPUT_KEY_SPACE))	
@@ -93,38 +106,14 @@ void PhysicsScene::Update(float dt)
 	//}
 
 	
-	//MoveRigidbody(rb, 87, 83, 65, 68);
-	//MoveRigidbody(rb2, 87, 83, 65, 68);
+	MoveRigidbody(rb, 87, 83, 65, 68);
+	MoveRigidbody(rb2, 265, 264, 263, 262);
 
 
 
 
 
-	//// Move up
-	//if (input->isKeyDown(aie::INPUT_KEY_UP))
-	//{
-	//	rb2->ApplyForce(glm::vec2(0, 1));
-	//}
-	//// Move down
-	//if (input->isKeyDown(aie::INPUT_KEY_DOWN))
-	//{
-	//	rb2->ApplyForce(glm::vec2(0, -1));
-	//}
-	//// Move right
-	//if (input->isKeyDown(aie::INPUT_KEY_RIGHT))
-	//{
-	//	rb2->ApplyForce(glm::vec2(1, 0));
-	//}
-	//// Move left
-	//if (input->isKeyDown(aie::INPUT_KEY_LEFT))
-	//{
-	//	rb2->ApplyForce(glm::vec2(-1, 0));
-	//}
-	//// Stop
-	//if (input->isKeyDown(aie::INPUT_KEY_KP_0))
-	//{
-	//	rb2->ApplyForce(-rb2->GetVelocity());
-	//}
+	
 
 
 	//std::cout << std::endl << "x: " << rb->GetPosition().x;
@@ -209,6 +198,11 @@ bool PhysicsScene::Plane2Sphere(PhysicsObject* objPlane, PhysicsObject* objSpher
 	return Sphere2Plane(objSphere, objPlane);
 }
 
+bool PhysicsScene::Plane2Box(PhysicsObject*, PhysicsObject*)
+{
+	return false;
+}
+
 bool PhysicsScene::Sphere2Plane(PhysicsObject* objSphere, PhysicsObject* objPlane)
 {
 	Sphere* sphere = dynamic_cast<Sphere*>(objSphere);
@@ -252,6 +246,26 @@ bool PhysicsScene::Sphere2Sphere(PhysicsObject* obj1, PhysicsObject* obj2)
 
 
 
+	return false;
+}
+
+bool PhysicsScene::Sphere2Box(PhysicsObject*, PhysicsObject*)
+{
+	return false;
+}
+
+bool PhysicsScene::Box2Plane(PhysicsObject*, PhysicsObject*)
+{
+	return false;
+}
+
+bool PhysicsScene::Box2Sphere(PhysicsObject*, PhysicsObject*)
+{
+	return false;
+}
+
+bool PhysicsScene::Box2Box(PhysicsObject*, PhysicsObject*)
+{
 	return false;
 }
 
