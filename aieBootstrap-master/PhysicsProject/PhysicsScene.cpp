@@ -7,6 +7,7 @@
 #include "Plane.h"
 #include "Input.h"
 
+
 // Function pointer array for handling our collisions
 typedef bool(*fn)(PhysicsObject*, PhysicsObject*);
 
@@ -51,7 +52,7 @@ float timer = 0.0f;
 
 void PhysicsScene::Update(float dt)
 {
-	aie::Input* input = aie::Input::getInstance();
+	//aie::Input* input = aie::Input::getInstance();
 
 	timer += dt;
 
@@ -76,80 +77,58 @@ void PhysicsScene::Update(float dt)
 	}
 
 	
-	Rigidbody* rb = dynamic_cast<Rigidbody*>(m_actors[0]);
-	Rigidbody* rb2 = dynamic_cast<Rigidbody*>(m_actors[1]);
+	//Rigidbody* rb = dynamic_cast<Rigidbody*>(m_actors[0]);
+	//Rigidbody* rb2 = dynamic_cast<Rigidbody*>(m_actors[1]);
 
 	
-	if (input->wasKeyPressed(aie::INPUT_KEY_SPACE))	
+	//if (input->wasKeyPressed(aie::INPUT_KEY_SPACE))	
 	//if (timer >= 0.2f)
-	{
-		Sphere* particle;
-		particle = new Sphere((rb->GetPosition()), glm::vec2(0, -10), 1.f, 1, glm::vec4(0, 1, 0, 1));
-		m_particles.push_back(particle);
+	//{
+		//Sphere* particle;
+		//particle = new Sphere((rb->GetPosition()), glm::vec2(0, -10), 1.f, 1, glm::vec4(0, 1, 0, 1));
+		//m_particles.push_back(particle);
 
-		particle->ApplyForceToOther(rb, rb->GetVelocity() * rb->GetMass());
-		timer = 0.0f;
-	}
+		//particle->ApplyForceToOther(rb, rb->GetVelocity() * rb->GetMass());
+	//	timer = 0.0f;
+	//}
 
-	// Move down
-	if (input->isKeyDown(aie::INPUT_KEY_W))
-	{
-		rb->ApplyForce(glm::vec2(0, 1));
-	}
-	// Move up
-	if (input->isKeyDown(aie::INPUT_KEY_S))
-	{
-		rb->ApplyForce(glm::vec2(0, -1));
-	}
-	// Move right
-	if (input->isKeyDown(aie::INPUT_KEY_D))
-	{
-		rb->ApplyForce(glm::vec2(1, 0));
-	}
-	// Move left
-	if (input->isKeyDown(aie::INPUT_KEY_A))
-	{
-		rb->ApplyForce(glm::vec2(-1, 0));
-	}
-	// Stop
-	if (input->isKeyDown(aie::INPUT_KEY_E))
-	{
-		rb->ApplyForce(-rb->GetVelocity());
-	}
+	
+	//MoveRigidbody(rb, 87, 83, 65, 68);
+	//MoveRigidbody(rb2, 87, 83, 65, 68);
 
 
 
 
 
-	// Move up
-	if (input->isKeyDown(aie::INPUT_KEY_UP))
-	{
-		rb2->ApplyForce(glm::vec2(0, 1));
-	}
-	// Move down
-	if (input->isKeyDown(aie::INPUT_KEY_DOWN))
-	{
-		rb2->ApplyForce(glm::vec2(0, -1));
-	}
-	// Move right
-	if (input->isKeyDown(aie::INPUT_KEY_RIGHT))
-	{
-		rb2->ApplyForce(glm::vec2(1, 0));
-	}
-	// Move left
-	if (input->isKeyDown(aie::INPUT_KEY_LEFT))
-	{
-		rb2->ApplyForce(glm::vec2(-1, 0));
-	}
-	// Stop
-	if (input->isKeyDown(aie::INPUT_KEY_KP_0))
-	{
-		rb2->ApplyForce(-rb2->GetVelocity());
-	}
+	//// Move up
+	//if (input->isKeyDown(aie::INPUT_KEY_UP))
+	//{
+	//	rb2->ApplyForce(glm::vec2(0, 1));
+	//}
+	//// Move down
+	//if (input->isKeyDown(aie::INPUT_KEY_DOWN))
+	//{
+	//	rb2->ApplyForce(glm::vec2(0, -1));
+	//}
+	//// Move right
+	//if (input->isKeyDown(aie::INPUT_KEY_RIGHT))
+	//{
+	//	rb2->ApplyForce(glm::vec2(1, 0));
+	//}
+	//// Move left
+	//if (input->isKeyDown(aie::INPUT_KEY_LEFT))
+	//{
+	//	rb2->ApplyForce(glm::vec2(-1, 0));
+	//}
+	//// Stop
+	//if (input->isKeyDown(aie::INPUT_KEY_KP_0))
+	//{
+	//	rb2->ApplyForce(-rb2->GetVelocity());
+	//}
 
 
-	std::cout << std::endl << "x: " << rb->GetPosition().x;
-	std::cout << std::endl << "y: " << rb->GetPosition().y << std::endl;
+	//std::cout << std::endl << "x: " << rb->GetPosition().x;
+	//std::cout << std::endl << "y: " << rb->GetPosition().y << std::endl;
 }
 
 void PhysicsScene::Draw()
@@ -188,7 +167,7 @@ void PhysicsScene::CheckForCollision()
 			int shapeID_out = objOuter->GetShapeID();
 			int shapeID_in = objInner->GetShapeID();
 
-			int functionIndex = (shapeID_out * SHAPE_COUNT) + shapeID_in;
+			int functionIndex = (shapeID_out * ShapeType::SHAPE_COUNT) + shapeID_in;
 			fn collisionFunctionPtr = collisionFunctionArray[functionIndex];
 			if (collisionFunctionPtr != nullptr)
 			{
@@ -274,4 +253,38 @@ bool PhysicsScene::Sphere2Sphere(PhysicsObject* obj1, PhysicsObject* obj2)
 
 
 	return false;
+}
+
+
+void PhysicsScene::MoveRigidbody(Rigidbody* rb, int up, int down, int left, int right)
+{
+	//rb = dynamic_cast<Rigidbody*>(m_actors[playerNumber]);
+
+	aie::Input* input = aie::Input::getInstance();
+
+	// Move down
+	if (input->isKeyDown(up))
+	{
+		rb->ApplyForce(glm::vec2(0, 1));
+	}
+	// Move up
+	if (input->isKeyDown(down))
+	{
+		rb->ApplyForce(glm::vec2(0, -1));
+	}
+	// Move right
+	if (input->isKeyDown(right))
+	{
+		rb->ApplyForce(glm::vec2(1, 0));
+	}
+	// Move left
+	if (input->isKeyDown(left))
+	{
+		rb->ApplyForce(glm::vec2(-1, 0));
+	}
+	// Stop
+	if (input->isKeyDown(aie::INPUT_KEY_E))
+	{
+		rb->ApplyForce(-rb->GetVelocity());
+	}
 }

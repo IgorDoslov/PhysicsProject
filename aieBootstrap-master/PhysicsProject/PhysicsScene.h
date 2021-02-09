@@ -3,7 +3,7 @@
 #include <vector>
 
 class PhysicsObject;
-
+class Rigidbody;
 
 class PhysicsScene
 {
@@ -39,6 +39,9 @@ public:
 	static bool Plane2Sphere(PhysicsObject*, PhysicsObject*);
 	static bool Sphere2Plane(PhysicsObject*, PhysicsObject*);
 	static bool Sphere2Sphere(PhysicsObject*, PhysicsObject*);
+
+	void MoveRigidbody(Rigidbody* rb, int up, int down, int left, int right);
+
 
 
 	std::vector<PhysicsObject*> m_particles;
