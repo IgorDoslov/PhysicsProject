@@ -6,6 +6,7 @@
 #include "Sphere.h"
 #include "Plane.h"
 #include "Input.h"
+#include "Box.h"
 
 
 // Function pointer array for handling our collisions
@@ -187,8 +188,54 @@ bool PhysicsScene::Plane2Sphere(PhysicsObject* objPlane, PhysicsObject* objSpher
 	return Sphere2Plane(objSphere, objPlane);
 }
 
-bool PhysicsScene::Plane2Box(PhysicsObject*, PhysicsObject*)
+bool PhysicsScene::Plane2Box(PhysicsObject* objPlane, PhysicsObject* objBox)
 {
+	Plane* plane = dynamic_cast<Plane*>(objPlane);
+	Box* box = dynamic_cast<Box*>(objBox);
+
+	if (box != nullptr && plane != nullptr)
+	{
+		int numContacts = 0;
+		glm::vec2 contact(0, 0);
+		float contactV = 0;
+
+		// Get a representative point on the plane
+		glm::vec2 planeOrigin = plane->GetNormal() * plane->GetDistance();
+
+		// Check all the corners for a collision with the plane
+		for (float x = -box->GetExtents().x; x < box->GetWidth(); x += box->GetWidth())
+		{
+			for (float y = -box->GetExtents().y; y < box->GetWidth(); y += box->GetWidth())
+			{
+				// Get the position of the corners in world space
+				glm::vec2 p = box->GetPosition() + x * box->GetLocalX() + y * box->GetLocalY();
+				float distFromPlane = glm::dot(p - planeOrigin, plane->GetNormal());
+
+				// this is the total velocity of the points in world space
+				glm::vec2 displacement = x * box->GetLocalX() + y * box->GetLocalY();
+				glm::vec2 pointVelocity = box->GetVelocity() + box->GetAngularVelocity() *
+					glm::vec2(-displacement.y, displacement.x);
+
+				// this is the amount of the point velocity inot the plane
+				float velocityIntoPlane = glm::dot(pointVelocity, plane->GetNormal());
+
+				// Moving further in, we need to resolve the collision
+				if (distFromPlane < 0 && velocityIntoPlane <= 0)
+				{
+					numContacts++;
+					contact += p;
+					contactV += velocityIntoPlane;
+				}
+			}
+		}
+
+		if (numContacts > 0)
+		{
+			plane->ResolveCollision(box, contact / (float)numContacts);
+				return true;
+		}
+	}
+
 	return false;
 }
 
