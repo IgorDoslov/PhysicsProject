@@ -1,4 +1,8 @@
 #include "Rigidbody.h"
+#include "PhysicsScene.h"
+
+//#define MIN_LINEAR_THRESHOLD 0.001f;
+//#define MIN_ANGULAR_THRESHOLD 0.001f;
 
 Rigidbody::Rigidbody(ShapeType a_shapeID, glm::vec2 a_position, glm::vec2 a_velocity, float a_rotation, float a_mass) : PhysicsObject(a_shapeID)
 {
@@ -15,19 +19,29 @@ Rigidbody::Rigidbody(ShapeType a_shapeID, glm::vec2 a_position, glm::vec2 a_velo
 
 void Rigidbody::FixedUpdate(glm::vec2 a_gravity, float a_timeStep)
 {
+	/*if (glm::length(m_velocity) < 0.001f)
+	{
+		m_velocity = glm::vec2(0);
+	}
+	if (abs(m_angularVelocity) < 0.001f)
+	{
+		m_angularVelocity = 0.f;
+	}*/
+
 	if (m_isKinematic)
 	{
 		m_velocity = glm::vec2(0);
-		m_angularVelocity = 0;
+		m_angularVelocity = 0.f;
 		return;
 	}
 
 	ApplyForce(a_gravity * GetMass() * a_timeStep, glm::vec2(0));
+
 	m_velocity -= m_velocity * m_linearDrag * a_timeStep;
 	m_angularVelocity -= m_angularVelocity * m_angularDrag * a_timeStep;
 
 	if (length(m_velocity) < MIN_LINEAR_THRESHOLD) { m_velocity = glm::vec2(0, 0); }
-	if (abs(m_angularVelocity) < MIN_ANGULAR_THRESHOLD) { m_angularVelocity = 0; }
+	if (abs(m_angularVelocity) < MIN_ANGULAR_THRESHOLD) { m_angularVelocity = 0.f; }
 
 	m_position += GetVelocity() * a_timeStep;
 
@@ -46,7 +60,7 @@ void Rigidbody::ApplyForce(glm::vec2 a_force, glm::vec2 a_pos)
 
 
 void Rigidbody::ResolveCollision(Rigidbody* a_otherActor, glm::vec2 a_contact,
-	glm::vec2* a_collisionNormal)
+	glm::vec2* a_collisionNormal, float a_pen)
 {
 	// Find the vector between their centres, or use the provided
 	// direction of force and make sure its normalised
@@ -83,7 +97,10 @@ void Rigidbody::ResolveCollision(Rigidbody* a_otherActor, glm::vec2 a_contact,
 			(mass1 + mass2) * (cp_velocity1 - cp_velocity2) * normal;
 		ApplyForce(-impact, a_contact - m_position);
 		a_otherActor->ApplyForce(impact, a_contact - a_otherActor->GetPosition());
-
+		if (a_pen > 0)
+		{
+			PhysicsScene::ApplyContactForces(this, a_otherActor, normal, a_pen);
+		}
 
 	}
 

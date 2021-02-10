@@ -10,11 +10,11 @@ public:
 	virtual void Debug() {};
 
 	void ApplyForce(glm::vec2 a_force, glm::vec2 a_pos);
-	
-	void ResolveCollision(Rigidbody* a_otherActor, glm::vec2 a_contact, 
-		glm::vec2* a_collisionNormal = nullptr);
 
-	
+	void ResolveCollision(Rigidbody* a_otherActor, glm::vec2 a_contact,
+		glm::vec2* a_collisionNormal = nullptr, float a_pen = 0);
+
+
 
 
 	glm::vec2 GetPosition() const { return m_position; }
@@ -34,9 +34,9 @@ public:
 	float GetAngularDrag() { return m_angularDrag; }
 	float SetAngularDrag(float a_angularDrag) { return m_angularDrag = a_angularDrag; }
 
+	glm::vec2 SetPosition(glm::vec2 a_newPos) { return m_position = a_newPos; }
+
 protected:
-	float MIN_LINEAR_THRESHOLD = 0.1f;
-	float MIN_ANGULAR_THRESHOLD = 0.01f;
 
 	glm::vec2 m_position;
 	glm::vec2 m_velocity;
@@ -44,7 +44,13 @@ protected:
 	float m_rotation;
 	float m_angularVelocity;
 	float m_moment;
+
 	float m_linearDrag;
 	float m_angularDrag;
+
+private:
+
+	float MIN_LINEAR_THRESHOLD = 0.1f;
+	float MIN_ANGULAR_THRESHOLD = 0.01f;
 };
 
