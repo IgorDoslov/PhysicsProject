@@ -43,14 +43,13 @@ bool PhysicsProjectApp::startup() {
 	m_physicsScene->SetTimeStep(0.01f);
 
 	//SetupContinuousDemo({ -40 , 0 }, 45, 40, 10);
-	DrawRect();
-	SphereAndPlane();
+	//DrawRect();
+	//SphereAndPlane();
 
-
-
-	/*Plane* plane2;
-	plane2 = new Plane();
-	m_physicsScene->m_particles.push_back(plane2);*/
+	DrawTable();
+	DrawBalls();
+	DrawCorners();
+	
 
 	return true;
 }
@@ -104,30 +103,93 @@ void PhysicsProjectApp::draw() {
 	m_2dRenderer->end();
 }
 
-void PhysicsProjectApp::SetupContinuousDemo(glm::vec2 startPos, float inclination, float speed, float gravity)
+void PhysicsProjectApp::DrawTable()
 {
-	float t = 0.0f;
-	float tStep = 0.1f;
-	float radius = 1.0f;
-	int segments = 12;
+	// Yellow
+	Box* box1 = new Box(glm::vec2(-48, -54), glm::vec2(0, 0), 0, 10000000, 38, 2,
+		glm::vec4(1, 1, 0, 1));
+	// Red
+	Box* box2 = new Box(glm::vec2(48, -54), glm::vec2(0, 0), 0, 10000000, 38, 2,
+		glm::vec4(1, 0, 0, 1));
+	// Green
+	Box* box3 = new Box(glm::vec2(-48, 54), glm::vec2(0, 0), 0, 10000000, 38, 2,
+		glm::vec4(0, 1, 0, 1));
+	// blue
+	Box* box4 = new Box(glm::vec2(48, 54), glm::vec2(0, 0), 0, 10000000, 38, 2,
+		glm::vec4(0, 0, 1, 1));
+	// Purple
+	Box* box5 = new Box(glm::vec2(97, 0), glm::vec2(0, 0), 0, 10000000, 2, 40,
+		glm::vec4(1, 0, 1, 1));
+	// White
+	Box* box6 = new Box(glm::vec2(-97, 0), glm::vec2(0, 0), 0, 10000000, 2, 40,
+		glm::vec4(1, 1, 1, 1));
 
-	glm::vec4 colour = glm::vec4(1, 1, 0, 1);
-	glm::vec2 pos;
 
 
-	while (t <= 5)
-	{
-		// calculate the x, y position of the projectile at time t
+	m_physicsScene->AddActor(box1);
+	m_physicsScene->AddActor(box2);
+	m_physicsScene->AddActor(box3);
+	m_physicsScene->AddActor(box4);
+	m_physicsScene->AddActor(box5);
+	m_physicsScene->AddActor(box6);
+}
 
-		startPos.x = speed * glm::cos(0.78) * t;
-		startPos.y = speed * glm::sin(0.78) * t - 0.5 * gravity * (t * t);
+void PhysicsProjectApp::DrawBalls()
+{
+	// Red
+	Sphere* ball1 = new Sphere(glm::vec2(0, 0), glm::vec2(0, 0), 1.f, 4, glm::vec4(1, 0, 0, 1));
+	// Yellow
+	Sphere* ball2 = new Sphere(glm::vec2(0, 0), glm::vec2(0, 0), 1.f, 4, glm::vec4(1, 1, 0, 1));
+	// Purple
+	Sphere* ball3 = new Sphere(glm::vec2(0, 0), glm::vec2(0, 0), 1.f, 4, glm::vec4(1, 0, 1, 1));
+	// Green
+	Sphere* ball4 = new Sphere(glm::vec2(0, 0), glm::vec2(0, 0), 1.f, 4, glm::vec4(0, 1, 0, 1));
+	// Blue
+	Sphere* ball5 = new Sphere(glm::vec2(0, 0), glm::vec2(0, 0), 1.f, 4, glm::vec4(0, 0, 1, 1));
+	// White
+	Sphere* ball6 = new Sphere(glm::vec2(0, 0), glm::vec2(0, 0), 1.f, 4, glm::vec4(1, 1, 1, 1));
 
 
+	m_physicsScene->AddActor(ball1);
+	m_physicsScene->AddActor(ball2);
+	m_physicsScene->AddActor(ball3);
+	m_physicsScene->AddActor(ball4);
+	m_physicsScene->AddActor(ball5);
+	m_physicsScene->AddActor(ball6);
 
 
-		aie::Gizmos::add2DCircle(startPos, radius, segments, colour);
-		t += tStep;
-	}
+	ball1->ApplyForce(glm::vec2(-180, 10), glm::vec2(0));
+	ball2->ApplyForce(glm::vec2(30, 180), glm::vec2(0));
+	ball3->ApplyForce(glm::vec2(10, 30), glm::vec2(0));
+	ball4->ApplyForce(glm::vec2(100, -80), glm::vec2(0));
+	ball5->ApplyForce(glm::vec2(-80, 180), glm::vec2(0));
+	ball6->ApplyForce(glm::vec2(180, -30), glm::vec2(0));
+
+}
+
+void PhysicsProjectApp::DrawCorners()
+{
+	// Red
+	Sphere* ball1 = new Sphere(glm::vec2(0, 60), glm::vec2(0, 0), 100000.f, 8, glm::vec4(1, 0, 0, 0));
+	// Yellow
+	Sphere* ball2 = new Sphere(glm::vec2(0, -60), glm::vec2(0, 0), 100000.f, 8, glm::vec4(1, 1, 0, 0));
+	// Purple
+	Sphere* ball3 = new Sphere(glm::vec2(97, 52), glm::vec2(0, 0), 100000.f, 8, glm::vec4(1, 0, 1, 0));
+	// Green
+	Sphere* ball4 = new Sphere(glm::vec2(97, -52), glm::vec2(0, 0), 100000.f, 8, glm::vec4(0, 1, 0, 0));
+	// Blue
+	Sphere* ball5 = new Sphere(glm::vec2(-97, -52), glm::vec2(0, 0), 100000.f, 8, glm::vec4(0, 0, 1, 0));
+	// White
+	Sphere* ball6 = new Sphere(glm::vec2(-97, 52), glm::vec2(0, 0), 100000.f, 8, glm::vec4(1, 1, 1, 0));
+
+
+	m_physicsScene->AddActor(ball1);
+	m_physicsScene->AddActor(ball2);
+	m_physicsScene->AddActor(ball3);
+	m_physicsScene->AddActor(ball4);
+	m_physicsScene->AddActor(ball5);
+	m_physicsScene->AddActor(ball6);
+
 }
 
 void PhysicsProjectApp::DrawRect()
@@ -179,8 +241,33 @@ void PhysicsProjectApp::SphereAndPlane()
 	ball2->ApplyForce(glm::vec2(2, -30), glm::vec2(0));
 
 
-
 	Plane* plane;
 	plane = new Plane({ 0,1 }, 0.f);
 	m_physicsScene->AddActor(plane);
+}
+
+void PhysicsProjectApp::SetupContinuousDemo(glm::vec2 startPos, float inclination, float speed, float gravity)
+{
+	float t = 0.0f;
+	float tStep = 0.1f;
+	float radius = 1.0f;
+	int segments = 12;
+
+	glm::vec4 colour = glm::vec4(1, 1, 0, 1);
+	glm::vec2 pos;
+
+
+	while (t <= 5)
+	{
+		// calculate the x, y position of the projectile at time t
+
+		startPos.x = speed * glm::cos(0.78) * t;
+		startPos.y = speed * glm::sin(0.78) * t - 0.5 * gravity * (t * t);
+
+
+
+
+		aie::Gizmos::add2DCircle(startPos, radius, segments, colour);
+		t += tStep;
+	}
 }

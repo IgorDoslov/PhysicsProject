@@ -31,4 +31,7 @@ protected:
 public:
 	void DrawRect();
 	void SphereAndPlane();
+	void DrawTable();
+	void DrawBalls();
+	void DrawCorners();
 };
