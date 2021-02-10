@@ -40,7 +40,8 @@ void Box::MakeGizmo()
 	aie::Gizmos::add2DTri(p1, p4, p3, m_colour);
 }
 
-bool Box::CheckBoxCorners(const Box& a_box, glm::vec2& a_contact, int& a_numContacts)
+bool Box::CheckBoxCorners(const Box& a_box, glm::vec2& a_contact, int& a_numContacts, 
+	float& a_pen, glm::vec2& a_edgeNormal)
 {
 	float minX, maxX, minY, maxY;
 	float boxW = a_box.GetExtents().x * 2;
@@ -90,4 +91,45 @@ bool Box::CheckBoxCorners(const Box& a_box, glm::vec2& a_contact, int& a_numCont
 	if (maxX <= -m_extents.x || minX >= m_extents.x ||
 		maxY <= -m_extents.y || minY >= m_extents.y)
 		return false;
+
+	if (numLocalContacts == 0)
+		return false;
+
+	bool res = false;
+	a_contact += m_position + (localContact.x * m_localX + localContact.y * m_localY) /
+		(float)numLocalContacts;
+	a_numContacts++;
+
+	// Find the minimum penetration vector as a penetration amount and normal
+	float pen0 = m_extents.x - minX;
+	if (pen0 > 0 && (pen0 < a_pen || a_pen == 0))
+	{
+		a_edgeNormal = m_localX;
+		a_pen = pen0;
+		res = true;
+	}
+	pen0 = maxX + m_extents.x;
+	if (pen0 > 0 && (pen0 < a_pen || a_pen == 0))
+	{
+		a_edgeNormal = -m_localX;
+		a_pen = pen0;
+		res = true;
+	}
+
+	pen0 = m_extents.y - minY;
+
+	if (pen0 > 0 && (pen0 < a_pen || a_pen == 0))
+	{
+		a_edgeNormal = m_localY;
+		a_pen = pen0;
+		res = true;
+	}
+	pen0 = maxY + m_extents.y;
+	if (pen0 > 0 && (pen0 < a_pen || a_pen == 0))
+	{
+		a_edgeNormal = -m_localY;
+		a_pen = pen0;
+		res = true;
+	}
+	return res;
 }

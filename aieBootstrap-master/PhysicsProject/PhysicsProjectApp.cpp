@@ -54,8 +54,8 @@ bool PhysicsProjectApp::startup() {
 	ball2 = new Sphere(glm::vec2(0, 60), glm::vec2(0, 1), 3.f, 1, glm::vec4(1, 0, 1, 1));
 	m_physicsScene->AddActor(ball2);
 
-	ball2->ApplyForce(glm::vec2(0, -30));
-	anotherBall->ApplyForce(glm::vec2(0, -30));
+	ball2->ApplyForce(glm::vec2(0, -30), glm::vec2(0));
+	anotherBall->ApplyForce(glm::vec2(0, -30), glm::vec2(0));
 	*/
 
 	/*Plane* plane;
