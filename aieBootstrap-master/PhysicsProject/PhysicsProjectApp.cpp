@@ -106,22 +106,22 @@ void PhysicsProjectApp::draw() {
 void PhysicsProjectApp::DrawTable()
 {
 	// Yellow
-	Box* box1 = new Box(glm::vec2(-48, -54), glm::vec2(0, 0), 0, 10000000, 38, 2,
+	Box* box1 = new Box(glm::vec2(-48, -54), glm::vec2(0, 0), 0, 100000000, 38, 2,
 		glm::vec4(1, 1, 0, 1));
 	// Red
-	Box* box2 = new Box(glm::vec2(48, -54), glm::vec2(0, 0), 0, 10000000, 38, 2,
+	Box* box2 = new Box(glm::vec2(48, -54), glm::vec2(0, 0), 0, 100000000, 38, 2,
 		glm::vec4(1, 0, 0, 1));
 	// Green
-	Box* box3 = new Box(glm::vec2(-48, 54), glm::vec2(0, 0), 0, 10000000, 38, 2,
+	Box* box3 = new Box(glm::vec2(-48, 54), glm::vec2(0, 0), 0, 100000000, 38, 2,
 		glm::vec4(0, 1, 0, 1));
 	// blue
-	Box* box4 = new Box(glm::vec2(48, 54), glm::vec2(0, 0), 0, 10000000, 38, 2,
+	Box* box4 = new Box(glm::vec2(48, 54), glm::vec2(0, 0), 0, 100000000, 38, 2,
 		glm::vec4(0, 0, 1, 1));
 	// Purple
-	Box* box5 = new Box(glm::vec2(97, 0), glm::vec2(0, 0), 0, 10000000, 2, 40,
+	Box* box5 = new Box(glm::vec2(97, 0), glm::vec2(0, 0), 0, 100000000, 2, 40,
 		glm::vec4(1, 0, 1, 1));
 	// White
-	Box* box6 = new Box(glm::vec2(-97, 0), glm::vec2(0, 0), 0, 10000000, 2, 40,
+	Box* box6 = new Box(glm::vec2(-97, 0), glm::vec2(0, 0), 0, 100000000, 2, 40,
 		glm::vec4(1, 1, 1, 1));
 
 
@@ -161,7 +161,7 @@ void PhysicsProjectApp::DrawBalls()
 	ball1->ApplyForce(glm::vec2(-180, 10), glm::vec2(0));
 	ball2->ApplyForce(glm::vec2(30, 180), glm::vec2(0));
 	ball3->ApplyForce(glm::vec2(10, 30), glm::vec2(0));
-	ball4->ApplyForce(glm::vec2(100, -80), glm::vec2(0));
+	ball4->ApplyForce(glm::vec2(200, -80), glm::vec2(0));
 	ball5->ApplyForce(glm::vec2(-80, 180), glm::vec2(0));
 	ball6->ApplyForce(glm::vec2(180, -30), glm::vec2(0));
 
@@ -170,17 +170,17 @@ void PhysicsProjectApp::DrawBalls()
 void PhysicsProjectApp::DrawCorners()
 {
 	// Red
-	Sphere* ball1 = new Sphere(glm::vec2(0, 60), glm::vec2(0, 0), 100000.f, 8, glm::vec4(1, 0, 0, 0));
+	Sphere* ball1 = new Sphere(glm::vec2(0, 60), glm::vec2(0, 0), 10000000.f, 8, glm::vec4(1, 0, 0, 0));
 	// Yellow
-	Sphere* ball2 = new Sphere(glm::vec2(0, -60), glm::vec2(0, 0), 100000.f, 8, glm::vec4(1, 1, 0, 0));
+	Sphere* ball2 = new Sphere(glm::vec2(0, -60), glm::vec2(0, 0), 10000000.f, 8, glm::vec4(1, 1, 0, 0));
 	// Purple
-	Sphere* ball3 = new Sphere(glm::vec2(97, 52), glm::vec2(0, 0), 100000.f, 8, glm::vec4(1, 0, 1, 0));
+	Sphere* ball3 = new Sphere(glm::vec2(97, 52), glm::vec2(0, 0), 10000000.f, 8, glm::vec4(1, 0, 1, 0));
 	// Green
-	Sphere* ball4 = new Sphere(glm::vec2(97, -52), glm::vec2(0, 0), 100000.f, 8, glm::vec4(0, 1, 0, 0));
+	Sphere* ball4 = new Sphere(glm::vec2(97, -52), glm::vec2(0, 0), 10000000.f, 8, glm::vec4(0, 1, 0, 0));
 	// Blue
-	Sphere* ball5 = new Sphere(glm::vec2(-97, -52), glm::vec2(0, 0), 100000.f, 8, glm::vec4(0, 0, 1, 0));
+	Sphere* ball5 = new Sphere(glm::vec2(-97, -52), glm::vec2(0, 0), 10000000.f, 8, glm::vec4(0, 0, 1, 0));
 	// White
-	Sphere* ball6 = new Sphere(glm::vec2(-97, 52), glm::vec2(0, 0), 100000.f, 8, glm::vec4(1, 1, 1, 0));
+	Sphere* ball6 = new Sphere(glm::vec2(-97, 52), glm::vec2(0, 0), 10000000.f, 8, glm::vec4(1, 1, 1, 0));
 
 
 	m_physicsScene->AddActor(ball1);
