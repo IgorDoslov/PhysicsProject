@@ -5,6 +5,7 @@ Box::Box(glm::vec2 a_position, glm::vec2 a_velocity, float a_rotation, float a_m
 	: Rigidbody(BOX, a_position, a_velocity, a_rotation, a_mass), m_extents(a_width, a_height)
 {
 	m_colour = glm::vec4(1, 0, 0, 1);
+	m_moment = 1.0f / 3.0f * m_mass * a_width * a_height;
 
 }
 
@@ -12,6 +13,8 @@ Box::Box(glm::vec2 a_position, glm::vec2 a_velocity, float a_rotation, float a_m
 	: Rigidbody(BOX, a_position, a_velocity, a_rotation, a_mass), m_extents(a_width, a_height)
 {
 	m_colour = a_colour;
+	m_moment = 1.0f / 3.0f * m_mass * a_width * a_height;
+
 }
 
 Box::~Box()
@@ -53,7 +56,7 @@ bool Box::CheckBoxCorners(const Box& a_box, glm::vec2& a_contact, int& a_numCont
 	// Loop over all the corner of the other box
 	for (float x = -a_box.GetExtents().x; x < boxW; x += boxW)
 	{
-		for (float y = -a_box.GetExtents().y; x < boxH; y += boxH)
+		for (float y = -a_box.GetExtents().y; y < boxH; y += boxH)
 		{
 			// Get the position in world space
 			glm::vec2 p = a_box.GetPosition() + x * a_box.m_localX + y * a_box.m_localY;
@@ -65,15 +68,11 @@ bool Box::CheckBoxCorners(const Box& a_box, glm::vec2& a_contact, int& a_numCont
 			// Update the extents in each cardinal direction of our box's space
 			// ~ Extents along the separating axes
 
-			if (first || p0.x < minX)
-				minX = p0.x;
-			if (first || p0.x > maxX)
-				maxX = p0.x;
+			if (first || p0.x < minX) minX = p0.x;
+			if (first || p0.x > maxX) maxX = p0.x;
 
-			if (first || p0.y < minY)
-				minY = p0.y;
-			if (first || p0.y > maxY)
-				maxX = p0.y;
+			if (first || p0.y < minY) minY = p0.y;
+			if (first || p0.y > maxY) maxY = p0.y;
 
 			if (p0.x >= -m_extents.x && p0.x <= m_extents.x &&
 				p0.y >= -m_extents.y && p0.y <= m_extents.y)
@@ -81,7 +80,7 @@ bool Box::CheckBoxCorners(const Box& a_box, glm::vec2& a_contact, int& a_numCont
 				numLocalContacts++;
 				localContact += p0;
 			}
-			return false;
+			first = false;
 
 		}
 	}
