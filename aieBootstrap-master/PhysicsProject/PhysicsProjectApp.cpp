@@ -139,9 +139,22 @@ void PhysicsProjectApp::DrawRect()
 	Box* box1 = new Box(glm::vec2(-20, 0), glm::vec2(25, -4), 1, 4, 8, 4,
 		glm::vec4(1, 1, 0, 1));
 
+	Box* box2 = new Box(glm::vec2(10, 0), glm::vec2(-4, 0), 1, 4, 8, 4,
+		glm::vec4(1, 0, 0, 1));
+
+
 	box1->SetRotation(0.5);
 
 	m_physicsScene->AddActor(box1);
+	m_physicsScene->AddActor(box2);
+
+	box1->ApplyForce(glm::vec2(30, 0), glm::vec2(0));
+	box2->ApplyForce(glm::vec2(-15, 0), glm::vec2(0));
+
+	Sphere* ball = new Sphere(glm::vec2(5, -10), glm::vec2(0), 1.f, 3, glm::vec4(0, 0, 1, 1));
+	ball->SetRotation(0.5);
+	m_physicsScene->AddActor(ball);
+
 }
 
 void PhysicsProjectApp::SphereAndPlane()
