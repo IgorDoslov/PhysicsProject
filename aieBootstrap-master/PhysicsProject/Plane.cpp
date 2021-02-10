@@ -7,6 +7,8 @@ Plane::Plane() : PhysicsObject(ShapeType::PLANE)
 	m_distanceToOrigin = 0;
 	m_normal = glm::normalize(glm::vec2(0, 1));
 	m_colour = glm::vec4(0, 1, 0, 1);
+	m_isKinematic = true;
+	m_elasticity = 1.f;
 }
 
 Plane::Plane(glm::vec2 a_normal, float a_distance) : PhysicsObject(PLANE)
@@ -14,6 +16,8 @@ Plane::Plane(glm::vec2 a_normal, float a_distance) : PhysicsObject(PLANE)
 	m_normal = glm::normalize(a_normal);
 	m_distanceToOrigin = a_distance;
 	m_colour = glm::vec4(0, 1, 1, 1);
+	m_isKinematic = true;
+	m_elasticity = 1.f;
 }
 
 Plane::~Plane()
@@ -64,7 +68,7 @@ void Plane::ResolveCollision(Rigidbody* a_otherActor, glm::vec2 a_contact)
 	float velocityIntoPlane = glm::dot(vRel, m_normal);
 
 	// This can be left as perfect elasticity for the moment
-	float e = 1;
+	float e = (m_elasticity + a_otherActor->GetElasticity()) / 2.f;
 
 	// This is the perpendicular distance we apply the force at relative
 	// to the centre of mass: Torque = F * r

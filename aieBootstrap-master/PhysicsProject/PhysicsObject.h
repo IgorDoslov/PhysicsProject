@@ -25,8 +25,18 @@ public:
 
 	ShapeType GetShapeID() { return m_shapeID; }
 
+	bool IsKinematic() { return m_isKinematic; }
+	bool SetKinematic(bool a_state) { return m_isKinematic = a_state; }
+
+	float GetElasticity() { return m_elasticity; }
+	// Keep to 1 for realism
+	float SetElasticity(float a_new) { return m_elasticity = a_new; }
+
 protected:
 	ShapeType m_shapeID;
+	bool m_isKinematic;
+	float m_elasticity;
+
 	PhysicsObject(ShapeType a_shapeID) : m_shapeID(a_shapeID){}
 };
 

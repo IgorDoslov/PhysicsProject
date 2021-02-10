@@ -72,7 +72,9 @@ void PhysicsScene::Update(float dt)
 	{
 		for (auto pActor : m_actors)
 		{
+
 			pActor->FixedUpdate(m_gravity, m_timeStep);
+			
 		}
 
 		for (auto pParticles : m_particles)
@@ -84,7 +86,7 @@ void PhysicsScene::Update(float dt)
 
 		CheckForCollision();
 	}
-
+	
 
 	//Rigidbody* rb = dynamic_cast<Rigidbody*>(m_actors[0]);
 	//Rigidbody* rb2 = dynamic_cast<Rigidbody*>(m_actors[1]);

@@ -154,6 +154,8 @@ void PhysicsProjectApp::DrawRect()
 	Sphere* ball = new Sphere(glm::vec2(5, -10), glm::vec2(0), 1.f, 3, glm::vec4(0, 0, 1, 1));
 	ball->SetRotation(0.5);
 	m_physicsScene->AddActor(ball);
+	ball->SetKinematic(true);
+
 
 }
 
@@ -171,8 +173,7 @@ void PhysicsProjectApp::SphereAndPlane()
 	ball2 = new Sphere(glm::vec2(0, 60), glm::vec2(0, 1), 3.f, 2, glm::vec4(1, 0, 1, 1));
 	m_physicsScene->AddActor(ball2);
 
-
-
+	
 	ball->ApplyForce(glm::vec2(80, 0), glm::vec2(0));
 	anotherBall->ApplyForce(glm::vec2(-80, 0), glm::vec2(0));
 	ball2->ApplyForce(glm::vec2(2, -30), glm::vec2(0));

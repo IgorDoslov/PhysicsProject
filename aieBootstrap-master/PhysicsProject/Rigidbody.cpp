@@ -7,6 +7,8 @@ Rigidbody::Rigidbody(ShapeType a_shapeID, glm::vec2 a_position, glm::vec2 a_velo
 	m_mass = a_mass;
 	m_rotation = a_rotation;
 	m_angularVelocity = 0;
+	m_isKinematic = false;
+	m_elasticity = 0.8f;
 }
 
 void Rigidbody::FixedUpdate(glm::vec2 a_gravity, float a_timeStep)
@@ -59,7 +61,7 @@ void Rigidbody::ResolveCollision(Rigidbody* a_otherActor, glm::vec2 a_contact,
 		float mass2 = 1.f / (1.f / a_otherActor->m_mass + (radius2 * radius2)
 			/ a_otherActor->GetMoment());
 
-		float elasticity = 1.f;
+		float elasticity = (m_elasticity + a_otherActor->GetElasticity()) / 2.f;
 
 		glm::vec2 impact = (1.f + elasticity) * mass1 * mass2 /
 			(mass1 + mass2) * (cp_velocity1 - cp_velocity2) * normal;
