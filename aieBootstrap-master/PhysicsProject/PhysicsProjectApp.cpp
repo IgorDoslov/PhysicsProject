@@ -106,24 +106,23 @@ void PhysicsProjectApp::draw() {
 void PhysicsProjectApp::DrawTable()
 {
 	// Yellow
-	Box* box1 = new Box(glm::vec2(-48, -54), glm::vec2(0, 0), 0, 100000000, 38, 2,
+	Box* box1 = new Box(glm::vec2(-48, -54), glm::vec2(0, 0), 0, 10, 38, 2,
 		glm::vec4(1, 1, 0, 1));
 	// Red
-	Box* box2 = new Box(glm::vec2(48, -54), glm::vec2(0, 0), 0, 100000000, 38, 2,
+	Box* box2 = new Box(glm::vec2(48, -54), glm::vec2(0, 0), 0, 10, 38, 2,
 		glm::vec4(1, 0, 0, 1));
 	// Green
-	Box* box3 = new Box(glm::vec2(-48, 54), glm::vec2(0, 0), 0, 100000000, 38, 2,
+	Box* box3 = new Box(glm::vec2(-48, 54), glm::vec2(0, 0), 0, 10, 38, 2,
 		glm::vec4(0, 1, 0, 1));
 	// blue
-	Box* box4 = new Box(glm::vec2(48, 54), glm::vec2(0, 0), 0, 100000000, 38, 2,
+	Box* box4 = new Box(glm::vec2(48, 54), glm::vec2(0, 0), 0, 10, 38, 2,
 		glm::vec4(0, 0, 1, 1));
 	// Purple
-	Box* box5 = new Box(glm::vec2(97, 0), glm::vec2(0, 0), 0, 100000000, 2, 40,
+	Box* box5 = new Box(glm::vec2(97, 0), glm::vec2(0, 0), 0, 10, 2, 40,
 		glm::vec4(1, 0, 1, 1));
 	// White
-	Box* box6 = new Box(glm::vec2(-97, 0), glm::vec2(0, 0), 0, 100000000, 2, 40,
+	Box* box6 = new Box(glm::vec2(-97, 0), glm::vec2(0, 0), 0, 10, 2, 40,
 		glm::vec4(1, 1, 1, 1));
-
 
 
 	m_physicsScene->AddActor(box1);
@@ -132,6 +131,21 @@ void PhysicsProjectApp::DrawTable()
 	m_physicsScene->AddActor(box4);
 	m_physicsScene->AddActor(box5);
 	m_physicsScene->AddActor(box6);
+	
+	box1->SetKinematic(1);
+	box2->SetKinematic(1);
+	box3->SetKinematic(1);
+	box4->SetKinematic(1);
+	box5->SetKinematic(1);
+	box6->SetKinematic(1);
+
+	box1->SetElasticity(0.6f);
+	box2->SetElasticity(0.6f);
+	box3->SetElasticity(0.6f);
+	box4->SetElasticity(0.6f);
+	box5->SetElasticity(0.6f);
+	box6->SetElasticity(0.6f);
+
 }
 
 void PhysicsProjectApp::DrawBalls()
@@ -157,6 +171,19 @@ void PhysicsProjectApp::DrawBalls()
 	m_physicsScene->AddActor(ball5);
 	m_physicsScene->AddActor(ball6);
 
+	ball1->SetElasticity(0.9f);
+	ball2->SetElasticity(0.9f);
+	ball3->SetElasticity(0.9f);
+	ball4->SetElasticity(0.9f);
+	ball5->SetElasticity(0.9f);
+	ball6->SetElasticity(0.9f);
+
+	ball1->SetLinearDrag(0.6f);
+	ball2->SetLinearDrag(0.6f);
+	ball3->SetLinearDrag(0.6f);
+	ball4->SetLinearDrag(0.6f);
+	ball5->SetLinearDrag(0.6f);
+	ball6->SetLinearDrag(0.6f);
 
 	ball1->ApplyForce(glm::vec2(-180, 10), glm::vec2(0));
 	ball2->ApplyForce(glm::vec2(30, 180), glm::vec2(0));

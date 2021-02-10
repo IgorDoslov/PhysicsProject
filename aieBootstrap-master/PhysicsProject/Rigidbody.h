@@ -20,20 +20,31 @@ public:
 	glm::vec2 GetPosition() const { return m_position; }
 	glm::vec2 GetVelocity() { return m_velocity; }
 
-	float GetMass() { return m_mass; }
+	float GetMass() { return m_isKinematic ? INT_MAX : m_mass; }
 	float GetRotation() { return m_rotation; }
 
-	float GetMoment() { return m_moment; }
+	float GetMoment() { return m_isKinematic ? INT_MAX : m_moment; }
 	float GetAngularVelocity() { return m_angularVelocity; }
 
 	float SetRotation(float a_rotate) { return m_rotation = a_rotate; }
 
+	float GetLinearDrag() { return m_linearDrag; }
+	float SetLinearDrag(float a_linearDrag) { return m_linearDrag = a_linearDrag; }
+
+	float GetAngularDrag() { return m_angularDrag; }
+	float SetAngularDrag(float a_angularDrag) { return m_angularDrag = a_angularDrag; }
+
 protected:
+	float MIN_LINEAR_THRESHOLD = 0.1f;
+	float MIN_ANGULAR_THRESHOLD = 0.01f;
+
 	glm::vec2 m_position;
 	glm::vec2 m_velocity;
 	float m_mass;
 	float m_rotation;
 	float m_angularVelocity;
 	float m_moment;
+	float m_linearDrag;
+	float m_angularDrag;
 };
 

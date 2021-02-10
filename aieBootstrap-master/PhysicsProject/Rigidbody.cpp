@@ -9,11 +9,26 @@ Rigidbody::Rigidbody(ShapeType a_shapeID, glm::vec2 a_position, glm::vec2 a_velo
 	m_angularVelocity = 0;
 	m_isKinematic = false;
 	m_elasticity = 0.8f;
+	m_linearDrag = 0.3f;
+	m_angularDrag = 0.3f;
 }
 
 void Rigidbody::FixedUpdate(glm::vec2 a_gravity, float a_timeStep)
 {
+	if (m_isKinematic)
+	{
+		m_velocity = glm::vec2(0);
+		m_angularVelocity = 0;
+		return;
+	}
+
 	ApplyForce(a_gravity * GetMass() * a_timeStep, glm::vec2(0));
+	m_velocity -= m_velocity * m_linearDrag * a_timeStep;
+	m_angularVelocity -= m_angularVelocity * m_angularDrag * a_timeStep;
+
+	if (length(m_velocity) < MIN_LINEAR_THRESHOLD) { m_velocity = glm::vec2(0, 0); }
+	if (abs(m_angularVelocity) < MIN_ANGULAR_THRESHOLD) { m_angularVelocity = 0; }
+
 	m_position += GetVelocity() * a_timeStep;
 
 	m_rotation += m_angularVelocity * a_timeStep;
@@ -24,6 +39,7 @@ void Rigidbody::FixedUpdate(glm::vec2 a_gravity, float a_timeStep)
 void Rigidbody::ApplyForce(glm::vec2 a_force, glm::vec2 a_pos)
 {
 	m_velocity += a_force / GetMass();
+	
 	m_angularVelocity += (a_force.y * a_pos.x - a_force.x * a_pos.y) / GetMoment();
 }
 
