@@ -25,6 +25,8 @@ void Rigidbody::ApplyForce(glm::vec2 a_force, glm::vec2 a_pos)
 	m_angularVelocity += (a_force.y * a_pos.x - a_force.x * a_pos.y) / GetMoment();
 }
 
+
+
 void Rigidbody::ResolveCollision(Rigidbody* a_otherActor, glm::vec2 a_contact,
 	glm::vec2* a_collisionNormal)
 {
@@ -46,7 +48,7 @@ void Rigidbody::ResolveCollision(Rigidbody* a_otherActor, glm::vec2 a_contact,
 	float cp_velocity1 = glm::dot(m_velocity, normal) - radius1 * m_angularVelocity;
 
 	// Velocity of contact point of the other object
-	float cp_velocity2 = glm::dot(a_otherActor->GetPosition(), normal) +
+	float cp_velocity2 = glm::dot(a_otherActor->GetVelocity(), normal) +
 		radius2 * a_otherActor->m_angularVelocity;
 
 	if (cp_velocity1 > cp_velocity2) // they are moving closer

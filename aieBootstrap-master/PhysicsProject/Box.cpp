@@ -26,7 +26,7 @@ void Box::FixedUpdate(glm::vec2 a_gravity, float a_timeStep)
 	float sn = sinf(m_rotation);
 
 	m_localX = glm::normalize(glm::vec2(cs, sn));
-
+	m_localY = glm::normalize(glm::vec2(-sn, cs));
 }
 
 void Box::MakeGizmo()

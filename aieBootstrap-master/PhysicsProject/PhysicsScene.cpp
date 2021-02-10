@@ -25,11 +25,6 @@ static fn collisionFunctionArray[] =
 	PhysicsScene::Box2Sphere,
 	PhysicsScene::Box2Box,
 
-
-
-
-
-
 };
 
 PhysicsScene::PhysicsScene() : m_timeStep(0.01f), m_gravity(glm::vec2(0, 0))
@@ -65,7 +60,7 @@ float timer = 0.0f;
 
 void PhysicsScene::Update(float dt)
 {
-	//aie::Input* input = aie::Input::getInstance();
+	aie::Input* input = aie::Input::getInstance();
 
 	timer += dt;
 
@@ -90,8 +85,8 @@ void PhysicsScene::Update(float dt)
 	}
 
 	
-	Rigidbody* rb = dynamic_cast<Rigidbody*>(m_actors[0]);
-	Rigidbody* rb2 = dynamic_cast<Rigidbody*>(m_actors[1]);
+	//Rigidbody* rb = dynamic_cast<Rigidbody*>(m_actors[0]);
+	//Rigidbody* rb2 = dynamic_cast<Rigidbody*>(m_actors[1]);
 
 	
 	//if (input->wasKeyPressed(aie::INPUT_KEY_SPACE))	
@@ -108,12 +103,6 @@ void PhysicsScene::Update(float dt)
 	
 	//MoveRigidbody(rb, 87, 83, 65, 68);
 	//MoveRigidbody(rb2, 265, 264, 263, 262);
-
-
-
-
-
-	
 
 
 	//std::cout << std::endl << "x: " << rb->GetPosition().x;
@@ -212,7 +201,7 @@ bool PhysicsScene::Sphere2Plane(PhysicsObject* objSphere, PhysicsObject* objPlan
 	if (sphere != nullptr && plane != nullptr)
 	{
 		glm::vec2 collisionNormal = plane->GetNormal();
-		float sphereToPlane = glm::dot(sphere->GetPosition(), collisionNormal - plane->GetDistance());
+		float sphereToPlane = glm::dot(sphere->GetPosition(), collisionNormal) - plane->GetDistance();
 		float intersection = sphere->GetRadius() - sphereToPlane;
 		float velocityOutOfPlane = glm::dot(sphere->GetVelocity(), collisionNormal);
 		if (intersection > 0 && velocityOutOfPlane < 0)
@@ -238,13 +227,11 @@ bool PhysicsScene::Sphere2Sphere(PhysicsObject* obj1, PhysicsObject* obj2)
 
 		if (penetration > 0)
 		{
-			//sphere1->ResolveCollision(sphere2);
+			sphere1->ResolveCollision(sphere2, 0.5f * (sphere1->GetPosition() + sphere2->GetPosition()));
 			return true;
 		}
 
 	}
-
-
 
 
 	return false;

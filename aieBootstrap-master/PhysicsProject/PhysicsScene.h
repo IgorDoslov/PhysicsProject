@@ -49,7 +49,7 @@ public:
 
 
 
-	void MoveRigidbody(Rigidbody* rb, int up, int down, int left, int right);
+	//void MoveRigidbody(Rigidbody* rb, int up, int down, int left, int right);
 
 
 

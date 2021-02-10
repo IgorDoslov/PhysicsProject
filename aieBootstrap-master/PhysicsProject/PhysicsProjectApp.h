@@ -28,4 +28,7 @@ protected:
 	Sphere* anotherBall;
 	PhysicsScene* m_physicsScene;
 	
+public:
+	void DrawRect();
+	void SphereAndPlane();
 };
