@@ -31,6 +31,7 @@ protected:
 	const float m_extents = 100.f;
 	
 public:
+	void TriggerTest();
 	void DrawRect();
 	void SphereAndPlane();
 	void DrawTable();
