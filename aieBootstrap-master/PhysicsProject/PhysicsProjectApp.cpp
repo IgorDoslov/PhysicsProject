@@ -33,7 +33,7 @@ bool PhysicsProjectApp::startup() {
 
 	m_physicsScene = new PhysicsScene();
 
-	m_physicsScene->SetGravity(glm::vec2(0, -10));
+	m_physicsScene->SetGravity(glm::vec2(0, 0));
 
 	//SetupContinuousDemo(glm::vec2 startPos, float inclination, float speed, float gravity)
 
@@ -47,12 +47,12 @@ bool PhysicsProjectApp::startup() {
 	//DrawRect();
 	//SphereAndPlane();
 
-	TriggerTest();
-	//DrawTable();
-	//DrawBalls();
-	//DrawCorners();
+	//TriggerTest();
+	DrawTable();
+	DrawBalls();
+	DrawCorners();
 	//SpringTest(10);
-	
+
 
 	return true;
 }
@@ -76,9 +76,15 @@ void PhysicsProjectApp::update(float deltaTime) {
 	{
 		int xScreen, yScreen;
 		input->getMouseXY(&xScreen, &yScreen);
-		glm::vec2 worldPos = ScreenToWorld(glm::vec2(xScreen, yScreen));
+		worldPos = ScreenToWorld(glm::vec2(xScreen, yScreen));
 		aie::Gizmos::add2DCircle(worldPos, 5, 32, glm::vec4(0.3));
+		aie::Gizmos::add2DLine(ball1->GetPosition(), worldPos, glm::vec4(1));
 	}
+		if (input->wasMouseButtonReleased(0))
+		{
+			ball1->ApplyForce(-(worldPos - ball1->GetPosition()), glm::vec2(0));
+			std::cout << "hi" << std::endl;
+		}
 
 	// exit the application
 	if (input->isKeyDown(aie::INPUT_KEY_ESCAPE))
@@ -97,6 +103,7 @@ void PhysicsProjectApp::draw() {
 	m_2dRenderer->begin();
 
 	// draw your stuff here!
+	aie::Gizmos::add2DLine(glm::vec2(0, 0), glm::vec2(0, 40), glm::vec4(1, 0, 0, 1));
 
 	// X axis = -100 to 100, Y axis = -56.25 to 56.25
 	aie::Gizmos::draw2D(glm::ortho<float>(-m_extents, m_extents,
@@ -108,6 +115,8 @@ void PhysicsProjectApp::draw() {
 
 	// output some text, uses the last used colour
 	m_2dRenderer->drawText(m_font, "Press ESC to quit", 0, 0);
+
+	m_2dRenderer->drawLine(400, 80, 400, 640, 2, 20);
 
 	// done drawing sprites
 	m_2dRenderer->end();
@@ -141,7 +150,7 @@ void PhysicsProjectApp::DrawTable()
 	m_physicsScene->AddActor(box4);
 	m_physicsScene->AddActor(box5);
 	m_physicsScene->AddActor(box6);
-	
+
 	box1->SetKinematic(1);
 	box2->SetKinematic(1);
 	box3->SetKinematic(1);
@@ -156,12 +165,13 @@ void PhysicsProjectApp::DrawTable()
 	box5->SetElasticity(0.6f);
 	box6->SetElasticity(0.6f);
 
+
 }
 
 void PhysicsProjectApp::DrawBalls()
 {
 	// Red
-	Sphere* ball1 = new Sphere(glm::vec2(-50, 0), glm::vec2(0, 0), 1.f, 4, glm::vec4(1, 0, 0, 1));
+	ball1 = new Sphere(glm::vec2(-50, 0), glm::vec2(0, 0), 1.f, 4, glm::vec4(1, 0, 0, 1));
 	// Yellow
 	Sphere* ball2 = new Sphere(glm::vec2(-40, 0), glm::vec2(0, 0), 1.f, 4, glm::vec4(1, 1, 0, 1));
 	// Purple
@@ -231,10 +241,10 @@ void PhysicsProjectApp::DrawBalls()
 
 	ball1->ApplyForce(glm::vec2(-180, 10), glm::vec2(0));
 	ball2->ApplyForce(glm::vec2(30, 180), glm::vec2(0));
-	ball3->ApplyForce(glm::vec2(10, 30), glm::vec2(0));
-	ball4->ApplyForce(glm::vec2(200, -80), glm::vec2(0));
-	ball5->ApplyForce(glm::vec2(-80, 180), glm::vec2(0));
-	ball6->ApplyForce(glm::vec2(180, -30), glm::vec2(0));
+	//ball3->ApplyForce(glm::vec2(10, 30), glm::vec2(0));
+	//ball4->ApplyForce(glm::vec2(200, -80), glm::vec2(0));
+	//ball5->ApplyForce(glm::vec2(-80, 180), glm::vec2(0));
+	//ball6->ApplyForce(glm::vec2(180, -30), glm::vec2(0));
 
 }
 
@@ -282,7 +292,7 @@ void PhysicsProjectApp::SpringTest(int a_amount)
 		{
 			sphere->SetKinematic(true);
 		}
-			m_physicsScene->AddActor(sphere);
+		m_physicsScene->AddActor(sphere);
 		if (prev)
 		{
 			m_physicsScene->AddActor(new Spring(sphere, prev, 10, 500));
@@ -306,10 +316,10 @@ void PhysicsProjectApp::TriggerTest()
 
 	m_physicsScene->AddActor(ball1);
 	m_physicsScene->AddActor(ball2);
-	m_physicsScene->AddActor(new Plane(glm::vec2(0,1), -30));
+	m_physicsScene->AddActor(new Plane(glm::vec2(0, 1), -30));
 	m_physicsScene->AddActor(new Plane(glm::vec2(1, 0), -50));
 	m_physicsScene->AddActor(new Plane(glm::vec2(-1, 0), -50));
-	m_physicsScene->AddActor(new Box(glm::vec2(20, 10), glm::vec2(10,0), 0.5, 4, 8, 4));
+	m_physicsScene->AddActor(new Box(glm::vec2(20, 10), glm::vec2(10, 0), 0.5, 4, 8, 4));
 	m_physicsScene->AddActor(new Box(glm::vec2(-40, 10), glm::vec2(10, 0), 0.5, 4, 8, 4));
 
 	ball2->triggerEnter = [=](PhysicsObject* other) {std::cout << "Entered: " << other << std::endl; };
@@ -362,7 +372,7 @@ void PhysicsProjectApp::SphereAndPlane()
 	ball2 = new Sphere(glm::vec2(0, 60), glm::vec2(0, 1), 3.f, 2, glm::vec4(1, 0, 1, 1));
 	m_physicsScene->AddActor(ball2);
 
-	
+
 	ball->ApplyForce(glm::vec2(80, 0), glm::vec2(0));
 	anotherBall->ApplyForce(glm::vec2(-80, 0), glm::vec2(0));
 	ball2->ApplyForce(glm::vec2(2, -30), glm::vec2(0));
