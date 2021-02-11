@@ -17,8 +17,7 @@ public:
 	virtual void update(float deltaTime);
 	virtual void draw();
 
-	void SetupContinuousDemo(glm::vec2 startPos, float inclination, float speed, float gravity);
-
+	glm::vec2 ScreenToWorld(glm::vec2 a_screenPos);
 
 protected:
 
@@ -27,6 +26,9 @@ protected:
 	Sphere* ball;
 	Sphere* anotherBall;
 	PhysicsScene* m_physicsScene;
+
+	const float m_aspectRatio = 16.f / 9.f;
+	const float m_extents = 100.f;
 	
 public:
 	void DrawRect();

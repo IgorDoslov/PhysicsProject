@@ -71,12 +71,13 @@ void PhysicsProjectApp::update(float deltaTime) {
 	m_physicsScene->Update(deltaTime);
 	m_physicsScene->Draw();
 
-	/*if (input->isKeyDown(aie::INPUT_KEY_SPACE))
+	if (input->isMouseButtonDown(0))
 	{
-		ball->ApplyForce({ 0,100 });
-	}*/
-
-
+		int xScreen, yScreen;
+		input->getMouseXY(&xScreen, &yScreen);
+		glm::vec2 worldPos = ScreenToWorld(glm::vec2(xScreen, yScreen));
+		aie::Gizmos::add2DCircle(worldPos, 5, 32, glm::vec4(0.3));
+	}
 
 	// exit the application
 	if (input->isKeyDown(aie::INPUT_KEY_ESCAPE))
@@ -89,14 +90,20 @@ void PhysicsProjectApp::draw() {
 	// wipe the screen to the background colour
 	clearScreen();
 
+
+
 	// begin drawing sprites
 	m_2dRenderer->begin();
 
 	// draw your stuff here!
 
-	static float aspectRatio = 16.f / 9.f;
-	aie::Gizmos::draw2D(glm::ortho<float>(-100, 100,
-		-100 / aspectRatio, 100 / aspectRatio, -1.f, 1.f));
+	// X axis = -100 to 100, Y axis = -56.25 to 56.25
+	aie::Gizmos::draw2D(glm::ortho<float>(-m_extents, m_extents,
+		-m_extents / m_aspectRatio, m_extents / m_aspectRatio, -1.f, 1.f));
+
+	char fps[32];
+	sprintf_s(fps, 32, "FPS: %i", getFPS());
+	m_2dRenderer->drawText(m_font, fps, 0, 720 - 32);
 
 	// output some text, uses the last used colour
 	m_2dRenderer->drawText(m_font, "Press ESC to quit", 0, 0);
@@ -277,7 +284,7 @@ void PhysicsProjectApp::SpringTest(int a_amount)
 			m_physicsScene->AddActor(sphere);
 		if (prev)
 		{
-			m_physicsScene->AddActor(new Spring(sphere, prev, 10, 5000));
+			m_physicsScene->AddActor(new Spring(sphere, prev, 10, 500));
 		}
 		prev = sphere;
 	}
@@ -341,28 +348,20 @@ void PhysicsProjectApp::SphereAndPlane()
 	m_physicsScene->AddActor(plane);
 }
 
-void PhysicsProjectApp::SetupContinuousDemo(glm::vec2 startPos, float inclination, float speed, float gravity)
+
+glm::vec2 PhysicsProjectApp::ScreenToWorld(glm::vec2 a_screenPos)
 {
-	float t = 0.0f;
-	float tStep = 0.1f;
-	float radius = 1.0f;
-	int segments = 12;
+	glm::vec2 worldPos = a_screenPos;
 
-	glm::vec4 colour = glm::vec4(1, 1, 0, 1);
-	glm::vec2 pos;
+	// We will move the centre of the screen to (0, 0)
+	worldPos.x -= getWindowWidth() / 2;
+	worldPos.y -= getWindowHeight() / 2;
 
-
-	while (t <= 5)
-	{
-		// calculate the x, y position of the projectile at time t
-
-		startPos.x = speed * glm::cos(0.78) * t;
-		startPos.y = speed * glm::sin(0.78) * t - 0.5 * gravity * (t * t);
+	// Scale this according to the extents
+	worldPos.x *= 2.f * m_extents / getWindowWidth();
+	worldPos.y *= 2.f * m_extents / (m_aspectRatio * getWindowHeight());
 
 
 
-
-		aie::Gizmos::add2DCircle(startPos, radius, segments, colour);
-		t += tStep;
-	}
+	return worldPos;
 }
