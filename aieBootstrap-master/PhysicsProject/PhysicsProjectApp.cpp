@@ -277,7 +277,7 @@ void PhysicsProjectApp::SpringTest(int a_amount)
 			m_physicsScene->AddActor(sphere);
 		if (prev)
 		{
-			m_physicsScene->AddActor(new Spring(sphere, prev, 10, 500));
+			m_physicsScene->AddActor(new Spring(sphere, prev, 10, 5000));
 		}
 		prev = sphere;
 	}
