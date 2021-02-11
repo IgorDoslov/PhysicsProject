@@ -40,7 +40,14 @@ void Rigidbody::FixedUpdate(glm::vec2 a_gravity, float a_timeStep)
 	m_velocity -= m_velocity * m_linearDrag * a_timeStep;
 	m_angularVelocity -= m_angularVelocity * m_angularDrag * a_timeStep;
 
-	if (length(m_velocity) < MIN_LINEAR_THRESHOLD) { m_velocity = glm::vec2(0, 0); }
+	if (length(m_velocity) < MIN_LINEAR_THRESHOLD)
+	{
+		if (length(m_velocity) < length(a_gravity) * m_linearDrag * a_timeStep)
+		{
+			m_velocity = glm::vec2(0, 0);
+
+		}
+	}
 	if (abs(m_angularVelocity) < MIN_ANGULAR_THRESHOLD) { m_angularVelocity = 0.f; }
 
 	m_position += GetVelocity() * a_timeStep;
@@ -53,7 +60,7 @@ void Rigidbody::FixedUpdate(glm::vec2 a_gravity, float a_timeStep)
 void Rigidbody::ApplyForce(glm::vec2 a_force, glm::vec2 a_pos)
 {
 	m_velocity += a_force / GetMass();
-	
+
 	m_angularVelocity += (a_force.y * a_pos.x - a_force.x * a_pos.y) / GetMoment();
 }
 
@@ -104,4 +111,9 @@ void Rigidbody::ResolveCollision(Rigidbody* a_otherActor, glm::vec2 a_contact,
 
 	}
 
+}
+
+glm::vec2 Rigidbody::ToWorld(glm::vec2 a_localPos)
+{
+	return m_position + m_localX * a_localPos.x + m_localY * a_localPos.y;
 }

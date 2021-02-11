@@ -74,7 +74,7 @@ void PhysicsScene::Update(float dt)
 		{
 
 			pActor->FixedUpdate(m_gravity, m_timeStep);
-			
+
 		}
 
 		for (auto pParticles : m_particles)
@@ -86,7 +86,7 @@ void PhysicsScene::Update(float dt)
 
 		CheckForCollision();
 	}
-	
+
 
 	//Rigidbody* rb = dynamic_cast<Rigidbody*>(m_actors[0]);
 	//Rigidbody* rb2 = dynamic_cast<Rigidbody*>(m_actors[1]);
@@ -130,12 +130,20 @@ void PhysicsScene::CheckForCollision()
 			int shapeID_out = objOuter->GetShapeID();
 			int shapeID_in = objInner->GetShapeID();
 
-			int functionIndex = (shapeID_out * ShapeType::SHAPE_COUNT) + shapeID_in;
-			fn collisionFunctionPtr = collisionFunctionArray[functionIndex];
-			if (collisionFunctionPtr != nullptr)
+			// this will check to ensure we do not include the joints
+			if (shapeID_in >= 0 && shapeID_out >= 0)
 			{
-				collisionFunctionPtr(objOuter, objInner);
+				// Uses our function pointers (fn)
+				int functionIndex = (shapeID_out * ShapeType::SHAPE_COUNT) + shapeID_in;
+				fn collisionFunctionPtr = collisionFunctionArray[functionIndex];
+				if (collisionFunctionPtr != nullptr)
+				{
+					// Check if the collision occurs
+					collisionFunctionPtr(objOuter, objInner);
+				}
 			}
+
+
 
 		}
 	}

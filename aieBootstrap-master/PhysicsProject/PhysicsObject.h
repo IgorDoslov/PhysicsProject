@@ -5,6 +5,7 @@
 // base for the derived classes that will use FixedUpdate
 
 enum ShapeType {
+	JOINT = -1,
 	PLANE = 0,
 	SPHERE,
 	BOX,

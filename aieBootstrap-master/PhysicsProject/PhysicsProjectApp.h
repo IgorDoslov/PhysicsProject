@@ -34,4 +34,5 @@ public:
 	void DrawTable();
 	void DrawBalls();
 	void DrawCorners();
+	void SpringTest(int a_amount);
 };

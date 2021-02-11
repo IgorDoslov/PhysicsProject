@@ -36,6 +36,8 @@ public:
 
 	glm::vec2 SetPosition(glm::vec2 a_newPos) { return m_position = a_newPos; }
 
+	glm::vec2 ToWorld(glm::vec2 a_localPos);
+
 protected:
 
 	glm::vec2 m_position;
@@ -47,6 +49,10 @@ protected:
 
 	float m_linearDrag;
 	float m_angularDrag;
+
+	// These will store the local x and y axes of the box based on its angle of rotation
+	glm::vec2 m_localX;
+	glm::vec2 m_localY;
 
 private:
 

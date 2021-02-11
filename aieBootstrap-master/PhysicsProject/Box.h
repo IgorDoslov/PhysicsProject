@@ -32,9 +32,7 @@ protected:
 	glm::vec2 m_extents; // The half length of the box
 	glm::vec4 m_colour;
 
-	// These will store the local x and y axes of the box based on its angle of rotation
-	glm::vec2 m_localX;
-	glm::vec2 m_localY;
+	
 
 };
 

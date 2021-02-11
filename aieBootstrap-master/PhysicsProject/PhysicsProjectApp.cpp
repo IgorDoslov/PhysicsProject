@@ -9,6 +9,7 @@
 #include <vector>
 #include "Box.h"
 #include "Sphere.h"
+#include "Spring.h"
 
 PhysicsProjectApp::PhysicsProjectApp() {
 
@@ -32,7 +33,7 @@ bool PhysicsProjectApp::startup() {
 
 	m_physicsScene = new PhysicsScene();
 
-	m_physicsScene->SetGravity(glm::vec2(0, 0));
+	m_physicsScene->SetGravity(glm::vec2(0, -10));
 
 	//SetupContinuousDemo(glm::vec2 startPos, float inclination, float speed, float gravity)
 
@@ -49,6 +50,7 @@ bool PhysicsProjectApp::startup() {
 	DrawTable();
 	DrawBalls();
 	DrawCorners();
+	SpringTest(10);
 	
 
 	return true;
@@ -151,17 +153,39 @@ void PhysicsProjectApp::DrawTable()
 void PhysicsProjectApp::DrawBalls()
 {
 	// Red
-	Sphere* ball1 = new Sphere(glm::vec2(0, 0), glm::vec2(0, 0), 1.f, 4, glm::vec4(1, 0, 0, 1));
+	Sphere* ball1 = new Sphere(glm::vec2(-50, 0), glm::vec2(0, 0), 1.f, 4, glm::vec4(1, 0, 0, 1));
 	// Yellow
-	Sphere* ball2 = new Sphere(glm::vec2(0, 0), glm::vec2(0, 0), 1.f, 4, glm::vec4(1, 1, 0, 1));
+	Sphere* ball2 = new Sphere(glm::vec2(-40, 0), glm::vec2(0, 0), 1.f, 4, glm::vec4(1, 1, 0, 1));
 	// Purple
-	Sphere* ball3 = new Sphere(glm::vec2(0, 0), glm::vec2(0, 0), 1.f, 4, glm::vec4(1, 0, 1, 1));
+	Sphere* ball3 = new Sphere(glm::vec2(-30, 0), glm::vec2(0, 0), 1.f, 4, glm::vec4(1, 0, 1, 1));
 	// Green
-	Sphere* ball4 = new Sphere(glm::vec2(0, 0), glm::vec2(0, 0), 1.f, 4, glm::vec4(0, 1, 0, 1));
+	Sphere* ball4 = new Sphere(glm::vec2(-20, 0), glm::vec2(0, 0), 1.f, 4, glm::vec4(0, 1, 0, 1));
 	// Blue
-	Sphere* ball5 = new Sphere(glm::vec2(0, 0), glm::vec2(0, 0), 1.f, 4, glm::vec4(0, 0, 1, 1));
+	Sphere* ball5 = new Sphere(glm::vec2(-10, 0), glm::vec2(0, 0), 1.f, 4, glm::vec4(0, 0, 1, 1));
 	// White
 	Sphere* ball6 = new Sphere(glm::vec2(0, 0), glm::vec2(0, 0), 1.f, 4, glm::vec4(1, 1, 1, 1));
+	// Red
+	Sphere* ball7 = new Sphere(glm::vec2(10, 0), glm::vec2(0, 0), 1.f, 4, glm::vec4(1, 0, 0, 0));
+	// Red clear
+	Sphere* ball8 = new Sphere(glm::vec2(20, 0), glm::vec2(0, 0), 1.f, 4, glm::vec4(1, 1, 0, 0));
+	// Purple clear
+	Sphere* ball9 = new Sphere(glm::vec2(30, 0), glm::vec2(0, 0), 1.f, 4, glm::vec4(1, 0, 1, 0));
+	// Green clear
+	Sphere* ball10 = new Sphere(glm::vec2(40, 0), glm::vec2(0, 0), 1.f, 4, glm::vec4(0, 1, 0, 0));
+	// Blue clear
+	Sphere* ball11 = new Sphere(glm::vec2(50, 0), glm::vec2(0, 0), 1.f, 4, glm::vec4(0, 0, 1, 0));
+	// Black
+	Sphere* ball12 = new Sphere(glm::vec2(60, 0), glm::vec2(0, 0), 1.f, 4, glm::vec4(0, 0, 0, 1));
+	// Orange
+	Sphere* ball13 = new Sphere(glm::vec2(60, 10), glm::vec2(0, 0), 1.f, 4, glm::vec4(1, 0.4, 0, 1));
+	// Orange clear
+	Sphere* ball14 = new Sphere(glm::vec2(60, 20), glm::vec2(0, 0), 1.f, 4, glm::vec4(1, 0.4, 0, 0));
+	// Maroon
+	Sphere* ball15 = new Sphere(glm::vec2(20, 10), glm::vec2(0, 0), 1.f, 4, glm::vec4(0.55, 0, 0.1, 1));
+	// Maroon clear
+	Sphere* ball16 = new Sphere(glm::vec2(30, 10), glm::vec2(0, 0), 1.f, 4, glm::vec4(0.55, 0, 0.1, 0));
+
+
 
 
 	m_physicsScene->AddActor(ball1);
@@ -170,6 +194,18 @@ void PhysicsProjectApp::DrawBalls()
 	m_physicsScene->AddActor(ball4);
 	m_physicsScene->AddActor(ball5);
 	m_physicsScene->AddActor(ball6);
+	m_physicsScene->AddActor(ball7);
+	m_physicsScene->AddActor(ball8);
+	m_physicsScene->AddActor(ball9);
+	m_physicsScene->AddActor(ball10);
+	m_physicsScene->AddActor(ball11);
+	m_physicsScene->AddActor(ball12);
+	m_physicsScene->AddActor(ball13);
+	m_physicsScene->AddActor(ball14);
+	m_physicsScene->AddActor(ball15);
+	m_physicsScene->AddActor(ball16);
+
+
 
 	ball1->SetElasticity(0.9f);
 	ball2->SetElasticity(0.9f);
@@ -197,17 +233,24 @@ void PhysicsProjectApp::DrawBalls()
 void PhysicsProjectApp::DrawCorners()
 {
 	// Red
-	Sphere* ball1 = new Sphere(glm::vec2(0, 60), glm::vec2(0, 0), 10000000.f, 8, glm::vec4(1, 0, 0, 0));
+	Sphere* ball1 = new Sphere(glm::vec2(0, 60), glm::vec2(0, 0), 10.f, 8, glm::vec4(0, 0, 0, 1));
 	// Yellow
-	Sphere* ball2 = new Sphere(glm::vec2(0, -60), glm::vec2(0, 0), 10000000.f, 8, glm::vec4(1, 1, 0, 0));
+	Sphere* ball2 = new Sphere(glm::vec2(0, -60), glm::vec2(0, 0), 10.f, 8, glm::vec4(0, 0, 0, 1));
 	// Purple
-	Sphere* ball3 = new Sphere(glm::vec2(97, 52), glm::vec2(0, 0), 10000000.f, 8, glm::vec4(1, 0, 1, 0));
+	Sphere* ball3 = new Sphere(glm::vec2(97, 52), glm::vec2(0, 0), 10.f, 8, glm::vec4(0, 0, 0, 1));
 	// Green
-	Sphere* ball4 = new Sphere(glm::vec2(97, -52), glm::vec2(0, 0), 10000000.f, 8, glm::vec4(0, 1, 0, 0));
+	Sphere* ball4 = new Sphere(glm::vec2(97, -52), glm::vec2(0, 0), 10.f, 8, glm::vec4(0, 0, 0, 1));
 	// Blue
-	Sphere* ball5 = new Sphere(glm::vec2(-97, -52), glm::vec2(0, 0), 10000000.f, 8, glm::vec4(0, 0, 1, 0));
+	Sphere* ball5 = new Sphere(glm::vec2(-97, -52), glm::vec2(0, 0), 10.f, 8, glm::vec4(0, 0, 0, 1));
 	// White
-	Sphere* ball6 = new Sphere(glm::vec2(-97, 52), glm::vec2(0, 0), 10000000.f, 8, glm::vec4(1, 1, 1, 0));
+	Sphere* ball6 = new Sphere(glm::vec2(-97, 52), glm::vec2(0, 0), 10.f, 8, glm::vec4(0, 0, 0, 1));
+
+	ball1->SetKinematic(1);
+	ball2->SetKinematic(1);
+	ball3->SetKinematic(1);
+	ball4->SetKinematic(1);
+	ball5->SetKinematic(1);
+	ball6->SetKinematic(1);
 
 
 	m_physicsScene->AddActor(ball1);
@@ -217,6 +260,31 @@ void PhysicsProjectApp::DrawCorners()
 	m_physicsScene->AddActor(ball5);
 	m_physicsScene->AddActor(ball6);
 
+}
+
+void PhysicsProjectApp::SpringTest(int a_amount)
+{
+	Sphere* prev = nullptr;
+	for (int i = 0; i < a_amount; i++)
+	{
+		// This will need to spawn the sphere at the bottom of the pervious one, to
+		// make a pendulum that is affected by gravity
+		Sphere* sphere = new Sphere(glm::vec2(i * 3, 30 - i * 5), glm::vec2(0), 10, 2, glm::vec4(0, 0, 1, 1));
+		if (i == 0)
+		{
+			sphere->SetKinematic(true);
+		}
+			m_physicsScene->AddActor(sphere);
+		if (prev)
+		{
+			m_physicsScene->AddActor(new Spring(sphere, prev, 10, 500));
+		}
+		prev = sphere;
+	}
+
+	Box* box = new Box(glm::vec2(0, -20), glm::vec2(0), 0.3f, 20, 8, 2);
+	box->SetKinematic(true);
+	m_physicsScene->AddActor(box);
 }
 
 void PhysicsProjectApp::DrawRect()
