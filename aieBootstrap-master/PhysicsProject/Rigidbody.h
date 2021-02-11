@@ -39,6 +39,8 @@ public:
 	float SetAngularDrag(float a_angularDrag) { return m_angularDrag = a_angularDrag; }
 
 	glm::vec2 SetPosition(glm::vec2 a_newPos) { return m_position = a_newPos; }
+	glm::vec2 SetVelocity(glm::vec2 a_newVel) { return m_velocity = a_newVel; }
+
 
 	glm::vec2 ToWorld(glm::vec2 a_localPos);
 

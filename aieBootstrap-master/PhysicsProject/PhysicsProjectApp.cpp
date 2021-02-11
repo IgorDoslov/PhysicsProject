@@ -78,11 +78,12 @@ void PhysicsProjectApp::update(float deltaTime) {
 		input->getMouseXY(&xScreen, &yScreen);
 		worldPos = ScreenToWorld(glm::vec2(xScreen, yScreen));
 		aie::Gizmos::add2DCircle(worldPos, 5, 32, glm::vec4(0.3));
-		aie::Gizmos::add2DLine(ball1->GetPosition(), worldPos, glm::vec4(1));
+		aie::Gizmos::add2DLine(whiteBall->GetPosition(), worldPos, glm::vec4(1));
+		
 	}
 		if (input->wasMouseButtonReleased(0))
 		{
-			ball1->ApplyForce(-(worldPos - ball1->GetPosition()), glm::vec2(0));
+			whiteBall->ApplyForce((worldPos - whiteBall->GetPosition()), glm::vec2(0));
 			std::cout << "hi" << std::endl;
 		}
 
@@ -171,7 +172,7 @@ void PhysicsProjectApp::DrawTable()
 void PhysicsProjectApp::DrawBalls()
 {
 	// Red
-	ball1 = new Sphere(glm::vec2(-50, 0), glm::vec2(0, 0), 1.f, 4, glm::vec4(1, 0, 0, 1));
+	Sphere* ball1 = new Sphere(glm::vec2(-50, 0), glm::vec2(0, 0), 1.f, 4, glm::vec4(1, 0, 0, 1));
 	// Yellow
 	Sphere* ball2 = new Sphere(glm::vec2(-40, 0), glm::vec2(0, 0), 1.f, 4, glm::vec4(1, 1, 0, 1));
 	// Purple
@@ -181,7 +182,7 @@ void PhysicsProjectApp::DrawBalls()
 	// Blue
 	Sphere* ball5 = new Sphere(glm::vec2(-10, 0), glm::vec2(0, 0), 1.f, 4, glm::vec4(0, 0, 1, 1));
 	// White
-	Sphere* ball6 = new Sphere(glm::vec2(0, 0), glm::vec2(0, 0), 1.f, 4, glm::vec4(1, 1, 1, 1));
+	whiteBall = new Sphere(glm::vec2(0, 0), glm::vec2(0, 0), 1.f, 4, glm::vec4(1, 1, 1, 1));
 	// Red
 	Sphere* ball7 = new Sphere(glm::vec2(10, 0), glm::vec2(0, 0), 1.f, 4, glm::vec4(1, 0, 0, 0));
 	// Red clear
@@ -211,7 +212,7 @@ void PhysicsProjectApp::DrawBalls()
 	m_physicsScene->AddActor(ball3);
 	m_physicsScene->AddActor(ball4);
 	m_physicsScene->AddActor(ball5);
-	m_physicsScene->AddActor(ball6);
+	m_physicsScene->AddActor(whiteBall);
 	m_physicsScene->AddActor(ball7);
 	m_physicsScene->AddActor(ball8);
 	m_physicsScene->AddActor(ball9);
@@ -230,17 +231,17 @@ void PhysicsProjectApp::DrawBalls()
 	ball3->SetElasticity(0.9f);
 	ball4->SetElasticity(0.9f);
 	ball5->SetElasticity(0.9f);
-	ball6->SetElasticity(0.9f);
+	whiteBall->SetElasticity(0.9f);
 
 	ball1->SetLinearDrag(0.6f);
 	ball2->SetLinearDrag(0.6f);
 	ball3->SetLinearDrag(0.6f);
 	ball4->SetLinearDrag(0.6f);
 	ball5->SetLinearDrag(0.6f);
-	ball6->SetLinearDrag(0.6f);
+	whiteBall->SetLinearDrag(0.6f);
 
-	ball1->ApplyForce(glm::vec2(-180, 10), glm::vec2(0));
-	ball2->ApplyForce(glm::vec2(30, 180), glm::vec2(0));
+	//ball1->ApplyForce(glm::vec2(-180, 10), glm::vec2(0));
+	//ball2->ApplyForce(glm::vec2(30, 180), glm::vec2(0));
 	//ball3->ApplyForce(glm::vec2(10, 30), glm::vec2(0));
 	//ball4->ApplyForce(glm::vec2(200, -80), glm::vec2(0));
 	//ball5->ApplyForce(glm::vec2(-80, 180), glm::vec2(0));
@@ -251,7 +252,7 @@ void PhysicsProjectApp::DrawBalls()
 void PhysicsProjectApp::DrawCorners()
 {
 	// Red
-	Sphere* ball1 = new Sphere(glm::vec2(0, 60), glm::vec2(0, 0), 10.f, 8, glm::vec4(0, 0, 0, 1));
+	Sphere* ball1 = new Sphere(glm::vec2(0, 60), glm::vec2(0, 0), 10.f, 8, glm::vec4(1, 0, 0, 1));
 	// Yellow
 	Sphere* ball2 = new Sphere(glm::vec2(0, -60), glm::vec2(0, 0), 10.f, 8, glm::vec4(0, 0, 0, 1));
 	// Purple
@@ -270,6 +271,14 @@ void PhysicsProjectApp::DrawCorners()
 	ball5->SetKinematic(1);
 	ball6->SetKinematic(1);
 
+	ball1->SetTrigger(1);
+	ball2->SetTrigger(1);
+	ball3->SetTrigger(1);
+	ball4->SetTrigger(1);
+	ball5->SetTrigger(1);
+	ball6->SetTrigger(1);
+
+	
 
 	m_physicsScene->AddActor(ball1);
 	m_physicsScene->AddActor(ball2);
@@ -277,6 +286,34 @@ void PhysicsProjectApp::DrawCorners()
 	m_physicsScene->AddActor(ball4);
 	m_physicsScene->AddActor(ball5);
 	m_physicsScene->AddActor(ball6);
+
+	ball1->triggerEnter = [=](PhysicsObject* other) 
+	{
+		std::cout << "Entered: " << other << std::endl; 
+		if (other == whiteBall)
+		{
+			whiteBall->SetPosition({ 0, 0 });
+			whiteBall->SetVelocity({ 0, 0 });
+			
+		}
+	};
+
+	ball1->triggerExit = [=](PhysicsObject* other) {std::cout << "Exited: " << other << std::endl; };
+
+	ball2->triggerEnter = [=](PhysicsObject* other) {std::cout << "Entered: " << other << std::endl; };
+	ball2->triggerExit = [=](PhysicsObject* other) {std::cout << "Exited: " << other << std::endl; };
+
+	ball3->triggerEnter = [=](PhysicsObject* other) {std::cout << "Entered: " << other << std::endl; };
+	ball3->triggerExit = [=](PhysicsObject* other) {std::cout << "Exited: " << other << std::endl; };
+
+	ball4->triggerEnter = [=](PhysicsObject* other) {std::cout << "Entered: " << other << std::endl; };
+	ball4->triggerExit = [=](PhysicsObject* other) {std::cout << "Exited: " << other << std::endl; };
+
+	ball5->triggerEnter = [=](PhysicsObject* other) {std::cout << "Entered: " << other << std::endl; };
+	ball5->triggerExit = [=](PhysicsObject* other) {std::cout << "Exited: " << other << std::endl; };
+
+	ball6->triggerEnter = [=](PhysicsObject* other) {std::cout << "Entered: " << other << std::endl; };
+	ball6->triggerExit = [=](PhysicsObject* other) {std::cout << "Exited: " << other << std::endl; };
 
 }
 
