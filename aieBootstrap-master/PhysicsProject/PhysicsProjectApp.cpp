@@ -50,7 +50,7 @@ bool PhysicsProjectApp::startup() {
 	//TriggerTest();
 	DrawTable();
 	DrawBalls();
-	DrawCorners();
+	DrawPockets();
 	//SpringTest(10);
 
 
@@ -74,8 +74,10 @@ void PhysicsProjectApp::update(float deltaTime) {
 
 	if (HaveAllBallsStopped())
 	{
-		AimAndShoot(input);
 	}
+		AimAndShoot(input);
+
+	BallSunk();
 
 	// exit the application
 	if (input->isKeyDown(aie::INPUT_KEY_ESCAPE))
@@ -115,46 +117,46 @@ void PhysicsProjectApp::draw() {
 
 void PhysicsProjectApp::DrawTable()
 {
-	// Yellow
-	Box* box1 = new Box(glm::vec2(-48, -54), glm::vec2(0, 0), 0, 10, 38, 2,
+	// bottom left
+	bottomLeftBox = new Box(glm::vec2(-48, -54), glm::vec2(0, 0), 0, 10, 38, 2,
 		glm::vec4(1, 1, 0, 1));
-	// Red
-	Box* box2 = new Box(glm::vec2(48, -54), glm::vec2(0, 0), 0, 10, 38, 2,
+	// bottom right
+	bottomRightBox = new Box(glm::vec2(48, -54), glm::vec2(0, 0), 0, 10, 38, 2,
 		glm::vec4(1, 0, 0, 1));
-	// Green
-	Box* box3 = new Box(glm::vec2(-48, 54), glm::vec2(0, 0), 0, 10, 38, 2,
+	// top left
+	topLeftBox = new Box(glm::vec2(-48, 45), glm::vec2(0, 0), 0, 10, 38, 2,
 		glm::vec4(0, 1, 0, 1));
-	// blue
-	Box* box4 = new Box(glm::vec2(48, 54), glm::vec2(0, 0), 0, 10, 38, 2,
+	// top right
+	topRightBox = new Box(glm::vec2(48, 45), glm::vec2(0, 0), 0, 10, 38, 2,
 		glm::vec4(0, 0, 1, 1));
-	// Purple
-	Box* box5 = new Box(glm::vec2(97, 0), glm::vec2(0, 0), 0, 10, 2, 40,
+	// right side
+	rightSideBox = new Box(glm::vec2(97, -4), glm::vec2(0, 0), 0, 10, 2, 40,
 		glm::vec4(1, 0, 1, 1));
-	// White
-	Box* box6 = new Box(glm::vec2(-97, 0), glm::vec2(0, 0), 0, 10, 2, 40,
+	// left side
+	leftSideBox = new Box(glm::vec2(-97, -4), glm::vec2(0, 0), 0, 10, 2, 40,
 		glm::vec4(1, 1, 1, 1));
 
 
-	m_physicsScene->AddActor(box1);
-	m_physicsScene->AddActor(box2);
-	m_physicsScene->AddActor(box3);
-	m_physicsScene->AddActor(box4);
-	m_physicsScene->AddActor(box5);
-	m_physicsScene->AddActor(box6);
+	m_physicsScene->AddActor(topLeftBox);
+	m_physicsScene->AddActor(topRightBox);
+	m_physicsScene->AddActor(bottomLeftBox);
+	m_physicsScene->AddActor(bottomRightBox);
+	m_physicsScene->AddActor(leftSideBox);
+	m_physicsScene->AddActor(rightSideBox);
 
-	box1->SetKinematic(1);
-	box2->SetKinematic(1);
-	box3->SetKinematic(1);
-	box4->SetKinematic(1);
-	box5->SetKinematic(1);
-	box6->SetKinematic(1);
+	topLeftBox->SetKinematic(1);
+	topRightBox->SetKinematic(1);
+	bottomLeftBox->SetKinematic(1);
+	bottomRightBox->SetKinematic(1);
+	leftSideBox->SetKinematic(1);
+	rightSideBox->SetKinematic(1);
 
-	box1->SetElasticity(0.6f);
-	box2->SetElasticity(0.6f);
-	box3->SetElasticity(0.6f);
-	box4->SetElasticity(0.6f);
-	box5->SetElasticity(0.6f);
-	box6->SetElasticity(0.6f);
+	topLeftBox->SetElasticity(0.6f);
+	topRightBox->SetElasticity(0.6f);
+	bottomLeftBox->SetElasticity(0.6f);
+	bottomRightBox->SetElasticity(0.6f);
+	leftSideBox->SetElasticity(0.6f);
+	rightSideBox->SetElasticity(0.6f);
 
 
 }
@@ -162,45 +164,66 @@ void PhysicsProjectApp::DrawTable()
 void PhysicsProjectApp::DrawBalls()
 {
 #pragma region CreateBall
-	// Red
-	Sphere* ball1 = new Sphere(glm::vec2(-50, 0), glm::vec2(0, 0), 1.f, 4, glm::vec4(1, 0, 0, 1));
-	// Yellow
-	Sphere* ball2 = new Sphere(glm::vec2(-40, 0), glm::vec2(0, 0), 1.f, 4, glm::vec4(1, 1, 0, 1));
-	// Purple
-	Sphere* ball3 = new Sphere(glm::vec2(-30, 0), glm::vec2(0, 0), 1.f, 4, glm::vec4(1, 0, 1, 1));
-	// Green
-	Sphere* ball4 = new Sphere(glm::vec2(-20, 0), glm::vec2(0, 0), 1.f, 4, glm::vec4(0, 1, 0, 1));
-	// Blue
-	Sphere* ball5 = new Sphere(glm::vec2(-10, 0), glm::vec2(0, 0), 1.f, 4, glm::vec4(0, 0, 1, 1));
+
 	// White
-	whiteBall = new Sphere(glm::vec2(0, 0), glm::vec2(0, 0), 1.f, 4, glm::vec4(1, 1, 1, 1));
-	// Red
-	Sphere* ball7 = new Sphere(glm::vec2(10, 0), glm::vec2(0, 0), 1.f, 4, glm::vec4(1, 0, 0, 0));
-	// Red clear
-	Sphere* ball8 = new Sphere(glm::vec2(20, 0), glm::vec2(0, 0), 1.f, 4, glm::vec4(1, 1, 0, 0));
-	// Purple clear
-	Sphere* ball9 = new Sphere(glm::vec2(30, 0), glm::vec2(0, 0), 1.f, 4, glm::vec4(1, 0, 1, 0));
-	// Green clear
-	Sphere* ball10 = new Sphere(glm::vec2(40, 0), glm::vec2(0, 0), 1.f, 4, glm::vec4(0, 1, 0, 0));
-	// Blue clear
-	Sphere* ball11 = new Sphere(glm::vec2(50, 0), glm::vec2(0, 0), 1.f, 4, glm::vec4(0, 0, 1, 0));
-	// Black
-	Sphere* ball12 = new Sphere(glm::vec2(60, 0), glm::vec2(0, 0), 1.f, 4, glm::vec4(0, 0, 0, 1));
-	// Orange
-	Sphere* ball13 = new Sphere(glm::vec2(60, 10), glm::vec2(0, 0), 1.f, 4, glm::vec4(1, 0.4, 0, 1));
-	// Orange clear
-	Sphere* ball14 = new Sphere(glm::vec2(60, 20), glm::vec2(0, 0), 1.f, 4, glm::vec4(1, 0.4, 0, 0));
-	// Maroon
-	Sphere* ball15 = new Sphere(glm::vec2(20, 10), glm::vec2(0, 0), 1.f, 4, glm::vec4(0.55, 0, 0.1, 1));
-	// Maroon clear
-	Sphere* ball16 = new Sphere(glm::vec2(30, 10), glm::vec2(0, 0), 1.f, 4, glm::vec4(0.55, 0, 0.1, 0));
+	whiteBall = new Sphere(glm::vec2(0, 0), glm::vec2(0, 0), 1.f, m_ballRadius, glm::vec4(1, 1, 1, 1));
+
+	// Yellow solid 1
+	Sphere* ball2 = new Sphere(glm::vec2(-40, 0), glm::vec2(0, 0), 1.f, m_ballRadius, glm::vec4(1, 1, 0, 1));
+
+	// Blue solid 2
+	Sphere* ball5 = new Sphere(glm::vec2(-10, 0), glm::vec2(0, 0), 1.f, m_ballRadius, glm::vec4(0, 0, 1, 1));
+
+	// Red solid 3
+	Sphere* ball1 = new Sphere(glm::vec2(-50, 0), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(1, 0, 0, 1));
+
+	// Purple solid 4
+	Sphere* ball3 = new Sphere(glm::vec2(-30, 0), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(1, 0, 1, 1));
+
+	// Green solid 6
+	Sphere* ball4 = new Sphere(glm::vec2(-20, 0), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(0, 1, 0, 1));
+
+	// Orange solid 5
+	Sphere* ball13 = new Sphere(glm::vec2(60, 10), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(1, 0.4, 0, 1));
+
+	// Maroon solid 7;
+	Sphere* ball15 = new Sphere(glm::vec2(20, 10), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(0.55, 0, 0.1, 1));
+
+	// Black 8
+	Sphere* ball12 = new Sphere(glm::vec2(60, 0), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(0, 0, 0, 1));
+
+	// Yellow stripe 9
+	Sphere* ball8 = new Sphere(glm::vec2(20, 0), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(1, 1, 0, 0));
+
+	// Blue stripe 10
+	Sphere* ball11 = new Sphere(glm::vec2(50, 0), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(0, 0, 1, 0));
+
+	// Red stripe 11
+	Sphere* ball7 = new Sphere(glm::vec2(10, 0), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(1, 0, 0, 0));
+
+	// Purple stripe 12
+	Sphere* ball9 = new Sphere(glm::vec2(30, 0), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(1, 0, 1, 0));
+
+	// Orange stripe 13
+	Sphere* ball14 = new Sphere(glm::vec2(60, 20), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(1, 0.4, 0, 0));
+
+	// Green stripe 14
+	Sphere* ball10 = new Sphere(glm::vec2(40, 0), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(0, 1, 0, 0));
+
+	// Maroon stripe 15
+	Sphere* ball16 = new Sphere(glm::vec2(30, 10), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(0.55, 0, 0.1, 0));
+
+
+
+
+
 
 	CreateBall("Len", ball1);
 	GetBall("Len");
 
 #pragma endregion
 
-	
+
 
 	AddBallsToList(ball1);
 	AddBallsToList(ball2);
@@ -229,12 +252,12 @@ void PhysicsProjectApp::DrawBalls()
 	ball5->SetElasticity(0.9f);
 	whiteBall->SetElasticity(0.9f);
 
-	ball1->SetLinearDrag(0.8f);
-	ball2->SetLinearDrag(0.8f);
-	ball3->SetLinearDrag(0.8f);
-	ball4->SetLinearDrag(0.8f);
-	ball5->SetLinearDrag(0.8f);
-	whiteBall->SetLinearDrag(0.8f);
+	ball1->SetLinearDrag(0.7f);
+	ball2->SetLinearDrag(0.7f);
+	ball3->SetLinearDrag(0.7f);
+	ball4->SetLinearDrag(0.7f);
+	ball5->SetLinearDrag(0.7f);
+	whiteBall->SetLinearDrag(0.7f);
 
 	//ball1->ApplyForce(glm::vec2(-180, 10), glm::vec2(0));
 	//ball2->ApplyForce(glm::vec2(30, 180), glm::vec2(0));
@@ -245,71 +268,50 @@ void PhysicsProjectApp::DrawBalls()
 
 }
 
-void PhysicsProjectApp::DrawCorners()
+void PhysicsProjectApp::DrawPockets()
 {
-	// Red
-	Sphere* ball1 = new Sphere(glm::vec2(0, 60), glm::vec2(0, 0), 10.f, 8, glm::vec4(1, 0, 0, 1));
-	// Yellow
-	Sphere* ball2 = new Sphere(glm::vec2(0, -60), glm::vec2(0, 0), 10.f, 8, glm::vec4(0, 0, 0, 1));
-	// Purple
-	Sphere* ball3 = new Sphere(glm::vec2(97, 52), glm::vec2(0, 0), 10.f, 8, glm::vec4(0, 0, 0, 1));
-	// Green
-	Sphere* ball4 = new Sphere(glm::vec2(97, -52), glm::vec2(0, 0), 10.f, 8, glm::vec4(0, 0, 0, 1));
-	// Blue
-	Sphere* ball5 = new Sphere(glm::vec2(-97, -52), glm::vec2(0, 0), 10.f, 8, glm::vec4(0, 0, 0, 1));
-	// White
-	Sphere* ball6 = new Sphere(glm::vec2(-97, 52), glm::vec2(0, 0), 10.f, 8, glm::vec4(0, 0, 0, 1));
+	topLeft = new Sphere(glm::vec2(-97, 47), glm::vec2(0, 0), 10.f, m_pocketSize, glm::vec4(0, 0, 0, 1));
 
-	ball1->SetKinematic(1);
-	ball2->SetKinematic(1);
-	ball3->SetKinematic(1);
-	ball4->SetKinematic(1);
-	ball5->SetKinematic(1);
-	ball6->SetKinematic(1);
+	topCentre = new Sphere(glm::vec2(0, 50), glm::vec2(0, 0), 10.f, m_pocketSize, glm::vec4(1, 0, 0, 1));
 
-	ball1->SetTrigger(1);
-	ball2->SetTrigger(1);
-	ball3->SetTrigger(1);
-	ball4->SetTrigger(1);
-	ball5->SetTrigger(1);
-	ball6->SetTrigger(1);
+	topRight = new Sphere(glm::vec2(97, 47), glm::vec2(0, 0), 10.f, m_pocketSize, glm::vec4(1, 0, 1, 1));
+
+	bottomLeft = new Sphere(glm::vec2(-97, -54), glm::vec2(0, 0), 10.f, m_pocketSize, glm::vec4(0, 0, 1, 1));
+
+	bottomCentre = new Sphere(glm::vec2(0, -60), glm::vec2(0, 0), 10.f, m_pocketSize, glm::vec4(1, 1, 0, 1));
+
+	bottomRight = new Sphere(glm::vec2(97, -54), glm::vec2(0, 0), 10.f, m_pocketSize, glm::vec4(0, 1, 0, 1));
 
 
+	topLeft->SetKinematic(1);
+	topCentre->SetKinematic(1);
+	topRight->SetKinematic(1);
+	bottomLeft->SetKinematic(1);
+	bottomCentre->SetKinematic(1);
+	bottomRight->SetKinematic(1);
 
-	m_physicsScene->AddActor(ball1);
-	m_physicsScene->AddActor(ball2);
-	m_physicsScene->AddActor(ball3);
-	m_physicsScene->AddActor(ball4);
-	m_physicsScene->AddActor(ball5);
-	m_physicsScene->AddActor(ball6);
+	topLeft->SetTrigger(1);
+	topCentre->SetTrigger(1);
+	topRight->SetTrigger(1);
+	bottomLeft->SetTrigger(1);
+	bottomCentre->SetTrigger(1);
+	bottomRight->SetTrigger(1);
 
-	ball1->triggerEnter = [=](PhysicsObject* other)
-	{
-		std::cout << "Entered: " << other << std::endl;
-		if (other == whiteBall)
-		{
-			whiteBall->SetPosition({ 0, 0 });
-			whiteBall->SetVelocity({ 0, 0 });
 
-		}
-	};
 
-	ball1->triggerExit = [=](PhysicsObject* other) {std::cout << "Exited: " << other << std::endl; };
+	m_physicsScene->AddActor(topLeft);
+	m_physicsScene->AddActor(topCentre);
+	m_physicsScene->AddActor(topRight);
+	m_physicsScene->AddActor(bottomLeft);
+	m_physicsScene->AddActor(bottomCentre);
+	m_physicsScene->AddActor(bottomRight);
 
-	ball2->triggerEnter = [=](PhysicsObject* other) {std::cout << "Entered: " << other << std::endl; };
-	ball2->triggerExit = [=](PhysicsObject* other) {std::cout << "Exited: " << other << std::endl; };
-
-	ball3->triggerEnter = [=](PhysicsObject* other) {std::cout << "Entered: " << other << std::endl; };
-	ball3->triggerExit = [=](PhysicsObject* other) {std::cout << "Exited: " << other << std::endl; };
-
-	ball4->triggerEnter = [=](PhysicsObject* other) {std::cout << "Entered: " << other << std::endl; };
-	ball4->triggerExit = [=](PhysicsObject* other) {std::cout << "Exited: " << other << std::endl; };
-
-	ball5->triggerEnter = [=](PhysicsObject* other) {std::cout << "Entered: " << other << std::endl; };
-	ball5->triggerExit = [=](PhysicsObject* other) {std::cout << "Exited: " << other << std::endl; };
-
-	ball6->triggerEnter = [=](PhysicsObject* other) {std::cout << "Entered: " << other << std::endl; };
-	ball6->triggerExit = [=](PhysicsObject* other) {std::cout << "Exited: " << other << std::endl; };
+	AddPocketsToList(topLeft);
+	AddPocketsToList(topCentre);
+	AddPocketsToList(topRight);
+	AddPocketsToList(bottomLeft);
+	AddPocketsToList(bottomCentre);
+	AddPocketsToList(bottomRight);
 
 }
 
@@ -466,13 +468,18 @@ void PhysicsProjectApp::AimAndShoot(aie::Input* a_input)
 	if (a_input->wasMouseButtonReleased(0))
 	{
 		whiteBall->ApplyForce((worldPos - whiteBall->GetPosition()), glm::vec2(0));
-		std::cout << "hi" << std::endl;
+
 	}
 }
 
 void PhysicsProjectApp::AddBallsToList(Sphere* a_ball)
 {
 	ballList.push_back(a_ball);
+}
+
+void PhysicsProjectApp::AddPocketsToList(Sphere* a_pocket)
+{
+	pocketList.push_back(a_pocket);
 }
 
 void PhysicsProjectApp::AddBallsToScene()
@@ -497,5 +504,32 @@ bool PhysicsProjectApp::HaveAllBallsStopped()
 			return false;
 		}
 	}
-		return true;
+	return true;
+}
+
+void PhysicsProjectApp::BallSunk()
+{
+	for (auto pocket : pocketList)
+	{
+
+		pocket->triggerEnter = [=](PhysicsObject* other)
+		{
+			std::cout << "Entered: " << other << std::endl;
+			if (other == whiteBall)
+			{
+				whiteBall->SetPosition({ 0, 0 });
+				whiteBall->SetVelocity({ 0, 0 });
+
+			}
+			if (other != whiteBall && other != blackBall8)
+			{
+				other->ResetPosition();
+				
+				m_sunkPosX += 10.f;
+			}
+		};
+
+		pocket->triggerExit = [=](PhysicsObject* other) {std::cout << "Exited: " << other << std::endl; };
+	}
+
 }

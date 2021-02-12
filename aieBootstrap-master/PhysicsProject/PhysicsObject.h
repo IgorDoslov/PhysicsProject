@@ -31,6 +31,9 @@ public:
 	bool IsKinematic() { return m_isKinematic; }
 	bool SetKinematic(bool a_state) { return m_isKinematic = a_state; }
 
+	glm::vec2 GetPosition() const { return m_physObjPosition; }
+	glm::vec2 SetPosition(glm::vec2 a_newPos) { return m_physObjPosition = a_newPos; }
+
 	float GetElasticity() { return m_elasticity; }
 	// Keep to 1 for realism
 	float SetElasticity(float a_new) { return m_elasticity = a_new; }
@@ -39,6 +42,9 @@ protected:
 	ShapeType m_shapeID;
 	bool m_isKinematic;
 	float m_elasticity;
+
+	glm::vec2 m_physObjPosition;
+	
 
 	PhysicsObject(ShapeType a_shapeID) : m_shapeID(a_shapeID){}
 };

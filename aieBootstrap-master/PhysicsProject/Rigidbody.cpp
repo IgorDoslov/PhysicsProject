@@ -15,7 +15,7 @@ Rigidbody::Rigidbody(ShapeType a_shapeID, glm::vec2 a_position, glm::vec2 a_velo
 	m_isKinematic = false;
 	m_isTrigger = false;
 	m_elasticity = 0.8f;
-	m_linearDrag = 0.7f;
+	m_linearDrag = 0.5f;
 	m_angularDrag = 0.9f;
 }
 
