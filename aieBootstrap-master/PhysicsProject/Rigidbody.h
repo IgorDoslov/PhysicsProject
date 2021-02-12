@@ -18,19 +18,19 @@ public:
 	void ResolveCollision(Rigidbody* a_otherActor, glm::vec2 a_contact,
 		glm::vec2* a_collisionNormal = nullptr, float a_pen = 0);
 
-
-
-
 	glm::vec2 GetPosition() const { return m_position; }
+	glm::vec2 SetPosition(glm::vec2 a_newPos) { return m_position = a_newPos; }
+
 	glm::vec2 GetVelocity() { return m_velocity; }
+	glm::vec2 SetVelocity(glm::vec2 a_newVel) { return m_velocity = a_newVel; }
 
 	float GetMass() { return m_isKinematic ? INT_MAX : m_mass; }
+
 	float GetRotation() { return m_rotation; }
+	float SetRotation(float a_rotate) { return m_rotation = a_rotate; }
 
 	float GetMoment() { return m_isKinematic ? INT_MAX : m_moment; }
 	float GetAngularVelocity() { return m_angularVelocity; }
-
-	float SetRotation(float a_rotate) { return m_rotation = a_rotate; }
 
 	float GetLinearDrag() { return m_linearDrag; }
 	float SetLinearDrag(float a_linearDrag) { return m_linearDrag = a_linearDrag; }
@@ -38,15 +38,10 @@ public:
 	float GetAngularDrag() { return m_angularDrag; }
 	float SetAngularDrag(float a_angularDrag) { return m_angularDrag = a_angularDrag; }
 
-	glm::vec2 SetPosition(glm::vec2 a_newPos) { return m_position = a_newPos; }
-	glm::vec2 SetVelocity(glm::vec2 a_newVel) { return m_velocity = a_newVel; }
-
-
 	glm::vec2 ToWorld(glm::vec2 a_localPos);
 
-	std::function<void(PhysicsObject*)> m_collisionCallback;
-
 	void TriggerEntered(PhysicsObject* a_otherActor);
+	std::function<void(PhysicsObject*)> m_collisionCallback;
 	std::function<void(PhysicsObject*)> triggerEnter;
 	std::function<void(PhysicsObject*)> triggerExit;
 

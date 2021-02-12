@@ -4,6 +4,10 @@
 #include "Renderer2D.h"
 #include "Sphere.h"
 #include "PhysicsScene.h"
+#include "Input.h"
+#include <vector>
+#include <map>
+#include <string>
 
 class PhysicsProjectApp : public aie::Application {
 public:
@@ -19,6 +23,16 @@ public:
 
 	glm::vec2 ScreenToWorld(glm::vec2 a_screenPos);
 
+	void AimAndShoot(aie::Input* a_input);
+
+	void AddBallsToList(Sphere* a_ball);
+
+	void AddBallsToScene();
+
+	bool HaveAllBallsStopped();
+
+	void BallSunk();
+
 protected:
 
 	aie::Renderer2D*	m_2dRenderer;
@@ -31,6 +45,15 @@ protected:
 	const float m_extents = 100.f;
 	Sphere* whiteBall;
 	glm::vec2 worldPos;
+
+	std::vector<Sphere*> ballList;
+	std::vector<Sphere*> pocketList;
+
+	std::map<const char*, Sphere*> poolBalls;
+	void CreateBall(const char* a_name, Sphere* a_ball);
+	Sphere* GetBall(const char* a_name);
+
+
 public:
 	void TriggerTest();
 	void DrawRect();

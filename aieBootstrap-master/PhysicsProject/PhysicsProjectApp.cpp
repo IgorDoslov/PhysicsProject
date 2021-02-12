@@ -72,20 +72,10 @@ void PhysicsProjectApp::update(float deltaTime) {
 	m_physicsScene->Update(deltaTime);
 	m_physicsScene->Draw();
 
-	if (input->isMouseButtonDown(0))
+	if (HaveAllBallsStopped())
 	{
-		int xScreen, yScreen;
-		input->getMouseXY(&xScreen, &yScreen);
-		worldPos = ScreenToWorld(glm::vec2(xScreen, yScreen));
-		aie::Gizmos::add2DCircle(worldPos, 5, 32, glm::vec4(0.3));
-		aie::Gizmos::add2DLine(whiteBall->GetPosition(), worldPos, glm::vec4(1));
-		
+		AimAndShoot(input);
 	}
-		if (input->wasMouseButtonReleased(0))
-		{
-			whiteBall->ApplyForce((worldPos - whiteBall->GetPosition()), glm::vec2(0));
-			std::cout << "hi" << std::endl;
-		}
 
 	// exit the application
 	if (input->isKeyDown(aie::INPUT_KEY_ESCAPE))
@@ -104,7 +94,7 @@ void PhysicsProjectApp::draw() {
 	m_2dRenderer->begin();
 
 	// draw your stuff here!
-	aie::Gizmos::add2DLine(glm::vec2(0, 0), glm::vec2(0, 40), glm::vec4(1, 0, 0, 1));
+	//aie::Gizmos::add2DLine(glm::vec2(0, 0), glm::vec2(0, 40), glm::vec4(1, 0, 0, 1));
 
 	// X axis = -100 to 100, Y axis = -56.25 to 56.25
 	aie::Gizmos::draw2D(glm::ortho<float>(-m_extents, m_extents,
@@ -117,7 +107,7 @@ void PhysicsProjectApp::draw() {
 	// output some text, uses the last used colour
 	m_2dRenderer->drawText(m_font, "Press ESC to quit", 0, 0);
 
-	m_2dRenderer->drawLine(400, 80, 400, 640, 2, 20);
+	//m_2dRenderer->drawLine(400, 80, 400, 640, 2, 20);
 
 	// done drawing sprites
 	m_2dRenderer->end();
@@ -171,6 +161,7 @@ void PhysicsProjectApp::DrawTable()
 
 void PhysicsProjectApp::DrawBalls()
 {
+#pragma region CreateBall
 	// Red
 	Sphere* ball1 = new Sphere(glm::vec2(-50, 0), glm::vec2(0, 0), 1.f, 4, glm::vec4(1, 0, 0, 1));
 	// Yellow
@@ -204,27 +195,32 @@ void PhysicsProjectApp::DrawBalls()
 	// Maroon clear
 	Sphere* ball16 = new Sphere(glm::vec2(30, 10), glm::vec2(0, 0), 1.f, 4, glm::vec4(0.55, 0, 0.1, 0));
 
+	CreateBall("Len", ball1);
+	GetBall("Len");
+
+#pragma endregion
+
+	
+
+	AddBallsToList(ball1);
+	AddBallsToList(ball2);
+	AddBallsToList(ball3);
+	AddBallsToList(ball4);
+	AddBallsToList(ball5);
+	AddBallsToList(whiteBall);
+	AddBallsToList(ball7);
+	AddBallsToList(ball8);
+	AddBallsToList(ball9);
+	AddBallsToList(ball10);
+	AddBallsToList(ball11);
+	AddBallsToList(ball12);
+	AddBallsToList(ball13);
+	AddBallsToList(ball14);
+	AddBallsToList(ball15);
+	AddBallsToList(ball16);
 
 
-
-	m_physicsScene->AddActor(ball1);
-	m_physicsScene->AddActor(ball2);
-	m_physicsScene->AddActor(ball3);
-	m_physicsScene->AddActor(ball4);
-	m_physicsScene->AddActor(ball5);
-	m_physicsScene->AddActor(whiteBall);
-	m_physicsScene->AddActor(ball7);
-	m_physicsScene->AddActor(ball8);
-	m_physicsScene->AddActor(ball9);
-	m_physicsScene->AddActor(ball10);
-	m_physicsScene->AddActor(ball11);
-	m_physicsScene->AddActor(ball12);
-	m_physicsScene->AddActor(ball13);
-	m_physicsScene->AddActor(ball14);
-	m_physicsScene->AddActor(ball15);
-	m_physicsScene->AddActor(ball16);
-
-
+	AddBallsToScene();
 
 	ball1->SetElasticity(0.9f);
 	ball2->SetElasticity(0.9f);
@@ -233,12 +229,12 @@ void PhysicsProjectApp::DrawBalls()
 	ball5->SetElasticity(0.9f);
 	whiteBall->SetElasticity(0.9f);
 
-	ball1->SetLinearDrag(0.6f);
-	ball2->SetLinearDrag(0.6f);
-	ball3->SetLinearDrag(0.6f);
-	ball4->SetLinearDrag(0.6f);
-	ball5->SetLinearDrag(0.6f);
-	whiteBall->SetLinearDrag(0.6f);
+	ball1->SetLinearDrag(0.8f);
+	ball2->SetLinearDrag(0.8f);
+	ball3->SetLinearDrag(0.8f);
+	ball4->SetLinearDrag(0.8f);
+	ball5->SetLinearDrag(0.8f);
+	whiteBall->SetLinearDrag(0.8f);
 
 	//ball1->ApplyForce(glm::vec2(-180, 10), glm::vec2(0));
 	//ball2->ApplyForce(glm::vec2(30, 180), glm::vec2(0));
@@ -278,7 +274,7 @@ void PhysicsProjectApp::DrawCorners()
 	ball5->SetTrigger(1);
 	ball6->SetTrigger(1);
 
-	
+
 
 	m_physicsScene->AddActor(ball1);
 	m_physicsScene->AddActor(ball2);
@@ -287,14 +283,14 @@ void PhysicsProjectApp::DrawCorners()
 	m_physicsScene->AddActor(ball5);
 	m_physicsScene->AddActor(ball6);
 
-	ball1->triggerEnter = [=](PhysicsObject* other) 
+	ball1->triggerEnter = [=](PhysicsObject* other)
 	{
-		std::cout << "Entered: " << other << std::endl; 
+		std::cout << "Entered: " << other << std::endl;
 		if (other == whiteBall)
 		{
 			whiteBall->SetPosition({ 0, 0 });
 			whiteBall->SetVelocity({ 0, 0 });
-			
+
 		}
 	};
 
@@ -342,6 +338,22 @@ void PhysicsProjectApp::SpringTest(int a_amount)
 	m_physicsScene->AddActor(box);
 }
 
+void PhysicsProjectApp::CreateBall(const char* a_name, Sphere* a_ball)
+{
+	poolBalls[a_name] = a_ball;
+}
+
+Sphere* PhysicsProjectApp::GetBall(const char* a_name)
+{
+	auto ball = poolBalls.find(a_name);
+
+	if (ball != poolBalls.end())
+	{
+		return (*ball).second;
+	}
+	return nullptr;
+}
+
 void PhysicsProjectApp::TriggerTest()
 {
 	// Draw trigger before other things
@@ -370,12 +382,12 @@ void PhysicsProjectApp::DrawRect()
 {
 	m_physicsScene->AddActor(new Sphere(glm::vec2(20, 10), glm::vec2(-10, -17),
 		1, 3, glm::vec4(1, 0, 0, 0)));
-	m_physicsScene->AddActor(new Plane(glm::vec2(-0.65, 0.75), -1));
+	m_physicsScene->AddActor(new Plane(glm::vec2(0, 1), -1));
 
-	Box* box1 = new Box(glm::vec2(-20, 0), glm::vec2(25, -4), 1, 4, 8, 4,
+	Box* box1 = new Box(glm::vec2(0, 20), glm::vec2(0, 0), 1, 40, 8, 4,
 		glm::vec4(1, 1, 0, 1));
 
-	Box* box2 = new Box(glm::vec2(10, 0), glm::vec2(-4, 0), 1, 4, 8, 4,
+	Box* box2 = new Box(glm::vec2(0, 50), glm::vec2(0, 0), 10, 40, 8, 4,
 		glm::vec4(1, 0, 0, 1));
 
 
@@ -384,8 +396,8 @@ void PhysicsProjectApp::DrawRect()
 	m_physicsScene->AddActor(box1);
 	m_physicsScene->AddActor(box2);
 
-	box1->ApplyForce(glm::vec2(30, 0), glm::vec2(0));
-	box2->ApplyForce(glm::vec2(-15, 0), glm::vec2(0));
+	//box1->ApplyForce(glm::vec2(30, 0), glm::vec2(0));
+	//box2->ApplyForce(glm::vec2(-15, 0), glm::vec2(0));
 
 	Sphere* ball = new Sphere(glm::vec2(5, -10), glm::vec2(0), 1.f, 3, glm::vec4(0, 0, 1, 1));
 	ball->SetRotation(0.5);
@@ -410,13 +422,13 @@ void PhysicsProjectApp::SphereAndPlane()
 	m_physicsScene->AddActor(ball2);
 
 
-	ball->ApplyForce(glm::vec2(80, 0), glm::vec2(0));
-	anotherBall->ApplyForce(glm::vec2(-80, 0), glm::vec2(0));
+	ball->ApplyForce(glm::vec2(80, 0), glm::vec2(0, 0));
+	anotherBall->ApplyForce(glm::vec2(30, 0), glm::vec2(0, 0));
 	ball2->ApplyForce(glm::vec2(2, -30), glm::vec2(0));
 
 
 	Plane* plane;
-	plane = new Plane({ 0,1 }, 0.f);
+	plane = new Plane({ 1,1 }, 0.f);
 	m_physicsScene->AddActor(plane);
 }
 
@@ -436,4 +448,54 @@ glm::vec2 PhysicsProjectApp::ScreenToWorld(glm::vec2 a_screenPos)
 
 
 	return worldPos;
+}
+
+void PhysicsProjectApp::AimAndShoot(aie::Input* a_input)
+{
+
+
+	if (a_input->isMouseButtonDown(0))
+	{
+		int xScreen, yScreen;
+		a_input->getMouseXY(&xScreen, &yScreen);
+		worldPos = ScreenToWorld(glm::vec2(xScreen, yScreen));
+		aie::Gizmos::add2DCircle(worldPos, 5, 32, glm::vec4(0.3));
+		aie::Gizmos::add2DLine(whiteBall->GetPosition(), worldPos, glm::vec4(1));
+
+	}
+	if (a_input->wasMouseButtonReleased(0))
+	{
+		whiteBall->ApplyForce((worldPos - whiteBall->GetPosition()), glm::vec2(0));
+		std::cout << "hi" << std::endl;
+	}
+}
+
+void PhysicsProjectApp::AddBallsToList(Sphere* a_ball)
+{
+	ballList.push_back(a_ball);
+}
+
+void PhysicsProjectApp::AddBallsToScene()
+{
+	for (auto pball : ballList)
+	{
+		m_physicsScene->AddActor(pball);
+	}
+}
+
+
+bool PhysicsProjectApp::HaveAllBallsStopped()
+{
+	for (auto pball : ballList)
+	{
+		if (glm::sqrt(glm::abs(pball->GetVelocity().x) + glm::abs(pball->GetVelocity().y)) < 0.8f)
+		{
+			pball->SetVelocity(glm::vec2(0));
+		}
+		else
+		{
+			return false;
+		}
+	}
+		return true;
 }

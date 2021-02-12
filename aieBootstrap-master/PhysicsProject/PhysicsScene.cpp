@@ -142,12 +142,8 @@ void PhysicsScene::CheckForCollision()
 					collisionFunctionPtr(objOuter, objInner);
 				}
 			}
-
-
-
 		}
 	}
-
 }
 
 void PhysicsScene::ApplyContactForces(Rigidbody* a_actor1, Rigidbody* a_actor2, glm::vec2 a_collisionNorm, float a_pen)
