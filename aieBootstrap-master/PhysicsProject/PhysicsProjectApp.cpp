@@ -75,7 +75,7 @@ void PhysicsProjectApp::update(float deltaTime) {
 	if (HaveAllBallsStopped())
 	{
 	}
-		AimAndShoot(input);
+	AimAndShoot(input);
 
 	BallSunk();
 
@@ -523,9 +523,17 @@ void PhysicsProjectApp::BallSunk()
 			}
 			if (other != whiteBall && other != blackBall8)
 			{
-				other->ResetPosition();
-				
-				m_sunkPosX += 10.f;
+				for (auto pBall : ballList)
+				{
+					if (other == pBall)
+					{
+						pBall->SetVelocity(glm::vec2(0));
+						pBall->SetKinematic(1);
+						pBall->SetPosition({ m_sunkPosX , m_sunkPosY });
+						m_sunkPosX += 10.f;
+					}
+				}
+
 			}
 		};
 

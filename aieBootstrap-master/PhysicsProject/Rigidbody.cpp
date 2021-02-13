@@ -91,7 +91,7 @@ void Rigidbody::ApplyForce(glm::vec2 a_force, glm::vec2 a_pos)
 {
 	m_velocity += a_force / GetMass();
 
-	m_angularVelocity += (a_force.y * a_pos.x - a_force.x * a_pos.y) / GetMoment();
+	m_angularVelocity += (a_force.y * a_pos.x + a_force.x * a_pos.y) / GetMoment();
 }
 
 

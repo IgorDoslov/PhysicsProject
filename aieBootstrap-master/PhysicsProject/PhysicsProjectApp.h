@@ -99,8 +99,8 @@ protected:
 	float m_ballMass = 2.f;
 	float m_pocketSize = 7.f;
 
-	float m_sunkPosX = 0.f;
-	float m_sunkPosY = 0.f;
+	float m_sunkPosX = -50.f;
+	float m_sunkPosY = 50.f;
 
 	glm::vec2 worldPos;
 
