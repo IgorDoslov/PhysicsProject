@@ -30,6 +30,10 @@ bool PhysicsProjectApp::startup() {
 	// TODO: remember to change this when redistributing a build!
 	// the following path would be used instead: "./font/consolas.ttf"
 	m_font = new aie::Font("../bin/font/consolas.ttf", 32);
+	m_tableTexture = new aie::Texture("./textures/table.png");
+	m_whiteBallTexture = new aie::Texture("./textures/ball 1.png");
+
+
 
 	m_physicsScene = new PhysicsScene();
 
@@ -99,8 +103,8 @@ void PhysicsProjectApp::draw() {
 	//aie::Gizmos::add2DLine(glm::vec2(0, 0), glm::vec2(0, 40), glm::vec4(1, 0, 0, 1));
 
 	// X axis = -100 to 100, Y axis = -56.25 to 56.25
-	aie::Gizmos::draw2D(glm::ortho<float>(-m_extents, m_extents,
-		-m_extents / m_aspectRatio, m_extents / m_aspectRatio, -1.f, 1.f));
+	aie::Gizmos::draw2D(getWindowWidth(), getWindowHeight());//(glm::ortho<float>(-m_extents, m_extents,
+		//-m_extents / m_aspectRatio, m_extents / m_aspectRatio, -1.f, 1.f));
 
 	char fps[32];
 	sprintf_s(fps, 32, "FPS: %i", getFPS());
@@ -110,6 +114,11 @@ void PhysicsProjectApp::draw() {
 	m_2dRenderer->drawText(m_font, "Press ESC to quit", 0, 0);
 
 	//m_2dRenderer->drawLine(400, 80, 400, 640, 2, 20);
+	m_2dRenderer->drawSprite(m_tableTexture, getWindowWidth()/2.f, getWindowHeight()/2.f, 
+		getWindowWidth(), getWindowHeight(), 0);
+
+	m_2dRenderer->drawSprite(m_whiteBallTexture, whiteBall->GetPosition().x, whiteBall->GetPosition().y, whiteBall->GetRadius() * 2,
+		whiteBall->GetRadius() * 2);
 
 	// done drawing sprites
 	m_2dRenderer->end();
@@ -166,7 +175,7 @@ void PhysicsProjectApp::DrawBalls()
 #pragma region CreateBall
 
 	// White
-	whiteBall = new Sphere(glm::vec2(0, 0), glm::vec2(0, 0), 1.f, m_ballRadius, glm::vec4(1, 1, 1, 1));
+	whiteBall = new Sphere(glm::vec2(900, 353), glm::vec2(0, 0), 1.f, m_ballRadius, glm::vec4(1, 1, 1, 1));
 
 	// Yellow solid 1
 	Sphere* ball2 = new Sphere(glm::vec2(-40, 0), glm::vec2(0, 0), 1.f, m_ballRadius, glm::vec4(1, 1, 0, 1));
@@ -440,12 +449,12 @@ glm::vec2 PhysicsProjectApp::ScreenToWorld(glm::vec2 a_screenPos)
 	glm::vec2 worldPos = a_screenPos;
 
 	// We will move the centre of the screen to (0, 0)
-	worldPos.x -= getWindowWidth() / 2;
-	worldPos.y -= getWindowHeight() / 2;
+	worldPos.x = getWindowWidth() / 2;
+	worldPos.y = getWindowHeight() / 2;
 
 	// Scale this according to the extents
-	worldPos.x *= 2.f * m_extents / getWindowWidth();
-	worldPos.y *= 2.f * m_extents / (m_aspectRatio * getWindowHeight());
+	//worldPos.x *= 2.f * m_extents / getWindowWidth();
+	//worldPos.y *= 2.f * m_extents / (m_aspectRatio * getWindowHeight());
 
 
 
@@ -458,9 +467,12 @@ void PhysicsProjectApp::AimAndShoot(aie::Input* a_input)
 
 	if (a_input->isMouseButtonDown(0))
 	{
-		int xScreen, yScreen;
+		/*int xScreen, yScreen;
 		a_input->getMouseXY(&xScreen, &yScreen);
-		worldPos = ScreenToWorld(glm::vec2(xScreen, yScreen));
+		worldPos = ScreenToWorld(glm::vec2(xScreen, yScreen));*/
+		worldPos.x = a_input->getMouseX();
+		worldPos.y = a_input->getMouseY();
+
 		aie::Gizmos::add2DCircle(worldPos, 5, 32, glm::vec4(0.3));
 		aie::Gizmos::add2DLine(whiteBall->GetPosition(), worldPos, glm::vec4(1));
 
@@ -527,7 +539,6 @@ void PhysicsProjectApp::BallSunk()
 				{
 					if (other == pBall)
 					{
-						pBall->SetVelocity(glm::vec2(0));
 						pBall->SetKinematic(1);
 						pBall->SetPosition({ m_sunkPosX , m_sunkPosY });
 						m_sunkPosX += 10.f;

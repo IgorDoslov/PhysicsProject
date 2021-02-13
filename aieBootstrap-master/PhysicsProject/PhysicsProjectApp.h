@@ -95,12 +95,18 @@ protected:
 
 #pragma endregion
 
-	float m_ballRadius = 3.f;
+	float m_ballRadius = 40.f;
 	float m_ballMass = 2.f;
 	float m_pocketSize = 7.f;
 
-	float m_sunkPosX = -50.f;
-	float m_sunkPosY = 50.f;
+	float m_sunkPosX = -80.f;
+	float m_sunkPosY = 51.f;
+
+	
+
+	aie::Texture* m_tableTexture;
+	aie::Texture* m_whiteBallTexture;
+
 
 	glm::vec2 worldPos;
 
