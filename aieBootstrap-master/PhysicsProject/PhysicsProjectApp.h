@@ -29,7 +29,8 @@ public:
 	void AddBallsToList(Sphere* a_ball);
 	void AddPocketsToList(Sphere* a_pocket);
 
-
+	void AddSolids();
+	void AddStripes();
 	void AddBallsToScene();
 	void SetBallsElasticity();
 	void SetBallsLinearDrag();
@@ -41,7 +42,7 @@ public:
 	void DrawTable();
 	void DrawBalls();
 	void DrawPockets();
-
+	void ChangePlayer();
 
 protected:
 
@@ -57,7 +58,7 @@ protected:
 #pragma region Pool Balls
 
 	float m_ballRadius = 14.f;
-	float m_ballMass = 2.f;
+	float m_ballMass = 1.f;
 	float m_pBallElasticity = 0.9f;
 	float m_pBallLinearDrag = 0.7f;
 
@@ -139,12 +140,26 @@ protected:
 
 #pragma endregion
 
-	float m_sunkPosX = -80.f;
-	float m_sunkPosY = 51.f;
+	float m_sunkPosX = 80.f;
+	float m_sunkPosY = 60.f;
+	float m_distance;
+
+	bool m_isPlayer1Turn = true;
+	bool m_isPlayer2Turn = false;
+	bool m_isFirstBallSunk = false;
+	bool m_areAllBallsSunk = false;
+	bool m_wasBallSunk = false;
+	bool m_ballWasHit = false;
+	int m_p1ShotCount = 1;
+	int m_p2ShotCount = 1;
+
 
 	glm::vec2 worldPos;
 
 	std::vector<Sphere*> ballList;
+	std::vector<Sphere*> solidBallList;
+	std::vector<Sphere*> stripeBallList;
+
 	std::vector<Sphere*> pocketList;
 
 	std::map<const char*, Sphere*> poolBalls;

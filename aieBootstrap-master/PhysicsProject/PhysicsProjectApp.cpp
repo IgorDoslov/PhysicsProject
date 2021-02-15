@@ -80,6 +80,7 @@ bool PhysicsProjectApp::startup() {
 	DrawTable();
 	DrawBalls();
 	DrawPockets();
+
 	//SpringTest(10);
 
 
@@ -103,11 +104,16 @@ void PhysicsProjectApp::update(float deltaTime) {
 
 	if (HaveAllBallsStopped())
 	{
+		if (m_wasBallSunk == false)
+		{
+			std::cout << "ball sunk: " << m_wasBallSunk << std::endl;
+			//ChangePlayer();
+		}
 	}
 	AimAndShoot(input);
 
-	BallSunk();
-	std::cout << "X: " << input->getMouseX() << " Y: " << input->getMouseY() << std::endl;
+
+	//std::cout << "X: " << input->getMouseX() << " Y: " << input->getMouseY() << std::endl;
 	// exit the application
 	if (input->isKeyDown(aie::INPUT_KEY_ESCAPE))
 		quit();
@@ -132,15 +138,18 @@ void PhysicsProjectApp::draw() {
 		//-m_extents / m_aspectRatio, m_extents / m_aspectRatio, -1.f, 1.f));
 
 	char fps[32];
-	sprintf_s(fps, 32, "FPS: %i", getFPS());
-	m_2dRenderer->drawText(m_font, fps, 0, 720 - 32);
+	sprintf_s(fps, 32, "Power: %i", m_distance);
+	m_2dRenderer->drawText(m_font, fps, 0, 720 - 12);
 
-	
 
-	
+
+
 
 	// output some text, uses the last used colour
 	m_2dRenderer->drawText(m_font, "Press ESC to quit", 0, 0);
+	m_2dRenderer->drawText(m_font, "Player 1", 20, 110);
+	m_2dRenderer->drawText(m_font, "Player 2", 20, 60);
+
 
 	//m_2dRenderer->drawLine(400, 80, 400, 640, 2, 20);
 	//m_2dRenderer->drawSprite(m_tableTexture, getWindowWidth() / 2.f, getWindowHeight() / 2.f, getWindowWidth(), getWindowHeight(), 0);
@@ -224,52 +233,52 @@ void PhysicsProjectApp::DrawBalls()
 #pragma region CreateBall
 
 	// White
-	whiteBall = new Sphere(glm::vec2(900, 353), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(1, 1, 1, 1));
+	whiteBall = new Sphere(glm::vec2(250, 435), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(1, 1, 1, 1));
 
 	// Yellow solid 1
-	yellowSolid1 = new Sphere(glm::vec2(340, 110), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(1, 1, 0, 1));
+	yellowSolid1 = new Sphere(glm::vec2(700, 435), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(1, 1, 0, 1));
 
 	// Blue solid 2
-	blueSolid2 = new Sphere(glm::vec2(310, 410), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(0, 0, 1, 1));
+	blueSolid2 = new Sphere(glm::vec2(774, 421), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(0, 0, 1, 1));
 
 	// Red solid 3
-	redSolid3 = new Sphere(glm::vec2(450, 400), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(1, 0, 0, 1));
+	redSolid3 = new Sphere(glm::vec2(800, 463), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(1, 0, 0, 1));
 
 	// Purple solid 4
-	purpleSolid4 = new Sphere(glm::vec2(230, 600), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(1, 0, 1, 1));
+	purpleSolid4 = new Sphere(glm::vec2(750, 463), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(1, 0, 1, 1));
 
 	// Orange solid 5
-	orangeSolid5 = new Sphere(glm::vec2(660, 510), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(1, 0.4, 0, 1));
+	orangeSolid5 = new Sphere(glm::vec2(800, 406), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(1, 0.4, 0, 1));
 
 	// Green solid 6
-	greenSolid6 = new Sphere(glm::vec2(720, 110), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(0, 1, 0, 1));
+	greenSolid6 = new Sphere(glm::vec2(750, 407), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(0, 1, 0, 1));
 
 	// Maroon solid 7;
-	maroonSolid7 = new Sphere(glm::vec2(320, 510), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(0.55, 0, 0.1, 1));
+	maroonSolid7 = new Sphere(glm::vec2(800, 490), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(0.55, 0, 0.1, 1));
 
 	// Black 8
-	blackBall8 = new Sphere(glm::vec2(460, 410), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(0, 0, 0, 1));
+	blackBall8 = new Sphere(glm::vec2(750, 435), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(0, 0, 0, 1));
 
 	// Yellow stripe 9
-	yellowStripe9 = new Sphere(glm::vec2(520, 310), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(1, 1, 0, 0));
+	yellowStripe9 = new Sphere(glm::vec2(800, 435), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(1, 1, 0, 0));
 
 	// Blue stripe 10
-	blueStripe10 = new Sphere(glm::vec2(350, 210), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(0, 0, 1, 0));
+	blueStripe10 = new Sphere(glm::vec2(725, 449), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(0, 0, 1, 0));
 
 	// Red stripe 11
-	redStripe11 = new Sphere(glm::vec2(210, 310), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(1, 0, 0, 0));
+	redStripe11 = new Sphere(glm::vec2(800, 378), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(1, 0, 0, 0));
 
 	// Purple stripe 12
-	purpleStripe12 = new Sphere(glm::vec2(430, 210), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(1, 0, 1, 0));
+	purpleStripe12 = new Sphere(glm::vec2(774, 392), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(1, 0, 1, 0));
 
 	// Orange stripe 13
-	orangeStripe13 = new Sphere(glm::vec2(560, 120), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(1, 0.4, 0, 0));
+	orangeStripe13 = new Sphere(glm::vec2(774, 449), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(1, 0.4, 0, 0));
 
 	// Green stripe 14
-	greenStripe14 = new Sphere(glm::vec2(40, 100), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(0, 1, 0, 0));
+	greenStripe14 = new Sphere(glm::vec2(774, 478), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(0, 1, 0, 0));
 
 	// Maroon stripe 15
-	maroonStripe15 = new Sphere(glm::vec2(330, 110), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(0.55, 0, 0.1, 0));
+	maroonStripe15 = new Sphere(glm::vec2(725, 421), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(0.55, 0, 0.1, 0));
 
 
 
@@ -303,6 +312,8 @@ void PhysicsProjectApp::DrawBalls()
 	AddBallsToScene();
 	SetBallsElasticity();
 	SetBallsLinearDrag();
+	AddSolids();
+	AddStripes();
 
 
 
@@ -363,9 +374,23 @@ void PhysicsProjectApp::DrawPockets()
 
 }
 
+void PhysicsProjectApp::ChangePlayer()
+{
+	if (m_isPlayer1Turn == true)
+	{
+		m_isPlayer2Turn = true;
+		m_isPlayer1Turn = false;
 
+		std::cout << "Player 2's turn" << std::endl;
+	}
+	else
+	{
+		m_isPlayer1Turn = true;
+		m_isPlayer2Turn = false;
 
-
+		std::cout << "Player 1's turn" << std::endl;
+	}
+}
 
 glm::vec2 PhysicsProjectApp::ScreenToWorld(glm::vec2 a_screenPos)
 {
@@ -387,24 +412,110 @@ glm::vec2 PhysicsProjectApp::ScreenToWorld(glm::vec2 a_screenPos)
 void PhysicsProjectApp::AimAndShoot(aie::Input* a_input)
 {
 
-
 	if (a_input->isMouseButtonDown(0))
 	{
+		m_wasBallSunk = false;
+		m_ballWasHit = false;
 		/*int xScreen, yScreen;
 		a_input->getMouseXY(&xScreen, &yScreen);
 		worldPos = ScreenToWorld(glm::vec2(xScreen, yScreen));*/
 		worldPos.x = a_input->getMouseX();
 		worldPos.y = a_input->getMouseY();
 
-		aie::Gizmos::add2DCircle(worldPos, 5, 32, glm::vec4(0.3));
-		aie::Gizmos::add2DLine(whiteBall->GetPosition(), worldPos, glm::vec4(1));
+		aie::Gizmos::add2DCircle(worldPos, 10, 32, glm::vec4(0.3));
+		aie::Gizmos::add2DLine(whiteBall->GetPosition(), worldPos, glm::vec4(1), glm::vec4(1, 0, 0, 1));
+		m_distance = glm::distance(whiteBall->GetPosition(), worldPos);
+		glm::normalize(m_distance);
+		//std::cout << m_distance << std::endl;
 
 	}
 	if (a_input->wasMouseButtonReleased(0))
 	{
 		whiteBall->ApplyForce((worldPos - whiteBall->GetPosition()), glm::vec2(0));
 
+		whiteBall->m_collisionCallback = [=](PhysicsObject* other)
+		{
+			m_ballWasHit = true;
+			
+			BallSunk();
+		if (HaveAllBallsStopped() == true && m_ballWasHit == true)
+		{
+			std::cout << "ball hit" << std::endl;
+		}
+		};
+
 	}
+
+}
+
+void PhysicsProjectApp::BallSunk()
+{
+	for (auto pocket : pocketList)
+	{
+
+		pocket->triggerEnter = [=](PhysicsObject* other)
+		{
+			if (m_isFirstBallSunk == false)
+			{
+				// Sink white ball on the break and nothing else
+				if (other == whiteBall)
+				{
+					whiteBall->SetPosition({ 250, 435 });
+					whiteBall->SetVelocity({ 0, 0 });
+					std::cout << "White ball sunk" << std::endl;
+					ChangePlayer();
+
+
+				}
+				else if (other != whiteBall) // Sink first ball on or after break
+				{
+					m_isFirstBallSunk = true; // first ball has now been sunk
+					for (auto pBall : ballList)
+					{
+						if (other == pBall)
+						{
+							pBall->SetKinematic(1);
+							pBall->SetPosition({ m_sunkPosX , m_sunkPosY });
+							m_sunkPosX += 50.f;
+							m_wasBallSunk = true;
+							std::cout << "First ball sunk: " << m_wasBallSunk << std::endl;
+
+						}
+					}
+				}
+			}
+			else if (m_isFirstBallSunk == true)
+			{
+				if (other != whiteBall)
+				{
+					for (auto pBall : ballList)
+					{
+						if (other == pBall)
+						{
+							pBall->SetKinematic(1);
+							pBall->SetPosition({ m_sunkPosX , m_sunkPosY });
+							m_sunkPosX += 50.f;
+							m_wasBallSunk = true;
+
+							std::cout << "ball sunk: " << m_wasBallSunk << std::endl;
+
+						}
+					}
+				}
+				else if (other == whiteBall)
+				{
+					whiteBall->SetPosition({ 250, 435 });
+					whiteBall->SetVelocity({ 0, 0 });
+					std::cout << "White ball sunk" << std::endl;
+					ChangePlayer();
+				}
+
+			}
+		};
+
+		pocket->triggerExit = [=](PhysicsObject* other) {std::cout << "Exited: " << other << std::endl; };
+	}
+	
 }
 
 void PhysicsProjectApp::AddBallsToList(Sphere* a_ball)
@@ -415,6 +526,30 @@ void PhysicsProjectApp::AddBallsToList(Sphere* a_ball)
 void PhysicsProjectApp::AddPocketsToList(Sphere* a_pocket)
 {
 	pocketList.push_back(a_pocket);
+}
+
+void PhysicsProjectApp::AddSolids()
+{
+	solidBallList.push_back(yellowSolid1);
+	solidBallList.push_back(blueSolid2);
+	solidBallList.push_back(redSolid3);
+	solidBallList.push_back(purpleSolid4);
+	solidBallList.push_back(orangeSolid5);
+	solidBallList.push_back(greenSolid6);
+	solidBallList.push_back(maroonSolid7);
+
+}
+
+void PhysicsProjectApp::AddStripes()
+{
+	stripeBallList.push_back(yellowStripe9);
+	stripeBallList.push_back(blueStripe10);
+	stripeBallList.push_back(redStripe11);
+	stripeBallList.push_back(purpleStripe12);
+	stripeBallList.push_back(orangeStripe13);
+	stripeBallList.push_back(greenStripe14);
+	stripeBallList.push_back(maroonStripe15);
+
 }
 
 void PhysicsProjectApp::AddBallsToScene()
@@ -445,7 +580,7 @@ bool PhysicsProjectApp::HaveAllBallsStopped()
 {
 	for (auto pball : ballList)
 	{
-		if (glm::sqrt(glm::abs(pball->GetVelocity().x) + glm::abs(pball->GetVelocity().y)) < 0.8f)
+		if (glm::sqrt(glm::abs(pball->GetVelocity().x) + glm::abs(pball->GetVelocity().y)) < 0.9f)
 		{
 			pball->SetVelocity(glm::vec2(0));
 		}
@@ -457,39 +592,6 @@ bool PhysicsProjectApp::HaveAllBallsStopped()
 	return true;
 }
 
-void PhysicsProjectApp::BallSunk()
-{
-	for (auto pocket : pocketList)
-	{
-
-		pocket->triggerEnter = [=](PhysicsObject* other)
-		{
-			std::cout << "Entered: " << other << std::endl;
-			if (other == whiteBall)
-			{
-				whiteBall->SetPosition({ 0, 0 });
-				whiteBall->SetVelocity({ 0, 0 });
-
-			}
-			if (other != whiteBall && other != blackBall8)
-			{
-				for (auto pBall : ballList)
-				{
-					if (other == pBall)
-					{
-						pBall->SetKinematic(1);
-						pBall->SetPosition({ m_sunkPosX , m_sunkPosY });
-						m_sunkPosX += 10.f;
-					}
-				}
-
-			}
-		};
-
-		pocket->triggerExit = [=](PhysicsObject* other) {std::cout << "Exited: " << other << std::endl; };
-	}
-
-}
 
 
 

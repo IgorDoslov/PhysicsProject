@@ -347,37 +347,3 @@ bool PhysicsScene::Box2Box(PhysicsObject* obj1, PhysicsObject* obj2)
 
 	return false;
 }
-
-
-////void PhysicsScene::MoveRigidbody(Rigidbody* rb, int up, int down, int left, int right)
-//{
-//	//rb = dynamic_cast<Rigidbody*>(m_actors[playerNumber]);
-//
-//	aie::Input* input = aie::Input::getInstance();
-//
-//	// Move down
-//	if (input->isKeyDown(up))
-//	{
-//		rb->ApplyForce(glm::vec2(0, 1));
-//	}
-//	// Move up
-//	if (input->isKeyDown(down))
-//	{
-//		rb->ApplyForce(glm::vec2(0, -1));
-//	}
-//	// Move right
-//	if (input->isKeyDown(right))
-//	{
-//		rb->ApplyForce(glm::vec2(1, 0));
-//	}
-//	// Move left
-//	if (input->isKeyDown(left))
-//	{
-//		rb->ApplyForce(glm::vec2(-1, 0));
-//	}
-//	// Stop
-//	if (input->isKeyDown(aie::INPUT_KEY_E))
-//	{
-//		rb->ApplyForce(-rb->GetVelocity());
-//	}
-//}
