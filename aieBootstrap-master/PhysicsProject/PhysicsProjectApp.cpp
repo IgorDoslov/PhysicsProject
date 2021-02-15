@@ -11,6 +11,7 @@
 #include "Sphere.h"
 #include "Spring.h"
 
+
 PhysicsProjectApp::PhysicsProjectApp() {
 
 }
@@ -29,24 +30,32 @@ bool PhysicsProjectApp::startup() {
 
 	// TODO: remember to change this when redistributing a build!
 	// the following path would be used instead: "./font/consolas.ttf"
+
 	m_font = new aie::Font("../bin/font/consolas.ttf", 32);
 	m_tableTexture = new aie::Texture("./textures/Pool_Table_Type_1_BG Wide.png");
-	m_whiteBallTexture = new aie::Texture("./textures/white.png");
-	m_blackBall8Texture = new aie::Texture("./textures/black8.png");
-	m_yellowSolid1Texture = new aie::Texture("./textures/yellow1.png");
-	m_blueSolid2Texture = new aie::Texture("./textures/blue2.png");
-	m_redSolid3Texture = new aie::Texture("./textures/red3.png");
-	m_purpleSolid4Texture = new aie::Texture("./textures/purple4.png");
-	m_orangeSolid5Texture = new aie::Texture("./textures/orange5.png");
-	m_greenSolid6Texture = new aie::Texture("./textures/green6.png");
-	m_maroonSolid7Texture = new aie::Texture("./textures/maroon7.png");
-	m_yellowStripe9Texture = new aie::Texture("./textures/yellowS1.png");
-	m_blueStripe10Texture = new aie::Texture("./textures/blueS2.png");
-	m_redStripe11Texture = new aie::Texture("./textures/redS3.png");
-	m_purpleStripe12Texture = new aie::Texture("./textures/purpleS4.png");
-	m_orangeStripe13Texture = new aie::Texture("./textures/orangeS5.png");
-	m_greenStripe14Texture = new aie::Texture("./textures/greenS6.png");
-	m_maroonStripe15Texture = new aie::Texture("./textures/maroonS7.png");
+	m_testTex = new aie::Texture("./textures/grass.png");
+	//m_whiteBallTexture = new aie::Texture("./textures/ball1.png");
+	//m_whiteBallTexture = new aie::Texture(64,64,aie::Texture::RGBA);
+
+	//#pragma region Textures
+	//
+	//	m_blackBall8Texture = new aie::Texture("./textures/black8.png");
+	//	m_yellowSolid1Texture = new aie::Texture("./textures/yellow1test.png");
+	//	m_blueSolid2Texture = new aie::Texture("./textures/blue2.png");
+	//	m_redSolid3Texture = new aie::Texture("./textures/red3.png");
+	//	m_purpleSolid4Texture = new aie::Texture("./textures/purple4.png");
+	//	m_orangeSolid5Texture = new aie::Texture("./textures/orange5.png");
+	//	m_greenSolid6Texture = new aie::Texture("./textures/green6.png");
+	//	m_maroonSolid7Texture = new aie::Texture("./textures/maroon7.png");
+	//	m_yellowStripe9Texture = new aie::Texture("./textures/yellowS1.png");
+	//	m_blueStripe10Texture = new aie::Texture("./textures/blueS2.png");
+	//	m_redStripe11Texture = new aie::Texture("./textures/redS3.png");
+	//	m_purpleStripe12Texture = new aie::Texture("./textures/purpleS4.png");
+	//	m_orangeStripe13Texture = new aie::Texture("./textures/orangeS5.png");
+	//	m_greenStripe14Texture = new aie::Texture("./textures/greenS6.png");
+	//	m_maroonStripe15Texture = new aie::Texture("./textures/maroonS7.png");
+	//#pragma endregion
+
 
 
 
@@ -98,7 +107,7 @@ void PhysicsProjectApp::update(float deltaTime) {
 	AimAndShoot(input);
 
 	BallSunk();
-
+	std::cout << "X: " << input->getMouseX() << " Y: " << input->getMouseY() << std::endl;
 	// exit the application
 	if (input->isKeyDown(aie::INPUT_KEY_ESCAPE))
 		quit();
@@ -110,7 +119,7 @@ void PhysicsProjectApp::draw() {
 	// wipe the screen to the background colour
 	clearScreen();
 
-
+	aie::Application::setBackgroundColour(0, 0.55f, 0.2f);
 
 	// begin drawing sprites
 	m_2dRenderer->begin();
@@ -126,77 +135,86 @@ void PhysicsProjectApp::draw() {
 	sprintf_s(fps, 32, "FPS: %i", getFPS());
 	m_2dRenderer->drawText(m_font, fps, 0, 720 - 32);
 
+	
+
+	
+
 	// output some text, uses the last used colour
 	m_2dRenderer->drawText(m_font, "Press ESC to quit", 0, 0);
 
 	//m_2dRenderer->drawLine(400, 80, 400, 640, 2, 20);
-	m_2dRenderer->drawSprite(m_tableTexture, getWindowWidth() / 2.f, getWindowHeight() / 2.f,
-		getWindowWidth(), getWindowHeight(), 0);
-
-	m_2dRenderer->drawSprite(m_whiteBallTexture, whiteBall->GetPosition().x, whiteBall->GetPosition().y, whiteBall->GetRadius() * 2, whiteBall->GetRadius() * 2, whiteBall->GetRotation());
-	m_2dRenderer->drawSprite(m_blackBall8Texture, blackBall8->GetPosition().x, blackBall8->GetPosition().y, blackBall8->GetRadius() * 2, blackBall8->GetRadius() * 2, blackBall8->GetRotation());
-	m_2dRenderer->drawSprite(m_yellowSolid1Texture, yellowSolid1->GetPosition().x, yellowSolid1->GetPosition().y, yellowSolid1->GetRadius() * 2, yellowSolid1->GetRadius() * 2, yellowSolid1->GetRotation());
-	m_2dRenderer->drawSprite(m_blueSolid2Texture, blueSolid2->GetPosition().x, blueSolid2->GetPosition().y, blueSolid2->GetRadius() * 2, blueSolid2->GetRadius() * 2, blueSolid2->GetRotation());
-	m_2dRenderer->drawSprite(m_redSolid3Texture, redSolid3->GetPosition().x, redSolid3->GetPosition().y, redSolid3->GetRadius() * 2, redSolid3->GetRadius() * 2, redSolid3->GetRotation());
-	m_2dRenderer->drawSprite(m_purpleSolid4Texture, purpleSolid4->GetPosition().x, purpleSolid4->GetPosition().y, purpleSolid4->GetRadius() * 2, purpleSolid4->GetRadius() * 2, purpleSolid4->GetRotation());
-	m_2dRenderer->drawSprite(m_orangeSolid5Texture, orangeSolid5->GetPosition().x, orangeSolid5->GetPosition().y, orangeSolid5->GetRadius() * 2, orangeSolid5->GetRadius() * 2, orangeSolid5->GetRotation());
-	m_2dRenderer->drawSprite(m_greenSolid6Texture, greenSolid6->GetPosition().x, greenSolid6->GetPosition().y, greenSolid6->GetRadius() * 2, greenSolid6->GetRadius() * 2, greenSolid6->GetRotation());
-	m_2dRenderer->drawSprite(m_maroonSolid7Texture, maroonSolid7->GetPosition().x, maroonSolid7->GetPosition().y, maroonSolid7->GetRadius() * 2, maroonSolid7->GetRadius() * 2, maroonSolid7->GetRotation());
-	m_2dRenderer->drawSprite(m_yellowStripe9Texture, yellowStripe9->GetPosition().x, yellowStripe9->GetPosition().y, yellowStripe9->GetRadius() * 2, yellowStripe9->GetRadius() * 2, yellowStripe9->GetRotation());
-	m_2dRenderer->drawSprite(m_blueStripe10Texture, blueStripe10->GetPosition().x, blueStripe10->GetPosition().y, blueStripe10->GetRadius() * 2, blueStripe10->GetRadius() * 2, blueStripe10->GetRotation());
-	m_2dRenderer->drawSprite(m_redStripe11Texture, redStripe11->GetPosition().x, redStripe11->GetPosition().y, redStripe11->GetRadius() * 2, redStripe11->GetRadius() * 2, redStripe11->GetRotation());
-	m_2dRenderer->drawSprite(m_purpleStripe12Texture, purpleStripe12->GetPosition().x, purpleStripe12->GetPosition().y, purpleStripe12->GetRadius() * 2, purpleStripe12->GetRadius() * 2, purpleStripe12->GetRotation());
-	m_2dRenderer->drawSprite(m_orangeStripe13Texture, orangeStripe13->GetPosition().x, orangeStripe13->GetPosition().y, orangeStripe13->GetRadius() * 2, orangeStripe13->GetRadius() * 2, orangeStripe13->GetRotation());
-	m_2dRenderer->drawSprite(m_greenStripe14Texture, greenStripe14->GetPosition().x, greenStripe14->GetPosition().y, greenStripe14->GetRadius() * 2, greenStripe14->GetRadius() * 2, greenStripe14->GetRotation());
-	m_2dRenderer->drawSprite(m_maroonStripe15Texture, maroonStripe15->GetPosition().x, maroonStripe15->GetPosition().y, maroonStripe15->GetRadius() * 2, maroonStripe15->GetRadius() * 2, maroonStripe15->GetRotation());
+	//m_2dRenderer->drawSprite(m_tableTexture, getWindowWidth() / 2.f, getWindowHeight() / 2.f, getWindowWidth(), getWindowHeight(), 0);
+	//m_2dRenderer->drawSprite(m_testTex, 946, 432, 10, 380, 0);
 
 
-	// done drawing sprites
+	//#pragma region DrawSpritesForBalls
+	//
+	//m_2dRenderer->drawSprite(m_whiteBallTexture, whiteBall->GetPosition().x, whiteBall->GetPosition().y, whiteBall->GetRadius() * 2, whiteBall->GetRadius() * 2, whiteBall->GetRotation());
+	//	m_2dRenderer->drawSprite(m_blackBall8Texture, blackBall8->GetPosition().x, blackBall8->GetPosition().y, blackBall8->GetRadius() * 2, blackBall8->GetRadius() * 2, blackBall8->GetRotation());
+	//	m_2dRenderer->drawSprite(m_yellowSolid1Texture, yellowSolid1->GetPosition().x, yellowSolid1->GetPosition().y, yellowSolid1->GetRadius() * 2, yellowSolid1->GetRadius() * 2, yellowSolid1->GetRotation());
+	//	m_2dRenderer->drawSprite(m_blueSolid2Texture, blueSolid2->GetPosition().x, blueSolid2->GetPosition().y, blueSolid2->GetRadius() * 2, blueSolid2->GetRadius() * 2, blueSolid2->GetRotation());
+	//	m_2dRenderer->drawSprite(m_redSolid3Texture, redSolid3->GetPosition().x, redSolid3->GetPosition().y, redSolid3->GetRadius() * 2, redSolid3->GetRadius() * 2, redSolid3->GetRotation());
+	//	m_2dRenderer->drawSprite(m_purpleSolid4Texture, purpleSolid4->GetPosition().x, purpleSolid4->GetPosition().y, purpleSolid4->GetRadius() * 2, purpleSolid4->GetRadius() * 2, purpleSolid4->GetRotation());
+	//	m_2dRenderer->drawSprite(m_orangeSolid5Texture, orangeSolid5->GetPosition().x, orangeSolid5->GetPosition().y, orangeSolid5->GetRadius() * 2, orangeSolid5->GetRadius() * 2, orangeSolid5->GetRotation());
+	//	m_2dRenderer->drawSprite(m_greenSolid6Texture, greenSolid6->GetPosition().x, greenSolid6->GetPosition().y, greenSolid6->GetRadius() * 2, greenSolid6->GetRadius() * 2, greenSolid6->GetRotation());
+	//	m_2dRenderer->drawSprite(m_maroonSolid7Texture, maroonSolid7->GetPosition().x, maroonSolid7->GetPosition().y, maroonSolid7->GetRadius() * 2, maroonSolid7->GetRadius() * 2, maroonSolid7->GetRotation());
+	//	m_2dRenderer->drawSprite(m_yellowStripe9Texture, yellowStripe9->GetPosition().x, yellowStripe9->GetPosition().y, yellowStripe9->GetRadius() * 2, yellowStripe9->GetRadius() * 2, yellowStripe9->GetRotation());
+	//	m_2dRenderer->drawSprite(m_blueStripe10Texture, blueStripe10->GetPosition().x, blueStripe10->GetPosition().y, blueStripe10->GetRadius() * 2, blueStripe10->GetRadius() * 2, blueStripe10->GetRotation());
+	//	m_2dRenderer->drawSprite(m_redStripe11Texture, redStripe11->GetPosition().x, redStripe11->GetPosition().y, redStripe11->GetRadius() * 2, redStripe11->GetRadius() * 2, redStripe11->GetRotation());
+	//	m_2dRenderer->drawSprite(m_purpleStripe12Texture, purpleStripe12->GetPosition().x, purpleStripe12->GetPosition().y, purpleStripe12->GetRadius() * 2, purpleStripe12->GetRadius() * 2, purpleStripe12->GetRotation());
+	//	m_2dRenderer->drawSprite(m_orangeStripe13Texture, orangeStripe13->GetPosition().x, orangeStripe13->GetPosition().y, orangeStripe13->GetRadius() * 2, orangeStripe13->GetRadius() * 2, orangeStripe13->GetRotation());
+	//	m_2dRenderer->drawSprite(m_greenStripe14Texture, greenStripe14->GetPosition().x, greenStripe14->GetPosition().y, greenStripe14->GetRadius() * 2, greenStripe14->GetRadius() * 2, greenStripe14->GetRotation());
+	//	m_2dRenderer->drawSprite(m_maroonStripe15Texture, maroonStripe15->GetPosition().x, maroonStripe15->GetPosition().y, maroonStripe15->GetRadius() * 2, maroonStripe15->GetRadius() * 2, maroonStripe15->GetRotation());
+	//
+	//#pragma endregion
+
+
+		// done drawing sprites
 	m_2dRenderer->end();
 }
 
 void PhysicsProjectApp::DrawTable()
 {
 	// bottom left
-	bottomLeftBox = new Box(glm::vec2(-48, -54), glm::vec2(0, 0), 0, 10, 38, 2,
-		glm::vec4(1, 1, 0, 1));
+	m_bottomLeftBox = new Box(glm::vec2(300, 206), glm::vec2(0, 0), 0, 10, 186, 4,
+		glm::vec4(0.6f, 0.25f, 0.01f, 1));
 	// bottom right
-	bottomRightBox = new Box(glm::vec2(48, -54), glm::vec2(0, 0), 0, 10, 38, 2,
-		glm::vec4(1, 0, 0, 1));
+	m_bottomRightBox = new Box(glm::vec2(725, 206), glm::vec2(0, 0), 0, 10, 186, 4,
+		glm::vec4(0.6f, 0.25f, 0.01f, 1));
 	// top left
-	topLeftBox = new Box(glm::vec2(-48, 45), glm::vec2(0, 0), 0, 10, 38, 2,
-		glm::vec4(0, 1, 0, 1));
+	m_topLeftBox = new Box(glm::vec2(725, 657), glm::vec2(0, 0), 0, 10, 186, 4,
+		glm::vec4(0.6f, 0.25f, 0.01f, 1));
 	// top right
-	topRightBox = new Box(glm::vec2(48, 45), glm::vec2(0, 0), 0, 10, 38, 2,
-		glm::vec4(0, 0, 1, 1));
+	m_topRightBox = new Box(glm::vec2(300, 657), glm::vec2(0, 0), 0, 10, 186, 4,
+		glm::vec4(0.6f, 0.25f, 0.01f, 1));
 	// right side
-	rightSideBox = new Box(glm::vec2(97, -4), glm::vec2(0, 0), 0, 10, 2, 40,
-		glm::vec4(1, 0, 1, 1));
+	m_rightSideBox = new Box(glm::vec2(946, 432), glm::vec2(0, 0), 0, 10, 4, 190,
+		glm::vec4(0.6f, 0.25f, 0.01f, 1));
 	// left side
-	leftSideBox = new Box(glm::vec2(-97, -4), glm::vec2(0, 0), 0, 10, 2, 40,
-		glm::vec4(1, 1, 1, 1));
+	m_leftSideBox = new Box(glm::vec2(79, 432), glm::vec2(0, 0), 0, 10, 4, 190,
+		glm::vec4(0.6f, 0.25f, 0.01f, 1));
 
 
-	m_physicsScene->AddActor(topLeftBox);
-	m_physicsScene->AddActor(topRightBox);
-	m_physicsScene->AddActor(bottomLeftBox);
-	m_physicsScene->AddActor(bottomRightBox);
-	m_physicsScene->AddActor(leftSideBox);
-	m_physicsScene->AddActor(rightSideBox);
+	m_physicsScene->AddActor(m_topLeftBox);
+	m_physicsScene->AddActor(m_topRightBox);
+	m_physicsScene->AddActor(m_bottomLeftBox);
+	m_physicsScene->AddActor(m_bottomRightBox);
+	m_physicsScene->AddActor(m_leftSideBox);
+	m_physicsScene->AddActor(m_rightSideBox);
 
-	topLeftBox->SetKinematic(1);
-	topRightBox->SetKinematic(1);
-	bottomLeftBox->SetKinematic(1);
-	bottomRightBox->SetKinematic(1);
-	leftSideBox->SetKinematic(1);
-	rightSideBox->SetKinematic(1);
+	m_topLeftBox->SetKinematic(1);
+	m_topRightBox->SetKinematic(1);
+	m_bottomLeftBox->SetKinematic(1);
+	m_bottomRightBox->SetKinematic(1);
+	m_leftSideBox->SetKinematic(1);
+	m_rightSideBox->SetKinematic(1);
 
-	topLeftBox->SetElasticity(0.6f);
-	topRightBox->SetElasticity(0.6f);
-	bottomLeftBox->SetElasticity(0.6f);
-	bottomRightBox->SetElasticity(0.6f);
-	leftSideBox->SetElasticity(0.6f);
-	rightSideBox->SetElasticity(0.6f);
+	m_topLeftBox->SetElasticity(0.6f);
+	m_topRightBox->SetElasticity(0.6f);
+	m_bottomLeftBox->SetElasticity(0.6f);
+	m_bottomRightBox->SetElasticity(0.6f);
+	m_leftSideBox->SetElasticity(0.6f);
+	m_rightSideBox->SetElasticity(0.6f);
 
 
 }
@@ -206,13 +224,13 @@ void PhysicsProjectApp::DrawBalls()
 #pragma region CreateBall
 
 	// White
-	whiteBall = new Sphere(glm::vec2(900, 353), glm::vec2(0, 0), 1.f, m_ballRadius, glm::vec4(1, 1, 1, 1));
+	whiteBall = new Sphere(glm::vec2(900, 353), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(1, 1, 1, 1));
 
 	// Yellow solid 1
-	yellowSolid1 = new Sphere(glm::vec2(340, 110), glm::vec2(0, 0), 1.f, m_ballRadius, glm::vec4(1, 1, 0, 1));
+	yellowSolid1 = new Sphere(glm::vec2(340, 110), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(1, 1, 0, 1));
 
 	// Blue solid 2
-	blueSolid2 = new Sphere(glm::vec2(310, 410), glm::vec2(0, 0), 1.f, m_ballRadius, glm::vec4(0, 0, 1, 1));
+	blueSolid2 = new Sphere(glm::vec2(310, 410), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(0, 0, 1, 1));
 
 	// Red solid 3
 	redSolid3 = new Sphere(glm::vec2(450, 400), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(1, 0, 0, 1));
@@ -300,48 +318,48 @@ void PhysicsProjectApp::DrawBalls()
 
 void PhysicsProjectApp::DrawPockets()
 {
-	topLeft = new Sphere(glm::vec2(-97, 47), glm::vec2(0, 0), 10.f, m_pocketSize, glm::vec4(0, 0, 0, 1));
+	m_topLeft = new Sphere(glm::vec2(80, 658), glm::vec2(0, 0), 10.f, m_pocketSize, glm::vec4(0, 0, 0, 1));
+	m_topRight = new Sphere(glm::vec2(947, 658), glm::vec2(0, 0), 10.f, m_pocketSize, glm::vec4(0, 0, 0, 1));
 
-	topCentre = new Sphere(glm::vec2(0, 50), glm::vec2(0, 0), 10.f, m_pocketSize, glm::vec4(1, 0, 0, 1));
+	m_topCentre = new Sphere(glm::vec2(512, 682), glm::vec2(0, 0), 10.f, m_pocketSize, glm::vec4(0, 0, 0, 1));
+	m_bottomCentre = new Sphere(glm::vec2(512, 180), glm::vec2(0, 0), 10.f, m_pocketSize, glm::vec4(0, 0, 0, 1));
 
-	topRight = new Sphere(glm::vec2(97, 47), glm::vec2(0, 0), 10.f, m_pocketSize, glm::vec4(1, 0, 1, 1));
-
-	bottomLeft = new Sphere(glm::vec2(-97, -54), glm::vec2(0, 0), 10.f, m_pocketSize, glm::vec4(0, 0, 1, 1));
-
-	bottomCentre = new Sphere(glm::vec2(0, -60), glm::vec2(0, 0), 10.f, m_pocketSize, glm::vec4(1, 1, 0, 1));
-
-	bottomRight = new Sphere(glm::vec2(97, -54), glm::vec2(0, 0), 10.f, m_pocketSize, glm::vec4(0, 1, 0, 1));
-
-
-	topLeft->SetKinematic(1);
-	topCentre->SetKinematic(1);
-	topRight->SetKinematic(1);
-	bottomLeft->SetKinematic(1);
-	bottomCentre->SetKinematic(1);
-	bottomRight->SetKinematic(1);
-
-	topLeft->SetTrigger(1);
-	topCentre->SetTrigger(1);
-	topRight->SetTrigger(1);
-	bottomLeft->SetTrigger(1);
-	bottomCentre->SetTrigger(1);
-	bottomRight->SetTrigger(1);
+	m_bottomLeft = new Sphere(glm::vec2(80, 207), glm::vec2(0, 0), 10.f, m_pocketSize, glm::vec4(0, 0, 0, 1));
+	m_bottomRight = new Sphere(glm::vec2(947, 207), glm::vec2(0, 0), 10.f, m_pocketSize, glm::vec4(0, 0, 0, 1));
 
 
 
-	m_physicsScene->AddActor(topLeft);
-	m_physicsScene->AddActor(topCentre);
-	m_physicsScene->AddActor(topRight);
-	m_physicsScene->AddActor(bottomLeft);
-	m_physicsScene->AddActor(bottomCentre);
-	m_physicsScene->AddActor(bottomRight);
 
-	AddPocketsToList(topLeft);
-	AddPocketsToList(topCentre);
-	AddPocketsToList(topRight);
-	AddPocketsToList(bottomLeft);
-	AddPocketsToList(bottomCentre);
-	AddPocketsToList(bottomRight);
+
+	m_topLeft->SetKinematic(1);
+	m_topCentre->SetKinematic(1);
+	m_topRight->SetKinematic(1);
+	m_bottomLeft->SetKinematic(1);
+	m_bottomCentre->SetKinematic(1);
+	m_bottomRight->SetKinematic(1);
+
+	m_topLeft->SetTrigger(1);
+	m_topCentre->SetTrigger(1);
+	m_topRight->SetTrigger(1);
+	m_bottomLeft->SetTrigger(1);
+	m_bottomCentre->SetTrigger(1);
+	m_bottomRight->SetTrigger(1);
+
+
+
+	m_physicsScene->AddActor(m_topLeft);
+	m_physicsScene->AddActor(m_topCentre);
+	m_physicsScene->AddActor(m_topRight);
+	m_physicsScene->AddActor(m_bottomLeft);
+	m_physicsScene->AddActor(m_bottomCentre);
+	m_physicsScene->AddActor(m_bottomRight);
+
+	AddPocketsToList(m_topLeft);
+	AddPocketsToList(m_topCentre);
+	AddPocketsToList(m_topRight);
+	AddPocketsToList(m_bottomLeft);
+	AddPocketsToList(m_bottomCentre);
+	AddPocketsToList(m_bottomRight);
 
 }
 
