@@ -31,6 +31,8 @@ public:
 
 
 	void AddBallsToScene();
+	void SetBallsElasticity();
+	void SetBallsLinearDrag();
 
 	bool HaveAllBallsStopped();
 
@@ -39,6 +41,8 @@ public:
 	void DrawTable();
 	void DrawBalls();
 	void DrawPockets();
+
+
 protected:
 
 	aie::Renderer2D* m_2dRenderer;
@@ -52,27 +56,65 @@ protected:
 
 #pragma region Pool Balls
 
+	float m_ballRadius = 17.f;
+	float m_ballMass = 2.f;
+	float m_pBallElasticity = 0.9f;
+	float m_pBallLinearDrag = 0.7f;
+
 	Sphere* whiteBall;
+	aie::Texture* m_whiteBallTexture;
+
 	Sphere* blackBall8;
+	aie::Texture* m_blackBall8Texture;
+
 	Sphere* yellowSolid1;
+	aie::Texture* m_yellowSolid1Texture;
+
 	Sphere* blueSolid2;
+	aie::Texture* m_blueSolid2Texture;
+
 	Sphere* redSolid3;
+	aie::Texture* m_redSolid3Texture;
+
 	Sphere* purpleSolid4;
+	aie::Texture* m_purpleSolid4Texture;
+
 	Sphere* orangeSolid5;
+	aie::Texture* m_orangeSolid5Texture;
+
 	Sphere* greenSolid6;
+	aie::Texture* m_greenSolid6Texture;
+
 	Sphere* maroonSolid7;
+	aie::Texture* m_maroonSolid7Texture;
+
 	Sphere* yellowStripe9;
+	aie::Texture* m_yellowStripe9Texture;
+
 	Sphere* blueStripe10;
+	aie::Texture* m_blueStripe10Texture;
+
 	Sphere* redStripe11;
+	aie::Texture* m_redStripe11Texture;
+
 	Sphere* purpleStripe12;
+	aie::Texture* m_purpleStripe12Texture;
+
 	Sphere* orangeStripe13;
+	aie::Texture* m_orangeStripe13Texture;
+
 	Sphere* greenStripe14;
+	aie::Texture* m_greenStripe14Texture;
+
 	Sphere* maroonStripe15;
+	aie::Texture* m_maroonStripe15Texture;
 
 #pragma endregion
 
 
 #pragma region Pockets
+	
+	float m_pocketSize = 7.f;
 
 	Sphere* topLeft;
 	Sphere* topCentre;
@@ -86,6 +128,8 @@ protected:
 
 #pragma region Table
 
+	aie::Texture* m_tableTexture;
+
 	Box* topLeftBox;
 	Box* topRightBox;
 	Box* bottomLeftBox;
@@ -95,18 +139,8 @@ protected:
 
 #pragma endregion
 
-	float m_ballRadius = 40.f;
-	float m_ballMass = 2.f;
-	float m_pocketSize = 7.f;
-
 	float m_sunkPosX = -80.f;
 	float m_sunkPosY = 51.f;
-
-	
-
-	aie::Texture* m_tableTexture;
-	aie::Texture* m_whiteBallTexture;
-
 
 	glm::vec2 worldPos;
 

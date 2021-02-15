@@ -30,8 +30,24 @@ bool PhysicsProjectApp::startup() {
 	// TODO: remember to change this when redistributing a build!
 	// the following path would be used instead: "./font/consolas.ttf"
 	m_font = new aie::Font("../bin/font/consolas.ttf", 32);
-	m_tableTexture = new aie::Texture("./textures/table.png");
-	m_whiteBallTexture = new aie::Texture("./textures/ball 1.png");
+	m_tableTexture = new aie::Texture("./textures/Pool_Table_Type_1_BG Wide.png");
+	m_whiteBallTexture = new aie::Texture("./textures/white.png");
+	m_blackBall8Texture = new aie::Texture("./textures/black8.png");
+	m_yellowSolid1Texture = new aie::Texture("./textures/yellow1.png");
+	m_blueSolid2Texture = new aie::Texture("./textures/blue2.png");
+	m_redSolid3Texture = new aie::Texture("./textures/red3.png");
+	m_purpleSolid4Texture = new aie::Texture("./textures/purple4.png");
+	m_orangeSolid5Texture = new aie::Texture("./textures/orange5.png");
+	m_greenSolid6Texture = new aie::Texture("./textures/green6.png");
+	m_maroonSolid7Texture = new aie::Texture("./textures/maroon7.png");
+	m_yellowStripe9Texture = new aie::Texture("./textures/yellowS1.png");
+	m_blueStripe10Texture = new aie::Texture("./textures/blueS2.png");
+	m_redStripe11Texture = new aie::Texture("./textures/redS3.png");
+	m_purpleStripe12Texture = new aie::Texture("./textures/purpleS4.png");
+	m_orangeStripe13Texture = new aie::Texture("./textures/orangeS5.png");
+	m_greenStripe14Texture = new aie::Texture("./textures/greenS6.png");
+	m_maroonStripe15Texture = new aie::Texture("./textures/maroonS7.png");
+
 
 
 
@@ -114,11 +130,26 @@ void PhysicsProjectApp::draw() {
 	m_2dRenderer->drawText(m_font, "Press ESC to quit", 0, 0);
 
 	//m_2dRenderer->drawLine(400, 80, 400, 640, 2, 20);
-	m_2dRenderer->drawSprite(m_tableTexture, getWindowWidth()/2.f, getWindowHeight()/2.f, 
+	m_2dRenderer->drawSprite(m_tableTexture, getWindowWidth() / 2.f, getWindowHeight() / 2.f,
 		getWindowWidth(), getWindowHeight(), 0);
 
-	m_2dRenderer->drawSprite(m_whiteBallTexture, whiteBall->GetPosition().x, whiteBall->GetPosition().y, whiteBall->GetRadius() * 2,
-		whiteBall->GetRadius() * 2);
+	m_2dRenderer->drawSprite(m_whiteBallTexture, whiteBall->GetPosition().x, whiteBall->GetPosition().y, whiteBall->GetRadius() * 2, whiteBall->GetRadius() * 2, whiteBall->GetRotation());
+	m_2dRenderer->drawSprite(m_blackBall8Texture, blackBall8->GetPosition().x, blackBall8->GetPosition().y, blackBall8->GetRadius() * 2, blackBall8->GetRadius() * 2, blackBall8->GetRotation());
+	m_2dRenderer->drawSprite(m_yellowSolid1Texture, yellowSolid1->GetPosition().x, yellowSolid1->GetPosition().y, yellowSolid1->GetRadius() * 2, yellowSolid1->GetRadius() * 2, yellowSolid1->GetRotation());
+	m_2dRenderer->drawSprite(m_blueSolid2Texture, blueSolid2->GetPosition().x, blueSolid2->GetPosition().y, blueSolid2->GetRadius() * 2, blueSolid2->GetRadius() * 2, blueSolid2->GetRotation());
+	m_2dRenderer->drawSprite(m_redSolid3Texture, redSolid3->GetPosition().x, redSolid3->GetPosition().y, redSolid3->GetRadius() * 2, redSolid3->GetRadius() * 2, redSolid3->GetRotation());
+	m_2dRenderer->drawSprite(m_purpleSolid4Texture, purpleSolid4->GetPosition().x, purpleSolid4->GetPosition().y, purpleSolid4->GetRadius() * 2, purpleSolid4->GetRadius() * 2, purpleSolid4->GetRotation());
+	m_2dRenderer->drawSprite(m_orangeSolid5Texture, orangeSolid5->GetPosition().x, orangeSolid5->GetPosition().y, orangeSolid5->GetRadius() * 2, orangeSolid5->GetRadius() * 2, orangeSolid5->GetRotation());
+	m_2dRenderer->drawSprite(m_greenSolid6Texture, greenSolid6->GetPosition().x, greenSolid6->GetPosition().y, greenSolid6->GetRadius() * 2, greenSolid6->GetRadius() * 2, greenSolid6->GetRotation());
+	m_2dRenderer->drawSprite(m_maroonSolid7Texture, maroonSolid7->GetPosition().x, maroonSolid7->GetPosition().y, maroonSolid7->GetRadius() * 2, maroonSolid7->GetRadius() * 2, maroonSolid7->GetRotation());
+	m_2dRenderer->drawSprite(m_yellowStripe9Texture, yellowStripe9->GetPosition().x, yellowStripe9->GetPosition().y, yellowStripe9->GetRadius() * 2, yellowStripe9->GetRadius() * 2, yellowStripe9->GetRotation());
+	m_2dRenderer->drawSprite(m_blueStripe10Texture, blueStripe10->GetPosition().x, blueStripe10->GetPosition().y, blueStripe10->GetRadius() * 2, blueStripe10->GetRadius() * 2, blueStripe10->GetRotation());
+	m_2dRenderer->drawSprite(m_redStripe11Texture, redStripe11->GetPosition().x, redStripe11->GetPosition().y, redStripe11->GetRadius() * 2, redStripe11->GetRadius() * 2, redStripe11->GetRotation());
+	m_2dRenderer->drawSprite(m_purpleStripe12Texture, purpleStripe12->GetPosition().x, purpleStripe12->GetPosition().y, purpleStripe12->GetRadius() * 2, purpleStripe12->GetRadius() * 2, purpleStripe12->GetRotation());
+	m_2dRenderer->drawSprite(m_orangeStripe13Texture, orangeStripe13->GetPosition().x, orangeStripe13->GetPosition().y, orangeStripe13->GetRadius() * 2, orangeStripe13->GetRadius() * 2, orangeStripe13->GetRotation());
+	m_2dRenderer->drawSprite(m_greenStripe14Texture, greenStripe14->GetPosition().x, greenStripe14->GetPosition().y, greenStripe14->GetRadius() * 2, greenStripe14->GetRadius() * 2, greenStripe14->GetRotation());
+	m_2dRenderer->drawSprite(m_maroonStripe15Texture, maroonStripe15->GetPosition().x, maroonStripe15->GetPosition().y, maroonStripe15->GetRadius() * 2, maroonStripe15->GetRadius() * 2, maroonStripe15->GetRotation());
+
 
 	// done drawing sprites
 	m_2dRenderer->end();
@@ -178,95 +209,85 @@ void PhysicsProjectApp::DrawBalls()
 	whiteBall = new Sphere(glm::vec2(900, 353), glm::vec2(0, 0), 1.f, m_ballRadius, glm::vec4(1, 1, 1, 1));
 
 	// Yellow solid 1
-	Sphere* ball2 = new Sphere(glm::vec2(-40, 0), glm::vec2(0, 0), 1.f, m_ballRadius, glm::vec4(1, 1, 0, 1));
+	yellowSolid1 = new Sphere(glm::vec2(340, 110), glm::vec2(0, 0), 1.f, m_ballRadius, glm::vec4(1, 1, 0, 1));
 
 	// Blue solid 2
-	Sphere* ball5 = new Sphere(glm::vec2(-10, 0), glm::vec2(0, 0), 1.f, m_ballRadius, glm::vec4(0, 0, 1, 1));
+	blueSolid2 = new Sphere(glm::vec2(310, 410), glm::vec2(0, 0), 1.f, m_ballRadius, glm::vec4(0, 0, 1, 1));
 
 	// Red solid 3
-	Sphere* ball1 = new Sphere(glm::vec2(-50, 0), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(1, 0, 0, 1));
+	redSolid3 = new Sphere(glm::vec2(450, 400), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(1, 0, 0, 1));
 
 	// Purple solid 4
-	Sphere* ball3 = new Sphere(glm::vec2(-30, 0), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(1, 0, 1, 1));
-
-	// Green solid 6
-	Sphere* ball4 = new Sphere(glm::vec2(-20, 0), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(0, 1, 0, 1));
+	purpleSolid4 = new Sphere(glm::vec2(230, 600), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(1, 0, 1, 1));
 
 	// Orange solid 5
-	Sphere* ball13 = new Sphere(glm::vec2(60, 10), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(1, 0.4, 0, 1));
+	orangeSolid5 = new Sphere(glm::vec2(660, 510), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(1, 0.4, 0, 1));
+
+	// Green solid 6
+	greenSolid6 = new Sphere(glm::vec2(720, 110), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(0, 1, 0, 1));
 
 	// Maroon solid 7;
-	Sphere* ball15 = new Sphere(glm::vec2(20, 10), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(0.55, 0, 0.1, 1));
+	maroonSolid7 = new Sphere(glm::vec2(320, 510), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(0.55, 0, 0.1, 1));
 
 	// Black 8
-	Sphere* ball12 = new Sphere(glm::vec2(60, 0), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(0, 0, 0, 1));
+	blackBall8 = new Sphere(glm::vec2(460, 410), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(0, 0, 0, 1));
 
 	// Yellow stripe 9
-	Sphere* ball8 = new Sphere(glm::vec2(20, 0), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(1, 1, 0, 0));
+	yellowStripe9 = new Sphere(glm::vec2(520, 310), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(1, 1, 0, 0));
 
 	// Blue stripe 10
-	Sphere* ball11 = new Sphere(glm::vec2(50, 0), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(0, 0, 1, 0));
+	blueStripe10 = new Sphere(glm::vec2(350, 210), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(0, 0, 1, 0));
 
 	// Red stripe 11
-	Sphere* ball7 = new Sphere(glm::vec2(10, 0), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(1, 0, 0, 0));
+	redStripe11 = new Sphere(glm::vec2(210, 310), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(1, 0, 0, 0));
 
 	// Purple stripe 12
-	Sphere* ball9 = new Sphere(glm::vec2(30, 0), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(1, 0, 1, 0));
+	purpleStripe12 = new Sphere(glm::vec2(430, 210), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(1, 0, 1, 0));
 
 	// Orange stripe 13
-	Sphere* ball14 = new Sphere(glm::vec2(60, 20), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(1, 0.4, 0, 0));
+	orangeStripe13 = new Sphere(glm::vec2(560, 120), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(1, 0.4, 0, 0));
 
 	// Green stripe 14
-	Sphere* ball10 = new Sphere(glm::vec2(40, 0), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(0, 1, 0, 0));
+	greenStripe14 = new Sphere(glm::vec2(40, 100), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(0, 1, 0, 0));
 
 	// Maroon stripe 15
-	Sphere* ball16 = new Sphere(glm::vec2(30, 10), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(0.55, 0, 0.1, 0));
+	maroonStripe15 = new Sphere(glm::vec2(330, 110), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(0.55, 0, 0.1, 0));
 
 
 
 
 
 
-	CreateBall("Len", ball1);
+	CreateBall("Len", whiteBall);
 	GetBall("Len");
 
 #pragma endregion
 
 
 
-	AddBallsToList(ball1);
-	AddBallsToList(ball2);
-	AddBallsToList(ball3);
-	AddBallsToList(ball4);
-	AddBallsToList(ball5);
 	AddBallsToList(whiteBall);
-	AddBallsToList(ball7);
-	AddBallsToList(ball8);
-	AddBallsToList(ball9);
-	AddBallsToList(ball10);
-	AddBallsToList(ball11);
-	AddBallsToList(ball12);
-	AddBallsToList(ball13);
-	AddBallsToList(ball14);
-	AddBallsToList(ball15);
-	AddBallsToList(ball16);
-
+	AddBallsToList(blackBall8);
+	AddBallsToList(yellowSolid1);
+	AddBallsToList(blueSolid2);
+	AddBallsToList(redSolid3);
+	AddBallsToList(purpleSolid4);
+	AddBallsToList(orangeSolid5);
+	AddBallsToList(greenSolid6);
+	AddBallsToList(maroonSolid7);
+	AddBallsToList(yellowStripe9);
+	AddBallsToList(blueStripe10);
+	AddBallsToList(redStripe11);
+	AddBallsToList(purpleStripe12);
+	AddBallsToList(orangeStripe13);
+	AddBallsToList(greenStripe14);
+	AddBallsToList(maroonStripe15);
 
 	AddBallsToScene();
+	SetBallsElasticity();
+	SetBallsLinearDrag();
 
-	ball1->SetElasticity(0.9f);
-	ball2->SetElasticity(0.9f);
-	ball3->SetElasticity(0.9f);
-	ball4->SetElasticity(0.9f);
-	ball5->SetElasticity(0.9f);
-	whiteBall->SetElasticity(0.9f);
 
-	ball1->SetLinearDrag(0.7f);
-	ball2->SetLinearDrag(0.7f);
-	ball3->SetLinearDrag(0.7f);
-	ball4->SetLinearDrag(0.7f);
-	ball5->SetLinearDrag(0.7f);
-	whiteBall->SetLinearDrag(0.7f);
+
 
 	//ball1->ApplyForce(glm::vec2(-180, 10), glm::vec2(0));
 	//ball2->ApplyForce(glm::vec2(30, 180), glm::vec2(0));
@@ -324,6 +345,158 @@ void PhysicsProjectApp::DrawPockets()
 
 }
 
+
+
+
+
+glm::vec2 PhysicsProjectApp::ScreenToWorld(glm::vec2 a_screenPos)
+{
+	glm::vec2 worldPos = a_screenPos;
+
+	// We will move the centre of the screen to (0, 0)
+	worldPos.x = getWindowWidth() / 2;
+	worldPos.y = getWindowHeight() / 2;
+
+	// Scale this according to the extents
+	//worldPos.x *= 2.f * m_extents / getWindowWidth();
+	//worldPos.y *= 2.f * m_extents / (m_aspectRatio * getWindowHeight());
+
+
+
+	return worldPos;
+}
+
+void PhysicsProjectApp::AimAndShoot(aie::Input* a_input)
+{
+
+
+	if (a_input->isMouseButtonDown(0))
+	{
+		/*int xScreen, yScreen;
+		a_input->getMouseXY(&xScreen, &yScreen);
+		worldPos = ScreenToWorld(glm::vec2(xScreen, yScreen));*/
+		worldPos.x = a_input->getMouseX();
+		worldPos.y = a_input->getMouseY();
+
+		aie::Gizmos::add2DCircle(worldPos, 5, 32, glm::vec4(0.3));
+		aie::Gizmos::add2DLine(whiteBall->GetPosition(), worldPos, glm::vec4(1));
+
+	}
+	if (a_input->wasMouseButtonReleased(0))
+	{
+		whiteBall->ApplyForce((worldPos - whiteBall->GetPosition()), glm::vec2(0));
+
+	}
+}
+
+void PhysicsProjectApp::AddBallsToList(Sphere* a_ball)
+{
+	ballList.push_back(a_ball);
+}
+
+void PhysicsProjectApp::AddPocketsToList(Sphere* a_pocket)
+{
+	pocketList.push_back(a_pocket);
+}
+
+void PhysicsProjectApp::AddBallsToScene()
+{
+	for (auto pball : ballList)
+	{
+		m_physicsScene->AddActor(pball);
+	}
+}
+
+void PhysicsProjectApp::SetBallsElasticity()
+{
+	for (auto pBall : ballList)
+	{
+		pBall->SetElasticity(m_pBallElasticity);
+	}
+}
+
+void PhysicsProjectApp::SetBallsLinearDrag()
+{
+	for (auto pBall : ballList)
+	{
+		pBall->SetLinearDrag(m_pBallLinearDrag);
+	}
+}
+
+bool PhysicsProjectApp::HaveAllBallsStopped()
+{
+	for (auto pball : ballList)
+	{
+		if (glm::sqrt(glm::abs(pball->GetVelocity().x) + glm::abs(pball->GetVelocity().y)) < 0.8f)
+		{
+			pball->SetVelocity(glm::vec2(0));
+		}
+		else
+		{
+			return false;
+		}
+	}
+	return true;
+}
+
+void PhysicsProjectApp::BallSunk()
+{
+	for (auto pocket : pocketList)
+	{
+
+		pocket->triggerEnter = [=](PhysicsObject* other)
+		{
+			std::cout << "Entered: " << other << std::endl;
+			if (other == whiteBall)
+			{
+				whiteBall->SetPosition({ 0, 0 });
+				whiteBall->SetVelocity({ 0, 0 });
+
+			}
+			if (other != whiteBall && other != blackBall8)
+			{
+				for (auto pBall : ballList)
+				{
+					if (other == pBall)
+					{
+						pBall->SetKinematic(1);
+						pBall->SetPosition({ m_sunkPosX , m_sunkPosY });
+						m_sunkPosX += 10.f;
+					}
+				}
+
+			}
+		};
+
+		pocket->triggerExit = [=](PhysicsObject* other) {std::cout << "Exited: " << other << std::endl; };
+	}
+
+}
+
+
+
+
+
+
+
+void PhysicsProjectApp::CreateBall(const char* a_name, Sphere* a_ball)
+{
+	poolBalls[a_name] = a_ball;
+}
+
+Sphere* PhysicsProjectApp::GetBall(const char* a_name)
+{
+	auto ball = poolBalls.find(a_name);
+
+	if (ball != poolBalls.end())
+	{
+		return (*ball).second;
+	}
+	return nullptr;
+}
+
+#pragma region Tests
+
 void PhysicsProjectApp::SpringTest(int a_amount)
 {
 	Sphere* prev = nullptr;
@@ -347,22 +520,6 @@ void PhysicsProjectApp::SpringTest(int a_amount)
 	Box* box = new Box(glm::vec2(0, -20), glm::vec2(0), 0.3f, 20, 8, 2);
 	box->SetKinematic(true);
 	m_physicsScene->AddActor(box);
-}
-
-void PhysicsProjectApp::CreateBall(const char* a_name, Sphere* a_ball)
-{
-	poolBalls[a_name] = a_ball;
-}
-
-Sphere* PhysicsProjectApp::GetBall(const char* a_name)
-{
-	auto ball = poolBalls.find(a_name);
-
-	if (ball != poolBalls.end())
-	{
-		return (*ball).second;
-	}
-	return nullptr;
 }
 
 void PhysicsProjectApp::TriggerTest()
@@ -443,112 +600,5 @@ void PhysicsProjectApp::SphereAndPlane()
 	m_physicsScene->AddActor(plane);
 }
 
+#pragma endregion
 
-glm::vec2 PhysicsProjectApp::ScreenToWorld(glm::vec2 a_screenPos)
-{
-	glm::vec2 worldPos = a_screenPos;
-
-	// We will move the centre of the screen to (0, 0)
-	worldPos.x = getWindowWidth() / 2;
-	worldPos.y = getWindowHeight() / 2;
-
-	// Scale this according to the extents
-	//worldPos.x *= 2.f * m_extents / getWindowWidth();
-	//worldPos.y *= 2.f * m_extents / (m_aspectRatio * getWindowHeight());
-
-
-
-	return worldPos;
-}
-
-void PhysicsProjectApp::AimAndShoot(aie::Input* a_input)
-{
-
-
-	if (a_input->isMouseButtonDown(0))
-	{
-		/*int xScreen, yScreen;
-		a_input->getMouseXY(&xScreen, &yScreen);
-		worldPos = ScreenToWorld(glm::vec2(xScreen, yScreen));*/
-		worldPos.x = a_input->getMouseX();
-		worldPos.y = a_input->getMouseY();
-
-		aie::Gizmos::add2DCircle(worldPos, 5, 32, glm::vec4(0.3));
-		aie::Gizmos::add2DLine(whiteBall->GetPosition(), worldPos, glm::vec4(1));
-
-	}
-	if (a_input->wasMouseButtonReleased(0))
-	{
-		whiteBall->ApplyForce((worldPos - whiteBall->GetPosition()), glm::vec2(0));
-
-	}
-}
-
-void PhysicsProjectApp::AddBallsToList(Sphere* a_ball)
-{
-	ballList.push_back(a_ball);
-}
-
-void PhysicsProjectApp::AddPocketsToList(Sphere* a_pocket)
-{
-	pocketList.push_back(a_pocket);
-}
-
-void PhysicsProjectApp::AddBallsToScene()
-{
-	for (auto pball : ballList)
-	{
-		m_physicsScene->AddActor(pball);
-	}
-}
-
-
-bool PhysicsProjectApp::HaveAllBallsStopped()
-{
-	for (auto pball : ballList)
-	{
-		if (glm::sqrt(glm::abs(pball->GetVelocity().x) + glm::abs(pball->GetVelocity().y)) < 0.8f)
-		{
-			pball->SetVelocity(glm::vec2(0));
-		}
-		else
-		{
-			return false;
-		}
-	}
-	return true;
-}
-
-void PhysicsProjectApp::BallSunk()
-{
-	for (auto pocket : pocketList)
-	{
-
-		pocket->triggerEnter = [=](PhysicsObject* other)
-		{
-			std::cout << "Entered: " << other << std::endl;
-			if (other == whiteBall)
-			{
-				whiteBall->SetPosition({ 0, 0 });
-				whiteBall->SetVelocity({ 0, 0 });
-
-			}
-			if (other != whiteBall && other != blackBall8)
-			{
-				for (auto pBall : ballList)
-				{
-					if (other == pBall)
-					{
-						pBall->SetKinematic(1);
-						pBall->SetPosition({ m_sunkPosX , m_sunkPosY });
-						m_sunkPosX += 10.f;
-					}
-				}
-
-			}
-		};
-
-		pocket->triggerExit = [=](PhysicsObject* other) {std::cout << "Exited: " << other << std::endl; };
-	}
-
-}
