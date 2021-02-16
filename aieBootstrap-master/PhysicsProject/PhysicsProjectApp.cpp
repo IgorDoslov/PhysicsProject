@@ -459,7 +459,7 @@ void PhysicsProjectApp::AimAndShoot(aie::Input* a_input)
 
 			for (auto pBall : ballList)
 			{
-				if (m_ballWasHit == false)
+				if (m_ballWasHit == false) // ignore collisions with cushions
 				{
 					if (pBall == other)
 						BallHit(other);
@@ -582,6 +582,8 @@ void PhysicsProjectApp::BallSunk()
 
 		pocket->triggerExit = [=](PhysicsObject* other) {std::cout << "Exited: " << other << std::endl; };
 	}
+	if (m_wasBallSunk == false)
+		ChangePlayer();
 }
 
 

@@ -146,9 +146,9 @@ protected:
 
 #pragma endregion
 
-	float m_p1sunkPosX = 190.f;
+	float m_p1sunkPosX = 200.f;
 	float m_p1sunkPosY = 120.f;
-	float m_p2sunkPosX = 190.f;
+	float m_p2sunkPosX = 200.f;
 	float m_p2sunkPosY = 70.f;
 	float m_distance;
 
