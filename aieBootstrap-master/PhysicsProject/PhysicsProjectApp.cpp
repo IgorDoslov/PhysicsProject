@@ -104,13 +104,26 @@ void PhysicsProjectApp::update(float deltaTime) {
 
 	if (HaveAllBallsStopped())
 	{
-		if (m_wasBallSunk == false)
+		if (HaveAllBallsStopped() == true && m_ballWasHit == true && m_wasBallSunk == true)
 		{
-			std::cout << "ball sunk: " << m_wasBallSunk << std::endl;
-			//ChangePlayer();
+			std::cout << "ball was hit and sunk" << std::endl;
+			AimAndShoot(input);
+
+
+		}
+		else if (HaveAllBallsStopped() == true && m_ballWasHit == true && m_wasBallSunk == false)
+		{
+			std::cout << "ball was hit but not sunk" << std::endl;
+			AimAndShoot(input);
+
+		}
+		if (HaveAllBallsStopped() == true && m_ballWasHit == false)
+		{
+			std::cout << "ball not hit" << std::endl;
+
+			AimAndShoot(input);
 		}
 	}
-	AimAndShoot(input);
 
 
 	//std::cout << "X: " << input->getMouseX() << " Y: " << input->getMouseY() << std::endl;
@@ -414,8 +427,6 @@ void PhysicsProjectApp::AimAndShoot(aie::Input* a_input)
 
 	if (a_input->isMouseButtonDown(0))
 	{
-		m_wasBallSunk = false;
-		m_ballWasHit = false;
 		/*int xScreen, yScreen;
 		a_input->getMouseXY(&xScreen, &yScreen);
 		worldPos = ScreenToWorld(glm::vec2(xScreen, yScreen));*/
@@ -431,21 +442,89 @@ void PhysicsProjectApp::AimAndShoot(aie::Input* a_input)
 	}
 	if (a_input->wasMouseButtonReleased(0))
 	{
-		whiteBall->ApplyForce((worldPos - whiteBall->GetPosition()), glm::vec2(0));
+		std::cout << "waiting for balls to stop..." << std::endl;
 
+		m_wasBallSunk = false;
+		m_ballWasHit = false;
+		whiteBall->ApplyForce((worldPos - whiteBall->GetPosition()), glm::vec2(0));
+		for (auto pocket : pocketList)
+		{
+			pocket->triggerEnter = [=](PhysicsObject* other)
+			{
+				if (m_isFirstBallSunk == false)
+				{
+					// Sink white ball on the break and nothing else
+					if (other == whiteBall)
+					{
+						whiteBall->SetPosition({ 250, 435 });
+						whiteBall->SetVelocity({ 0, 0 });
+						std::cout << "White ball sunk" << std::endl;
+						ChangePlayer();
+
+
+					}
+				}
+			};
+		}
 		whiteBall->m_collisionCallback = [=](PhysicsObject* other)
 		{
 			m_ballWasHit = true;
-			
-			BallSunk();
-		if (HaveAllBallsStopped() == true && m_ballWasHit == true)
-		{
-			std::cout << "ball hit" << std::endl;
-		}
+			if (m_isPlayer1Turn == true && m_player1Solid == true)
+			{
+				for (auto pBall : solidBallList)
+				{
+					if (solidBallList.empty() == true)
+					{
+						m_areAllBallsSunk = true;
+						std::cout << "solid ball list empty" << std::endl;
+					}
+					else if (pBall == other)
+					{
+						BallSunk();
+
+					}
+					else if (pBall != other)
+					{
+						ChangePlayer();
+					}
+				}
+			}
+			else if (m_isPlayer2Turn == true && m_player2Solid == true)
+			{
+				for (auto pBall : solidBallList)
+				{
+					if (solidBallList.empty() == true)
+					{
+						m_areAllBallsSunk = true;
+						std::cout << "solid ball list empty" << std::endl;
+
+					}
+					if (pBall == other)
+					{
+						BallSunk();
+
+					}
+					else if (pBall != other)
+					{
+						ChangePlayer();
+					}
+				}
+			}
+
 		};
 
 	}
 
+}
+
+void PhysicsProjectApp::AddBallsToList(Sphere* a_ball)
+{
+	ballList.push_back(a_ball);
+}
+
+void PhysicsProjectApp::AddPocketsToList(Sphere* a_pocket)
+{
+	pocketList.push_back(a_pocket);
 }
 
 void PhysicsProjectApp::BallSunk()
@@ -455,6 +534,7 @@ void PhysicsProjectApp::BallSunk()
 
 		pocket->triggerEnter = [=](PhysicsObject* other)
 		{
+			WasBlackBallSunk(other);
 			if (m_isFirstBallSunk == false)
 			{
 				// Sink white ball on the break and nothing else
@@ -470,6 +550,19 @@ void PhysicsProjectApp::BallSunk()
 				else if (other != whiteBall) // Sink first ball on or after break
 				{
 					m_isFirstBallSunk = true; // first ball has now been sunk
+					for (auto pBall : solidBallList)
+					{
+						if (pBall == other)
+						{
+							m_player1Solid = true;
+							m_player2Solid = false;
+						}
+						else if (pBall != other)
+						{
+							m_player2Solid = true;
+							m_player1Solid = false;
+						}
+					}
 					for (auto pBall : ballList)
 					{
 						if (other == pBall)
@@ -479,6 +572,8 @@ void PhysicsProjectApp::BallSunk()
 							m_sunkPosX += 50.f;
 							m_wasBallSunk = true;
 							std::cout << "First ball sunk: " << m_wasBallSunk << std::endl;
+							std::cout << "Player 1 solids?: " << m_player1Solid << std::endl;
+							std::cout << "Player 2 solids?: " << m_player2Solid << std::endl;
 
 						}
 					}
@@ -515,17 +610,6 @@ void PhysicsProjectApp::BallSunk()
 
 		pocket->triggerExit = [=](PhysicsObject* other) {std::cout << "Exited: " << other << std::endl; };
 	}
-	
-}
-
-void PhysicsProjectApp::AddBallsToList(Sphere* a_ball)
-{
-	ballList.push_back(a_ball);
-}
-
-void PhysicsProjectApp::AddPocketsToList(Sphere* a_pocket)
-{
-	pocketList.push_back(a_pocket);
 }
 
 void PhysicsProjectApp::AddSolids()
@@ -592,9 +676,53 @@ bool PhysicsProjectApp::HaveAllBallsStopped()
 	return true;
 }
 
+bool PhysicsProjectApp::WasWhiteBallSunk()
+{
+	return false;
+}
 
+bool PhysicsProjectApp::WasBlackBallSunk(PhysicsObject* other)
+{
+	if (other == blackBall8)
+	{
+		if (m_areAllBallsSunk == true)
+		{
+			std::cout << "You win" << std::endl;
+		}
+		else if (m_areAllBallsSunk == false)
+		{
+			std::cout << "You lose" << std::endl;
+		}
+		return true;
+	}
+	return false;
+}
 
+void PhysicsProjectApp::BallHit()
+{
+	whiteBall->m_collisionCallback = [=](PhysicsObject* other)
+	{
+		m_ballWasHit = true;
+		if (m_isPlayer1Turn)
+		{
+			for (auto pBall : solidBallList)
+			{
+				if (pBall == other)
+				{
+					BallSunk();
 
+				}
+			}
+		}
+		
+
+	};
+}
+
+void PhysicsProjectApp::SetPlayerBallType()
+{
+
+}
 
 
 

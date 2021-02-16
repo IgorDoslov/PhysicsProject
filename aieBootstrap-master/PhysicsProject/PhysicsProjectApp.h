@@ -38,11 +38,15 @@ public:
 	bool HaveAllBallsStopped();
 
 	void BallSunk();
+	bool WasWhiteBallSunk();
+	bool WasBlackBallSunk(PhysicsObject* other);
+	void BallHit();
+	void SetPlayerBallType();
+	void ChangePlayer();
 
 	void DrawTable();
 	void DrawBalls();
 	void DrawPockets();
-	void ChangePlayer();
 
 protected:
 
@@ -150,6 +154,8 @@ protected:
 	bool m_areAllBallsSunk = false;
 	bool m_wasBallSunk = false;
 	bool m_ballWasHit = false;
+	bool m_player1Solid = false;
+	bool m_player2Solid = false;
 	int m_p1ShotCount = 1;
 	int m_p2ShotCount = 1;
 
