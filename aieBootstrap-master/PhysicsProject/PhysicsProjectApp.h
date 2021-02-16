@@ -38,10 +38,11 @@ public:
 	bool HaveAllBallsStopped();
 
 	void BallSunk();
-	bool WasWhiteBallSunk();
+	bool WasWhiteBallSunk(PhysicsObject* other);
 	bool WasBlackBallSunk(PhysicsObject* other);
-	void BallHit();
-	void SetPlayerBallType();
+	void BallHit(PhysicsObject* other);
+	void CheckBallType(PhysicsObject* other, std::vector<Sphere*> a_list);
+	void SetPlayerBallType(PhysicsObject* other);
 	void ChangePlayer();
 
 	void DrawTable();
@@ -52,7 +53,7 @@ protected:
 
 	aie::Renderer2D* m_2dRenderer;
 	aie::Font* m_font;
-	Sphere* ball;
+	Sphere* m_ball;
 	Sphere* anotherBall;
 	PhysicsScene* m_physicsScene;
 
@@ -156,6 +157,12 @@ protected:
 	bool m_ballWasHit = false;
 	bool m_player1Solid = false;
 	bool m_player2Solid = false;
+	bool m_player1Stripe = false;
+	bool m_player2Stripe = false;
+	bool m_solidFound = false;
+	bool m_stripeFound = false;
+	bool m_ballFound = false;
+	
 	int m_p1ShotCount = 1;
 	int m_p2ShotCount = 1;
 
