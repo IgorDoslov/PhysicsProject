@@ -44,6 +44,7 @@ public:
 	void CheckBallType(PhysicsObject* other, std::vector<Sphere*> a_list);
 	void SetPlayerBallType(PhysicsObject* other);
 	void ChangePlayer();
+	void PlaceBallNextToPlayer(Sphere* a_ball);
 
 	void DrawTable();
 	void DrawBalls();
@@ -145,8 +146,10 @@ protected:
 
 #pragma endregion
 
-	float m_sunkPosX = 80.f;
-	float m_sunkPosY = 60.f;
+	float m_p1sunkPosX = 190.f;
+	float m_p1sunkPosY = 120.f;
+	float m_p2sunkPosX = 190.f;
+	float m_p2sunkPosY = 70.f;
 	float m_distance;
 
 	bool m_isPlayer1Turn = true;

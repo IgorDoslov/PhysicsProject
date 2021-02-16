@@ -304,7 +304,6 @@ void PhysicsProjectApp::DrawBalls()
 #pragma endregion
 
 
-
 	AddBallsToList(whiteBall);
 	AddBallsToList(blackBall8);
 	AddBallsToList(yellowSolid1);
@@ -327,16 +326,6 @@ void PhysicsProjectApp::DrawBalls()
 	SetBallsLinearDrag();
 	AddSolids();
 	AddStripes();
-
-
-
-
-	//ball1->ApplyForce(glm::vec2(-180, 10), glm::vec2(0));
-	//ball2->ApplyForce(glm::vec2(30, 180), glm::vec2(0));
-	//ball3->ApplyForce(glm::vec2(10, 30), glm::vec2(0));
-	//ball4->ApplyForce(glm::vec2(200, -80), glm::vec2(0));
-	//ball5->ApplyForce(glm::vec2(-80, 180), glm::vec2(0));
-	//ball6->ApplyForce(glm::vec2(180, -30), glm::vec2(0));
 
 }
 
@@ -405,6 +394,7 @@ void PhysicsProjectApp::ChangePlayer()
 	}
 }
 
+
 glm::vec2 PhysicsProjectApp::ScreenToWorld(glm::vec2 a_screenPos)
 {
 	glm::vec2 worldPos = a_screenPos;
@@ -457,25 +447,25 @@ void PhysicsProjectApp::AimAndShoot(aie::Input* a_input)
 					if (other == whiteBall)
 					{
 						if (WasWhiteBallSunk(other) == true)
-
 							ChangePlayer();
+
 					}
 				}
 			};
+			pocket->triggerExit = [=](PhysicsObject* other) {std::cout << "Exited: " << other << std::endl; };
 		}
 		whiteBall->m_collisionCallback = [=](PhysicsObject* other)
 		{
-			
-			
-				for (auto pBall : ballList)
+
+			for (auto pBall : ballList)
+			{
+				if (m_ballWasHit == false)
 				{
-					if (m_ballWasHit == false)
-					{ 
-						if (pBall == other)
-							BallHit(other);
-					}
+					if (pBall == other)
+						BallHit(other);
 				}
-			
+			}
+
 		};
 	}
 }
@@ -488,6 +478,49 @@ void PhysicsProjectApp::AddBallsToList(Sphere* a_ball)
 void PhysicsProjectApp::AddPocketsToList(Sphere* a_pocket)
 {
 	pocketList.push_back(a_pocket);
+}
+
+void PhysicsProjectApp::BallHit(PhysicsObject* other)
+{
+
+	if (m_isFirstBallSunk == false)
+	{
+		BallSunk();
+	}
+	else if (m_isPlayer1Turn == true && m_player1Solid == true) // player1 and solids
+	{
+		CheckBallType(other, solidBallList);
+	}
+	else if (m_isPlayer2Turn == true && m_player2Solid == true) // player2 and solids
+	{
+		CheckBallType(other, solidBallList);
+	}
+	else if (m_isPlayer1Turn == true && m_player1Stripe == true) // player1 and stripes
+	{
+		CheckBallType(other, stripeBallList);
+	}
+	else if (m_isPlayer2Turn == true && m_player2Stripe == true) // player2 and stripes
+	{
+		CheckBallType(other, stripeBallList);
+	}
+
+	m_ballWasHit = true;
+
+}
+
+void PhysicsProjectApp::PlaceBallNextToPlayer(Sphere* a_ball)
+{
+	a_ball->SetKinematic(1);
+	if (m_isPlayer1Turn == true)
+	{
+		a_ball->SetPosition({ m_p1sunkPosX , m_p1sunkPosY });
+		m_p1sunkPosX += 50.f;
+	}
+	else if (m_isPlayer2Turn == true)
+	{
+		a_ball->SetPosition({ m_p2sunkPosX , m_p2sunkPosY });
+		m_p2sunkPosX += 50.f;
+	}
 }
 
 void PhysicsProjectApp::BallSunk()
@@ -513,9 +546,7 @@ void PhysicsProjectApp::BallSunk()
 					{
 						if (other == pBall)
 						{
-							pBall->SetKinematic(1);
-							pBall->SetPosition({ m_sunkPosX , m_sunkPosY });
-							m_sunkPosX += 50.f;
+							PlaceBallNextToPlayer(pBall);
 							m_wasBallSunk = true;
 							std::cout << "First ball sunk: " << m_wasBallSunk << std::endl;
 							std::cout << "Player 1 solids?: " << m_player1Solid << std::endl;
@@ -533,9 +564,7 @@ void PhysicsProjectApp::BallSunk()
 					{
 						if (other == pBall)
 						{
-							pBall->SetKinematic(1);
-							pBall->SetPosition({ m_sunkPosX , m_sunkPosY });
-							m_sunkPosX += 50.f;
+							PlaceBallNextToPlayer(pBall);
 							m_wasBallSunk = true;
 
 							std::cout << "ball sunk: " << m_wasBallSunk << std::endl;
@@ -555,6 +584,32 @@ void PhysicsProjectApp::BallSunk()
 	}
 }
 
+
+void PhysicsProjectApp::CheckBallType(PhysicsObject* other, std::vector<Sphere*> a_list)
+{
+	m_ballFound = false;
+	for (auto pBall : a_list)
+	{
+		if (a_list.empty() == true)
+		{
+			m_areAllBallsSunk = true;
+			std::cout << "list empty" << std::endl;
+			break;
+		}
+		if (pBall == other)
+		{
+			BallSunk();
+			m_ballFound = true;
+			break;
+		}
+	}
+	if (m_ballFound == false)
+	{
+		ChangePlayer();
+	}
+}
+
+
 void PhysicsProjectApp::AddSolids()
 {
 	solidBallList.push_back(yellowSolid1);
@@ -566,6 +621,7 @@ void PhysicsProjectApp::AddSolids()
 	solidBallList.push_back(maroonSolid7);
 
 }
+
 
 void PhysicsProjectApp::AddStripes()
 {
@@ -648,64 +704,11 @@ bool PhysicsProjectApp::WasBlackBallSunk(PhysicsObject* other)
 	return false;
 }
 
-void PhysicsProjectApp::BallHit(PhysicsObject* other)
-{
-
-
-	if (m_isFirstBallSunk == false)
-	{
-		BallSunk();
-	}
-	else if (m_isPlayer1Turn == true && m_player1Solid == true) // player1 and solids
-	{
-		CheckBallType(other, solidBallList);
-	}
-	else if (m_isPlayer2Turn == true && m_player2Solid == true) // player2 and solids
-	{
-		CheckBallType(other, solidBallList);
-	}
-	else if (m_isPlayer1Turn == true && m_player1Stripe == true) // player1 and stripes
-	{
-		CheckBallType(other, stripeBallList);
-	}
-	else if (m_isPlayer2Turn == true && m_player2Stripe == true) // player2 and stripes
-	{
-		CheckBallType(other, stripeBallList);
-	}
-
-	m_ballWasHit = true;
-
-}
-
-void PhysicsProjectApp::CheckBallType(PhysicsObject* other, std::vector<Sphere*> a_list)
-{
-	m_ballFound = false;
-	for (auto pBall : a_list)
-	{
-		if (a_list.empty() == true)
-		{
-			m_areAllBallsSunk = true;
-			std::cout << "list empty" << std::endl;
-			break;
-		}
-		if (pBall == other)
-		{
-			BallSunk();
-			m_ballFound = true;
-			break;
-		}
-	}
-	if (m_ballFound == false)
-	{
-			ChangePlayer();
-	}
-}
-
 void PhysicsProjectApp::SetPlayerBallType(PhysicsObject* other)
 {
 	for (auto pBall : solidBallList)
 	{
-		if(pBall == other)
+		if (pBall == other)
 		{
 			m_solidFound = true;
 		}
@@ -717,28 +720,28 @@ void PhysicsProjectApp::SetPlayerBallType(PhysicsObject* other)
 			m_stripeFound = true;
 		}
 	}
-	
-		if (m_isPlayer1Turn == true && m_solidFound == true) // player 1 solids
-		{
-			m_player1Solid = true;
-			m_player2Stripe = true;
-		}
-		else if (m_isPlayer1Turn == true && m_stripeFound == true) // player 1 stripes
-		{
-			m_player1Stripe = true;
-			m_player2Solid = true;
-		}
-		else if (m_isPlayer2Turn == true && m_solidFound == true) // player 2 solids
-		{
-			m_player2Solid = true;
-			m_player1Stripe = true;
-		}
-		else if (m_isPlayer2Turn == true && m_stripeFound == true) // player 2 stripes
-		{
-			m_player1Solid = true;
-			m_player2Stripe = true;
-		}
-	
+
+	if (m_isPlayer1Turn == true && m_solidFound == true) // player 1 solids
+	{
+		m_player1Solid = true;
+		m_player2Stripe = true;
+	}
+	else if (m_isPlayer1Turn == true && m_stripeFound == true) // player 1 stripes
+	{
+		m_player1Stripe = true;
+		m_player2Solid = true;
+	}
+	else if (m_isPlayer2Turn == true && m_solidFound == true) // player 2 solids
+	{
+		m_player2Solid = true;
+		m_player1Stripe = true;
+	}
+	else if (m_isPlayer2Turn == true && m_stripeFound == true) // player 2 stripes
+	{
+		m_player1Solid = true;
+		m_player2Stripe = true;
+	}
+
 }
 
 
