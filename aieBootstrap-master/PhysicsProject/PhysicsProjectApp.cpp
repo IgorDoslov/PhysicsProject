@@ -269,6 +269,13 @@ void PhysicsProjectApp::DrawTable()
 	m_leftSideBox->SetKinematic(1);
 	m_rightSideBox->SetKinematic(1);
 
+	m_topLeftBox2->SetKinematic(1);
+	m_topRightBox2->SetKinematic(1);
+	m_bottomLeftBox2->SetKinematic(1);
+	m_bottomRightBox2->SetKinematic(1);
+	m_leftSideBox2->SetKinematic(1);
+	m_rightSideBox2->SetKinematic(1);
+
 	m_topLeftBox->SetElasticity(0.6f);
 	m_topRightBox->SetElasticity(0.6f);
 	m_bottomLeftBox->SetElasticity(0.6f);
@@ -423,7 +430,7 @@ void PhysicsProjectApp::ChangePlayer()
 
 		std::cout << "Player 2's turn" << std::endl;
 	}
-	else
+	else if (m_isPlayer2Turn == true)
 	{
 		m_isPlayer1Turn = true;
 		m_isPlayer2Turn = false;
@@ -443,6 +450,10 @@ void PhysicsProjectApp::ChangePlayerCheck()
 				ChangePlayer();
 			}
 			else if (m_ballFound == false && m_wasBallSunk == true) // Wrong ball hit and sunk
+			{
+				ChangePlayer();
+			}
+			else if (m_ballFound == true && m_wasBallSunk == false) // Hit right ball but didn't sink
 			{
 				ChangePlayer();
 			}
@@ -625,6 +636,7 @@ void PhysicsProjectApp::BallSunk()
 						{
 							PlaceBallNextToPlayer(pBall);
 							m_wasBallSunk = true;
+							m_ballFound = true;
 							std::cout << "First ball sunk: " << m_wasBallSunk << std::endl;
 							std::cout << "Player 1 solids?: " << m_player1Solid << std::endl;
 							std::cout << "Player 2 solids?: " << m_player2Solid << std::endl;
