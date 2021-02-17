@@ -46,6 +46,7 @@ public:
 	void ChangePlayer();
 	void ChangePlayerCheck();
 	void PlaceBallNextToPlayer(Sphere* a_ball);
+	void PoolGame(aie::Input* input);
 
 	void DrawTable();
 	void DrawBalls();
@@ -188,8 +189,8 @@ protected:
 
 	std::vector<Sphere*> pocketList;
 
-	std::map<const char*, Sphere*> poolBalls;
-	void CreateBall(const char* a_name, Sphere* a_ball);
+	//std::map<const char*, Sphere*> poolBalls;
+	/*void CreateBall(const char* a_name, Sphere* a_ball);
 	Sphere* GetBall(const char* a_name);
 
 
@@ -197,5 +198,5 @@ public:
 	void TriggerTest();
 	void DrawRect();
 	void SphereAndPlane();
-	void SpringTest(int a_amount);
+	void SpringTest(int a_amount);*/
 };

@@ -103,35 +103,7 @@ void PhysicsProjectApp::update(float deltaTime) {
 	m_physicsScene->Draw();
 
 	
-	if (m_wasFirstShotTaken == true)
-	{
-		if (HaveAllBallsStopped() == true)
-		{
-			if (HaveAllBallsStopped() == true && m_ballWasHit == true && m_wasBallSunk == true)
-			{
-				ChangePlayerCheck();
-				//std::cout << "ball was hit and sunk" << std::endl;
-				AimAndShoot(input);
-			}
-			else if (HaveAllBallsStopped() == true && m_ballWasHit == true && m_wasBallSunk == false)
-			{
-				ChangePlayerCheck();
-				//std::cout << "ball was hit but not sunk" << std::endl;
-				AimAndShoot(input);
-			}
-			if (HaveAllBallsStopped() == true && m_ballWasHit == false)
-			{
-				ChangePlayerCheck();
-				//std::cout << "ball not hit" << std::endl;
-				AimAndShoot(input);
-			}
-			
-		}
-	}
-	else if (m_wasFirstShotTaken == false)
-	{
-		AimAndShoot(input);
-	}
+	PoolGame(input);
 
 
 	//std::cout << "X: " << input->getMouseX() << " Y: " << input->getMouseY() << std::endl;
@@ -140,6 +112,7 @@ void PhysicsProjectApp::update(float deltaTime) {
 		quit();
 
 }
+
 
 void PhysicsProjectApp::draw() {
 
@@ -202,6 +175,9 @@ void PhysicsProjectApp::draw() {
 		// done drawing sprites
 	m_2dRenderer->end();
 }
+
+
+#pragma region Setup Functions
 
 void PhysicsProjectApp::DrawTable()
 {
@@ -421,6 +397,102 @@ void PhysicsProjectApp::DrawPockets()
 
 }
 
+void PhysicsProjectApp::AddPocketsToList(Sphere* a_pocket)
+{
+	pocketList.push_back(a_pocket);
+}
+
+void PhysicsProjectApp::AddBallsToList(Sphere* a_ball)
+{
+	ballList.push_back(a_ball);
+}
+
+void PhysicsProjectApp::AddSolids()
+{
+	solidBallList.push_back(yellowSolid1);
+	solidBallList.push_back(blueSolid2);
+	solidBallList.push_back(redSolid3);
+	solidBallList.push_back(purpleSolid4);
+	solidBallList.push_back(orangeSolid5);
+	solidBallList.push_back(greenSolid6);
+	solidBallList.push_back(maroonSolid7);
+
+}
+
+void PhysicsProjectApp::AddStripes()
+{
+	stripeBallList.push_back(yellowStripe9);
+	stripeBallList.push_back(blueStripe10);
+	stripeBallList.push_back(redStripe11);
+	stripeBallList.push_back(purpleStripe12);
+	stripeBallList.push_back(orangeStripe13);
+	stripeBallList.push_back(greenStripe14);
+	stripeBallList.push_back(maroonStripe15);
+
+}
+
+void PhysicsProjectApp::AddBallsToScene()
+{
+	for (auto pball : ballList)
+	{
+		m_physicsScene->AddActor(pball);
+	}
+}
+
+void PhysicsProjectApp::SetBallsElasticity()
+{
+	for (auto pBall : ballList)
+	{
+		pBall->SetElasticity(m_pBallElasticity);
+	}
+}
+
+void PhysicsProjectApp::SetBallsLinearDrag()
+{
+	for (auto pBall : ballList)
+	{
+		pBall->SetLinearDrag(m_pBallLinearDrag);
+	}
+}
+
+#pragma endregion
+
+
+#pragma region Game Logic
+
+void PhysicsProjectApp::PoolGame(aie::Input* input)
+{
+	if (m_wasFirstShotTaken == true)
+	{
+		if (HaveAllBallsStopped() == true)
+		{
+			if (HaveAllBallsStopped() == true && m_ballWasHit == true && m_wasBallSunk == true)
+			{
+				ChangePlayerCheck();
+				//std::cout << "ball was hit and sunk" << std::endl;
+				AimAndShoot(input);
+			}
+			else if (HaveAllBallsStopped() == true && m_ballWasHit == true && m_wasBallSunk == false)
+			{
+				ChangePlayerCheck();
+				//std::cout << "ball was hit but not sunk" << std::endl;
+				AimAndShoot(input);
+			}
+			if (HaveAllBallsStopped() == true && m_ballWasHit == false)
+			{
+				ChangePlayerCheck();
+				//std::cout << "ball not hit" << std::endl;
+				AimAndShoot(input);
+			}
+
+		}
+	}
+	else if (m_wasFirstShotTaken == false)
+	{
+		AimAndShoot(input);
+	}
+}
+
 void PhysicsProjectApp::ChangePlayer()
 {
 	if (m_isPlayer1Turn == true)
@@ -469,16 +541,6 @@ void PhysicsProjectApp::ChangePlayerCheck()
 		}
 		m_hasPlayerBeenChecked = true;
 	}
-}
-
-void PhysicsProjectApp::AddBallsToList(Sphere* a_ball)
-{
-	ballList.push_back(a_ball);
-}
-
-void PhysicsProjectApp::AddPocketsToList(Sphere* a_pocket)
-{
-	pocketList.push_back(a_pocket);
 }
 
 glm::vec2 PhysicsProjectApp::ScreenToWorld(glm::vec2 a_screenPos)
@@ -555,7 +617,6 @@ void PhysicsProjectApp::AimAndShoot(aie::Input* a_input)
 	}
 }
 
-
 void PhysicsProjectApp::BallHit(PhysicsObject* other)
 {
 
@@ -600,9 +661,6 @@ void PhysicsProjectApp::CheckBallType(PhysicsObject* other, std::vector<Sphere*>
 			BallSunk();
 			m_ballFound = true;
 			break;
-		}
-		else if (pBall != other)
-		{
 		}
 	}
 	if (m_ballFound == false)
@@ -671,20 +729,7 @@ void PhysicsProjectApp::BallSunk()
 
 		pocket->triggerExit = [=](PhysicsObject* other) {std::cout << "Exited: " << other << std::endl; };
 	}
-	//if (m_isFirstBallSunk == true)
-	//{
-	//	if (m_ballFound == false && m_wasBallSunk == false) // Wrong ball hit and nothing sunk
-	//		ChangePlayer();
-	//	else if (m_ballFound == false && m_wasBallSunk == true) // Wrong ball hit and sunk
-	//		ChangePlayer();
-	//}
-	//else if (m_isFirstBallSunk == false)
-	//{
-	//	if (m_wasBallSunk == false)
-	//	{
-	//		ChangePlayer();
-	//	}
-	//}
+	
 }
 
 void PhysicsProjectApp::PlaceBallNextToPlayer(Sphere* a_ball)
@@ -699,60 +744,6 @@ void PhysicsProjectApp::PlaceBallNextToPlayer(Sphere* a_ball)
 	{
 		a_ball->SetPosition({ m_p2sunkPosX , m_p2sunkPosY });
 		m_p2sunkPosX += 50.f;
-	}
-}
-
-
-
-
-
-
-void PhysicsProjectApp::AddSolids()
-{
-	solidBallList.push_back(yellowSolid1);
-	solidBallList.push_back(blueSolid2);
-	solidBallList.push_back(redSolid3);
-	solidBallList.push_back(purpleSolid4);
-	solidBallList.push_back(orangeSolid5);
-	solidBallList.push_back(greenSolid6);
-	solidBallList.push_back(maroonSolid7);
-
-}
-
-
-void PhysicsProjectApp::AddStripes()
-{
-	stripeBallList.push_back(yellowStripe9);
-	stripeBallList.push_back(blueStripe10);
-	stripeBallList.push_back(redStripe11);
-	stripeBallList.push_back(purpleStripe12);
-	stripeBallList.push_back(orangeStripe13);
-	stripeBallList.push_back(greenStripe14);
-	stripeBallList.push_back(maroonStripe15);
-
-}
-
-void PhysicsProjectApp::AddBallsToScene()
-{
-	for (auto pball : ballList)
-	{
-		m_physicsScene->AddActor(pball);
-	}
-}
-
-void PhysicsProjectApp::SetBallsElasticity()
-{
-	for (auto pBall : ballList)
-	{
-		pBall->SetElasticity(m_pBallElasticity);
-	}
-}
-
-void PhysicsProjectApp::SetBallsLinearDrag()
-{
-	for (auto pBall : ballList)
-	{
-		pBall->SetLinearDrag(m_pBallLinearDrag);
 	}
 }
 
@@ -842,128 +833,131 @@ void PhysicsProjectApp::SetPlayerBallType(PhysicsObject* other)
 }
 
 
-
-
-void PhysicsProjectApp::CreateBall(const char* a_name, Sphere* a_ball)
-{
-	poolBalls[a_name] = a_ball;
-}
-
-Sphere* PhysicsProjectApp::GetBall(const char* a_name)
-{
-	auto ball = poolBalls.find(a_name);
-
-	if (ball != poolBalls.end())
-	{
-		return (*ball).second;
-	}
-	return nullptr;
-}
-
-#pragma region Tests
-
-void PhysicsProjectApp::SpringTest(int a_amount)
-{
-	Sphere* prev = nullptr;
-	for (int i = 0; i < a_amount; i++)
-	{
-		// This will need to spawn the sphere at the bottom of the pervious one, to
-		// make a pendulum that is affected by gravity
-		Sphere* sphere = new Sphere(glm::vec2(i * 3, 30 - i * 5), glm::vec2(0), 10, 2, glm::vec4(0, 0, 1, 1));
-		if (i == 0)
-		{
-			sphere->SetKinematic(true);
-		}
-		m_physicsScene->AddActor(sphere);
-		if (prev)
-		{
-			m_physicsScene->AddActor(new Spring(sphere, prev, 10, 500));
-		}
-		prev = sphere;
-	}
-
-	Box* box = new Box(glm::vec2(0, -20), glm::vec2(0), 0.3f, 20, 8, 2);
-	box->SetKinematic(true);
-	m_physicsScene->AddActor(box);
-}
-
-void PhysicsProjectApp::TriggerTest()
-{
-	// Draw trigger before other things
-	Sphere* ball1 = new Sphere(glm::vec2(10, 0), glm::vec2(0), 4, 4, glm::vec4(0.5, 0, 0, 1));
-	Sphere* ball2 = new Sphere(glm::vec2(10, -5), glm::vec2(0), 4, 4, glm::vec4(0, 0.5, 0.5, 1));
-
-	ball2->SetKinematic(true);
-	ball2->SetTrigger(true);
-
-	m_physicsScene->AddActor(ball1);
-	m_physicsScene->AddActor(ball2);
-	m_physicsScene->AddActor(new Plane(glm::vec2(0, 1), -30));
-	m_physicsScene->AddActor(new Plane(glm::vec2(1, 0), -50));
-	m_physicsScene->AddActor(new Plane(glm::vec2(-1, 0), -50));
-	m_physicsScene->AddActor(new Box(glm::vec2(20, 10), glm::vec2(10, 0), 0.5, 4, 8, 4));
-	m_physicsScene->AddActor(new Box(glm::vec2(-40, 10), glm::vec2(10, 0), 0.5, 4, 8, 4));
-
-	ball2->triggerEnter = [=](PhysicsObject* other) {std::cout << "Entered: " << other << std::endl; };
-	ball2->triggerExit = [=](PhysicsObject* other) {std::cout << "Exited: " << other << std::endl; };
-
-
-
-}
-
-void PhysicsProjectApp::DrawRect()
-{
-	m_physicsScene->AddActor(new Sphere(glm::vec2(20, 10), glm::vec2(-10, -17),
-		1, 3, glm::vec4(1, 0, 0, 0)));
-	m_physicsScene->AddActor(new Plane(glm::vec2(0, 1), -1));
-
-	Box* box1 = new Box(glm::vec2(0, 20), glm::vec2(0, 0), 1, 40, 8, 4,
-		glm::vec4(1, 1, 0, 1));
-
-	Box* box2 = new Box(glm::vec2(0, 50), glm::vec2(0, 0), 10, 40, 8, 4,
-		glm::vec4(1, 0, 0, 1));
-
-
-	box1->SetRotation(0.5);
-
-	m_physicsScene->AddActor(box1);
-	m_physicsScene->AddActor(box2);
-
-	//box1->ApplyForce(glm::vec2(30, 0), glm::vec2(0));
-	//box2->ApplyForce(glm::vec2(-15, 0), glm::vec2(0));
-
-	Sphere* ball = new Sphere(glm::vec2(5, -10), glm::vec2(0), 1.f, 3, glm::vec4(0, 0, 1, 1));
-	ball->SetRotation(0.5);
-	m_physicsScene->AddActor(ball);
-	ball->SetKinematic(true);
-
-
-}
-
-void PhysicsProjectApp::SphereAndPlane()
-{
-	Sphere* ball;
-	ball = new Sphere(glm::vec2(-30, 20), glm::vec2(0, 0), 10.f, 7, glm::vec4(1, 0, 0, 0));
-	m_physicsScene->AddActor(ball);
-
-	Sphere* anotherBall;
-	anotherBall = new Sphere(glm::vec2(40, 25), glm::vec2(0, 0), 10.f, 6, glm::vec4(0, 1, 0, 0));
-	m_physicsScene->AddActor(anotherBall);
-
-	Sphere* ball2;
-	ball2 = new Sphere(glm::vec2(0, 60), glm::vec2(0, 1), 3.f, 2, glm::vec4(1, 0, 1, 1));
-	m_physicsScene->AddActor(ball2);
-
-
-	ball->ApplyForce(glm::vec2(80, 0), glm::vec2(0, 0));
-	anotherBall->ApplyForce(glm::vec2(30, 0), glm::vec2(0, 0));
-	ball2->ApplyForce(glm::vec2(2, -30), glm::vec2(0));
-
-
-	Plane* plane;
-	plane = new Plane({ 1,1 }, 0.f);
-	m_physicsScene->AddActor(plane);
-}
-
 #pragma endregion
 
+
+
+
+//void PhysicsProjectApp::CreateBall(const char* a_name, Sphere* a_ball)
+//{
+//	poolBalls[a_name] = a_ball;
+//}
+//
+//Sphere* PhysicsProjectApp::GetBall(const char* a_name)
+//{
+//	auto ball = poolBalls.find(a_name);
+//
+//	if (ball != poolBalls.end())
+//	{
+//		return (*ball).second;
+//	}
+//	return nullptr;
+//}
+//
+//#pragma region Tests
+//
+//void PhysicsProjectApp::SpringTest(int a_amount)
+//{
+//	Sphere* prev = nullptr;
+//	for (int i = 0; i < a_amount; i++)
+//	{
+//		 This will need to spawn the sphere at the bottom of the pervious one, to
+//		 make a pendulum that is affected by gravity
+//		Sphere* sphere = new Sphere(glm::vec2(i * 3, 30 - i * 5), glm::vec2(0), 10, 2, glm::vec4(0, 0, 1, 1));
+//		if (i == 0)
+//		{
+//			sphere->SetKinematic(true);
+//		}
+//		m_physicsScene->AddActor(sphere);
+//		if (prev)
+//		{
+//			m_physicsScene->AddActor(new Spring(sphere, prev, 10, 500));
+//		}
+//		prev = sphere;
+//	}
+//
+//	Box* box = new Box(glm::vec2(0, -20), glm::vec2(0), 0.3f, 20, 8, 2);
+//	box->SetKinematic(true);
+//	m_physicsScene->AddActor(box);
+//}
+//
+//void PhysicsProjectApp::TriggerTest()
+//{
+//	 Draw trigger before other things
+//	Sphere* ball1 = new Sphere(glm::vec2(10, 0), glm::vec2(0), 4, 4, glm::vec4(0.5, 0, 0, 1));
+//	Sphere* ball2 = new Sphere(glm::vec2(10, -5), glm::vec2(0), 4, 4, glm::vec4(0, 0.5, 0.5, 1));
+//
+//	ball2->SetKinematic(true);
+//	ball2->SetTrigger(true);
+//
+//	m_physicsScene->AddActor(ball1);
+//	m_physicsScene->AddActor(ball2);
+//	m_physicsScene->AddActor(new Plane(glm::vec2(0, 1), -30));
+//	m_physicsScene->AddActor(new Plane(glm::vec2(1, 0), -50));
+//	m_physicsScene->AddActor(new Plane(glm::vec2(-1, 0), -50));
+//	m_physicsScene->AddActor(new Box(glm::vec2(20, 10), glm::vec2(10, 0), 0.5, 4, 8, 4));
+//	m_physicsScene->AddActor(new Box(glm::vec2(-40, 10), glm::vec2(10, 0), 0.5, 4, 8, 4));
+//
+//	ball2->triggerEnter = [=](PhysicsObject* other) {std::cout << "Entered: " << other << std::endl; };
+//	ball2->triggerExit = [=](PhysicsObject* other) {std::cout << "Exited: " << other << std::endl; };
+//
+//
+//
+//}
+//
+//void PhysicsProjectApp::DrawRect()
+//{
+//	m_physicsScene->AddActor(new Sphere(glm::vec2(20, 10), glm::vec2(-10, -17),
+//		1, 3, glm::vec4(1, 0, 0, 0)));
+//	m_physicsScene->AddActor(new Plane(glm::vec2(0, 1), -1));
+//
+//	Box* box1 = new Box(glm::vec2(0, 20), glm::vec2(0, 0), 1, 40, 8, 4,
+//		glm::vec4(1, 1, 0, 1));
+//
+//	Box* box2 = new Box(glm::vec2(0, 50), glm::vec2(0, 0), 10, 40, 8, 4,
+//		glm::vec4(1, 0, 0, 1));
+//
+//
+//	box1->SetRotation(0.5);
+//
+//	m_physicsScene->AddActor(box1);
+//	m_physicsScene->AddActor(box2);
+//
+//	box1->ApplyForce(glm::vec2(30, 0), glm::vec2(0));
+//	box2->ApplyForce(glm::vec2(-15, 0), glm::vec2(0));
+//
+//	Sphere* ball = new Sphere(glm::vec2(5, -10), glm::vec2(0), 1.f, 3, glm::vec4(0, 0, 1, 1));
+//	ball->SetRotation(0.5);
+//	m_physicsScene->AddActor(ball);
+//	ball->SetKinematic(true);
+//
+//
+//}
+//
+//void PhysicsProjectApp::SphereAndPlane()
+//{
+//	Sphere* ball;
+//	ball = new Sphere(glm::vec2(-30, 20), glm::vec2(0, 0), 10.f, 7, glm::vec4(1, 0, 0, 0));
+//	m_physicsScene->AddActor(ball);
+//
+//	Sphere* anotherBall;
+//	anotherBall = new Sphere(glm::vec2(40, 25), glm::vec2(0, 0), 10.f, 6, glm::vec4(0, 1, 0, 0));
+//	m_physicsScene->AddActor(anotherBall);
+//
+//	Sphere* ball2;
+//	ball2 = new Sphere(glm::vec2(0, 60), glm::vec2(0, 1), 3.f, 2, glm::vec4(1, 0, 1, 1));
+//	m_physicsScene->AddActor(ball2);
+//
+//
+//	ball->ApplyForce(glm::vec2(80, 0), glm::vec2(0, 0));
+//	anotherBall->ApplyForce(glm::vec2(30, 0), glm::vec2(0, 0));
+//	ball2->ApplyForce(glm::vec2(2, -30), glm::vec2(0));
+//
+//
+//	Plane* plane;
+//	plane = new Plane({ 1,1 }, 0.f);
+//	m_physicsScene->AddActor(plane);
+//}
+//
+//#pragma endregion
+//
