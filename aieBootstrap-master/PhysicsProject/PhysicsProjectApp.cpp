@@ -102,27 +102,35 @@ void PhysicsProjectApp::update(float deltaTime) {
 	m_physicsScene->Update(deltaTime);
 	m_physicsScene->Draw();
 
-	if (HaveAllBallsStopped())
+	
+	if (m_wasFirstShotTaken == true)
 	{
-		if (HaveAllBallsStopped() == true && m_ballWasHit == true && m_wasBallSunk == true)
+		if (HaveAllBallsStopped() == true)
 		{
-			std::cout << "ball was hit and sunk" << std::endl;
-			AimAndShoot(input);
-
-
+			if (HaveAllBallsStopped() == true && m_ballWasHit == true && m_wasBallSunk == true)
+			{
+				ChangePlayerCheck();
+				//std::cout << "ball was hit and sunk" << std::endl;
+				AimAndShoot(input);
+			}
+			else if (HaveAllBallsStopped() == true && m_ballWasHit == true && m_wasBallSunk == false)
+			{
+				ChangePlayerCheck();
+				//std::cout << "ball was hit but not sunk" << std::endl;
+				AimAndShoot(input);
+			}
+			if (HaveAllBallsStopped() == true && m_ballWasHit == false)
+			{
+				ChangePlayerCheck();
+				//std::cout << "ball not hit" << std::endl;
+				AimAndShoot(input);
+			}
+			
 		}
-		else if (HaveAllBallsStopped() == true && m_ballWasHit == true && m_wasBallSunk == false)
-		{
-			std::cout << "ball was hit but not sunk" << std::endl;
-			AimAndShoot(input);
-
-		}
-		if (HaveAllBallsStopped() == true && m_ballWasHit == false)
-		{
-			std::cout << "ball not hit" << std::endl;
-
-			AimAndShoot(input);
-		}
+	}
+	else if (m_wasFirstShotTaken == false)
+	{
+		AimAndShoot(input);
 	}
 
 
@@ -150,9 +158,9 @@ void PhysicsProjectApp::draw() {
 	aie::Gizmos::draw2D(getWindowWidth(), getWindowHeight());//(glm::ortho<float>(-m_extents, m_extents,
 		//-m_extents / m_aspectRatio, m_extents / m_aspectRatio, -1.f, 1.f));
 
-	char fps[32];
-	sprintf_s(fps, 32, "Power: %i", m_distance);
-	m_2dRenderer->drawText(m_font, fps, 0, 720 - 12);
+	//char fps[32];
+	//sprintf_s(fps, 32, "Power: %i", m_distance);
+	//m_2dRenderer->drawText(m_font, fps, 0, 720 - 12);
 
 
 
@@ -200,20 +208,43 @@ void PhysicsProjectApp::DrawTable()
 	// bottom left
 	m_bottomLeftBox = new Box(glm::vec2(300, 206), glm::vec2(0, 0), 0, 10, 186, 4,
 		glm::vec4(0.6f, 0.25f, 0.01f, 1));
+
+	m_bottomLeftBox2 = new Box(glm::vec2(300, 156), glm::vec2(0, 0), 0, 10, 267, 4,
+		glm::vec4(0.6f, 0.25f, 0.01f, 1));
+
 	// bottom right
 	m_bottomRightBox = new Box(glm::vec2(725, 206), glm::vec2(0, 0), 0, 10, 186, 4,
 		glm::vec4(0.6f, 0.25f, 0.01f, 1));
+
+	m_bottomRightBox2 = new Box(glm::vec2(725, 156), glm::vec2(0, 0), 0, 10, 267, 4,
+		glm::vec4(0.6f, 0.25f, 0.01f, 1));
+
 	// top left
 	m_topLeftBox = new Box(glm::vec2(725, 657), glm::vec2(0, 0), 0, 10, 186, 4,
 		glm::vec4(0.6f, 0.25f, 0.01f, 1));
+
+	m_topLeftBox2 = new Box(glm::vec2(725, 707), glm::vec2(0, 0), 0, 10, 267, 4,
+		glm::vec4(0.6f, 0.25f, 0.01f, 1));
+
 	// top right
 	m_topRightBox = new Box(glm::vec2(300, 657), glm::vec2(0, 0), 0, 10, 186, 4,
 		glm::vec4(0.6f, 0.25f, 0.01f, 1));
+
+	m_topRightBox2 = new Box(glm::vec2(300, 707), glm::vec2(0, 0), 0, 10, 267, 4,
+		glm::vec4(0.6f, 0.25f, 0.01f, 1));
+
 	// right side
 	m_rightSideBox = new Box(glm::vec2(946, 432), glm::vec2(0, 0), 0, 10, 4, 190,
 		glm::vec4(0.6f, 0.25f, 0.01f, 1));
+
+	m_rightSideBox2 = new Box(glm::vec2(996, 432), glm::vec2(0, 0), 0, 10, 4, 279,
+		glm::vec4(0.6f, 0.25f, 0.01f, 1));
+
 	// left side
 	m_leftSideBox = new Box(glm::vec2(79, 432), glm::vec2(0, 0), 0, 10, 4, 190,
+		glm::vec4(0.6f, 0.25f, 0.01f, 1));
+
+	m_leftSideBox2 = new Box(glm::vec2(29, 432), glm::vec2(0, 0), 0, 10, 4, 279,
 		glm::vec4(0.6f, 0.25f, 0.01f, 1));
 
 
@@ -223,6 +254,13 @@ void PhysicsProjectApp::DrawTable()
 	m_physicsScene->AddActor(m_bottomRightBox);
 	m_physicsScene->AddActor(m_leftSideBox);
 	m_physicsScene->AddActor(m_rightSideBox);
+
+	m_physicsScene->AddActor(m_topLeftBox2);
+	m_physicsScene->AddActor(m_topRightBox2);
+	m_physicsScene->AddActor(m_bottomLeftBox2);
+	m_physicsScene->AddActor(m_bottomRightBox2);
+	m_physicsScene->AddActor(m_leftSideBox2);
+	m_physicsScene->AddActor(m_rightSideBox2);
 
 	m_topLeftBox->SetKinematic(1);
 	m_topRightBox->SetKinematic(1);
@@ -394,6 +432,43 @@ void PhysicsProjectApp::ChangePlayer()
 	}
 }
 
+void PhysicsProjectApp::ChangePlayerCheck()
+{
+	if (m_hasPlayerBeenChecked == false)
+	{
+		if (m_isFirstBallSunk == true)
+		{
+			if (m_ballFound == false && m_wasBallSunk == false) // Wrong ball hit and nothing sunk
+			{
+				ChangePlayer();
+			}
+			else if (m_ballFound == false && m_wasBallSunk == true) // Wrong ball hit and sunk
+			{
+				ChangePlayer();
+			}
+
+		}
+		else if (m_isFirstBallSunk == false)
+		{
+			if (m_wasBallSunk == false)
+			{
+				ChangePlayer();
+				
+			}
+		}
+		m_hasPlayerBeenChecked = true;
+	}
+}
+
+void PhysicsProjectApp::AddBallsToList(Sphere* a_ball)
+{
+	ballList.push_back(a_ball);
+}
+
+void PhysicsProjectApp::AddPocketsToList(Sphere* a_pocket)
+{
+	pocketList.push_back(a_pocket);
+}
 
 glm::vec2 PhysicsProjectApp::ScreenToWorld(glm::vec2 a_screenPos)
 {
@@ -425,18 +500,18 @@ void PhysicsProjectApp::AimAndShoot(aie::Input* a_input)
 
 		aie::Gizmos::add2DCircle(worldPos, 10, 32, glm::vec4(0.3));
 		aie::Gizmos::add2DLine(whiteBall->GetPosition(), worldPos, glm::vec4(1), glm::vec4(1, 0, 0, 1));
-		m_distance = glm::distance(whiteBall->GetPosition(), worldPos);
-		glm::normalize(m_distance);
-		//std::cout << m_distance << std::endl;
+		
 
 	}
 	if (a_input->wasMouseButtonReleased(0))
 	{
 		std::cout << "waiting for balls to stop..." << std::endl;
-
+		m_wasFirstShotTaken = true;
 		m_wasBallSunk = false;
 		m_ballWasHit = false;
+		m_hasPlayerBeenChecked = false;
 		whiteBall->ApplyForce((worldPos - whiteBall->GetPosition()), glm::vec2(0));
+
 		for (auto pocket : pocketList)
 		{
 			pocket->triggerEnter = [=](PhysicsObject* other)
@@ -448,7 +523,6 @@ void PhysicsProjectApp::AimAndShoot(aie::Input* a_input)
 					{
 						if (WasWhiteBallSunk(other) == true)
 							ChangePlayer();
-
 					}
 				}
 			};
@@ -470,15 +544,6 @@ void PhysicsProjectApp::AimAndShoot(aie::Input* a_input)
 	}
 }
 
-void PhysicsProjectApp::AddBallsToList(Sphere* a_ball)
-{
-	ballList.push_back(a_ball);
-}
-
-void PhysicsProjectApp::AddPocketsToList(Sphere* a_pocket)
-{
-	pocketList.push_back(a_pocket);
-}
 
 void PhysicsProjectApp::BallHit(PhysicsObject* other)
 {
@@ -508,18 +573,30 @@ void PhysicsProjectApp::BallHit(PhysicsObject* other)
 
 }
 
-void PhysicsProjectApp::PlaceBallNextToPlayer(Sphere* a_ball)
+void PhysicsProjectApp::CheckBallType(PhysicsObject* other, std::vector<Sphere*> a_list)
 {
-	a_ball->SetKinematic(1);
-	if (m_isPlayer1Turn == true)
+	m_ballFound = false;
+	for (auto pBall : a_list)
 	{
-		a_ball->SetPosition({ m_p1sunkPosX , m_p1sunkPosY });
-		m_p1sunkPosX += 50.f;
+		if (a_list.empty() == true)
+		{
+			m_areAllBallsSunk = true;
+			std::cout << "list empty." << std::endl;
+			break;
+		}
+		if (pBall == other)
+		{
+			BallSunk();
+			m_ballFound = true;
+			break;
+		}
+		else if (pBall != other)
+		{
+		}
 	}
-	else if (m_isPlayer2Turn == true)
+	if (m_ballFound == false)
 	{
-		a_ball->SetPosition({ m_p2sunkPosX , m_p2sunkPosY });
-		m_p2sunkPosX += 50.f;
+		BallSunk();
 	}
 }
 
@@ -582,34 +659,40 @@ void PhysicsProjectApp::BallSunk()
 
 		pocket->triggerExit = [=](PhysicsObject* other) {std::cout << "Exited: " << other << std::endl; };
 	}
-	if (m_wasBallSunk == false)
-		ChangePlayer();
+	//if (m_isFirstBallSunk == true)
+	//{
+	//	if (m_ballFound == false && m_wasBallSunk == false) // Wrong ball hit and nothing sunk
+	//		ChangePlayer();
+	//	else if (m_ballFound == false && m_wasBallSunk == true) // Wrong ball hit and sunk
+	//		ChangePlayer();
+	//}
+	//else if (m_isFirstBallSunk == false)
+	//{
+	//	if (m_wasBallSunk == false)
+	//	{
+	//		ChangePlayer();
+	//	}
+	//}
 }
 
-
-void PhysicsProjectApp::CheckBallType(PhysicsObject* other, std::vector<Sphere*> a_list)
+void PhysicsProjectApp::PlaceBallNextToPlayer(Sphere* a_ball)
 {
-	m_ballFound = false;
-	for (auto pBall : a_list)
+	a_ball->SetKinematic(1);
+	if (m_isPlayer1Turn == true)
 	{
-		if (a_list.empty() == true)
-		{
-			m_areAllBallsSunk = true;
-			std::cout << "list empty" << std::endl;
-			break;
-		}
-		if (pBall == other)
-		{
-			BallSunk();
-			m_ballFound = true;
-			break;
-		}
+		a_ball->SetPosition({ m_p1sunkPosX , m_p1sunkPosY });
+		m_p1sunkPosX += 50.f;
 	}
-	if (m_ballFound == false)
+	else if (m_isPlayer2Turn == true)
 	{
-		ChangePlayer();
+		a_ball->SetPosition({ m_p2sunkPosX , m_p2sunkPosY });
+		m_p2sunkPosX += 50.f;
 	}
 }
+
+
+
+
 
 
 void PhysicsProjectApp::AddSolids()

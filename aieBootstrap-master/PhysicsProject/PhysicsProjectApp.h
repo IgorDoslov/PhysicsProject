@@ -44,6 +44,7 @@ public:
 	void CheckBallType(PhysicsObject* other, std::vector<Sphere*> a_list);
 	void SetPlayerBallType(PhysicsObject* other);
 	void ChangePlayer();
+	void ChangePlayerCheck();
 	void PlaceBallNextToPlayer(Sphere* a_ball);
 
 	void DrawTable();
@@ -144,6 +145,13 @@ protected:
 	Box* m_leftSideBox;
 	Box* m_rightSideBox;
 
+	Box* m_topLeftBox2;
+	Box* m_topRightBox2;
+	Box* m_bottomLeftBox2;
+	Box* m_bottomRightBox2;
+	Box* m_leftSideBox2;
+	Box* m_rightSideBox2;
+
 #pragma endregion
 
 	float m_p1sunkPosX = 200.f;
@@ -165,6 +173,8 @@ protected:
 	bool m_solidFound = false;
 	bool m_stripeFound = false;
 	bool m_ballFound = false;
+	bool m_wasFirstShotTaken = false;
+	bool m_hasPlayerBeenChecked = false;
 	
 	int m_p1ShotCount = 1;
 	int m_p2ShotCount = 1;
