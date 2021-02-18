@@ -58,7 +58,6 @@ protected:
 	aie::Font* m_font;
 	aie::Font* m_ballFont;
 	Sphere* m_ball;
-	Sphere* anotherBall;
 	PhysicsScene* m_physicsScene;
 
 	const float m_aspectRatio = 16.f / 9.f;
@@ -189,15 +188,4 @@ protected:
 	std::vector<Sphere*> stripeBallList;
 
 	std::vector<Sphere*> pocketList;
-
-	//std::map<const char*, Sphere*> poolBalls;
-	/*void CreateBall(const char* a_name, Sphere* a_ball);
-	Sphere* GetBall(const char* a_name);
-
-
-public:
-	void TriggerTest();
-	void DrawRect();
-	void SphereAndPlane();
-	void SpringTest(int a_amount);*/
 };

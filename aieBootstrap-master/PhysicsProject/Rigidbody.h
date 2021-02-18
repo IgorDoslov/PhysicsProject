@@ -51,20 +51,20 @@ public:
 protected:
 
 	bool m_isTrigger;
-
+	
 	std::list<PhysicsObject*> m_objectInside;
 	std::list<PhysicsObject*> m_objectInsideThisFrame;
-
+	
 	glm::vec2 m_position;
 	glm::vec2 m_velocity;
 	float m_mass;
 	float m_rotation;
 	float m_angularVelocity;
 	float m_moment;
-
+	
 	float m_linearDrag;
 	float m_angularDrag;
-
+	
 	// These will store the local x and y axes of the box based on its angle of rotation
 	glm::vec2 m_localX;
 	glm::vec2 m_localY;

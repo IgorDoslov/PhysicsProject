@@ -34,40 +34,13 @@ bool PhysicsProjectApp::startup() {
 	m_font = new aie::Font("../bin/font/consolas.ttf", 32);
 	m_ballFont = new aie::Font("../bin/font/consolas.ttf", 18);
 
-
 	m_tableTexture = new aie::Texture("./textures/Pool_Table_Type_1_BG Wide.png");
 	m_testTex = new aie::Texture("./textures/grass.png");
-	//m_whiteBallTexture = new aie::Texture("./textures/ball1.png");
-	//m_whiteBallTexture = new aie::Texture(64,64,aie::Texture::RGBA);
-
-	//#pragma region Textures
-	//
-	//	m_blackBall8Texture = new aie::Texture("./textures/black8.png");
-	//	m_yellowSolid1Texture = new aie::Texture("./textures/yellow1test.png");
-	//	m_blueSolid2Texture = new aie::Texture("./textures/blue2.png");
-	//	m_redSolid3Texture = new aie::Texture("./textures/red3.png");
-	//	m_purpleSolid4Texture = new aie::Texture("./textures/purple4.png");
-	//	m_orangeSolid5Texture = new aie::Texture("./textures/orange5.png");
-	//	m_greenSolid6Texture = new aie::Texture("./textures/green6.png");
-	//	m_maroonSolid7Texture = new aie::Texture("./textures/maroon7.png");
-	//	m_yellowStripe9Texture = new aie::Texture("./textures/yellowS1.png");
-	//	m_blueStripe10Texture = new aie::Texture("./textures/blueS2.png");
-	//	m_redStripe11Texture = new aie::Texture("./textures/redS3.png");
-	//	m_purpleStripe12Texture = new aie::Texture("./textures/purpleS4.png");
-	//	m_orangeStripe13Texture = new aie::Texture("./textures/orangeS5.png");
-	//	m_greenStripe14Texture = new aie::Texture("./textures/greenS6.png");
-	//	m_maroonStripe15Texture = new aie::Texture("./textures/maroonS7.png");
-	//#pragma endregion
-
-
-
-
 
 	m_physicsScene = new PhysicsScene();
 
 	m_physicsScene->SetGravity(glm::vec2(0, 0));
 
-	//SetupContinuousDemo(glm::vec2 startPos, float inclination, float speed, float gravity)
 
 	// Lower the value, the more accurate the simulation will be;
 	// but it will increase the processing time required. If it
@@ -75,17 +48,9 @@ bool PhysicsProjectApp::startup() {
 
 	m_physicsScene->SetTimeStep(0.01f);
 
-	//SetupContinuousDemo({ -40 , 0 }, 45, 40, 10);
-	//DrawRect();
-	//SphereAndPlane();
-
-	//TriggerTest();
 	DrawTable();
 	DrawBalls();
 	DrawPockets();
-
-	//SpringTest(10);
-
 
 	return true;
 }
@@ -108,8 +73,6 @@ void PhysicsProjectApp::update(float deltaTime) {
 	
 	PoolGame(input);
 
-
-	//std::cout << "X: " << input->getMouseX() << " Y: " << input->getMouseY() << std::endl;
 	// exit the application
 	if (input->isKeyDown(aie::INPUT_KEY_ESCAPE))
 		quit();
@@ -163,14 +126,6 @@ void PhysicsProjectApp::draw() {
 	m_2dRenderer->drawText(m_ballFont, "15", maroonStripe15->GetPosition().x - 10, maroonStripe15->GetPosition().y - 5, 1);
 
 
-
-
-
-	//m_2dRenderer->drawLine(400, 80, 400, 640, 2, 20);
-	//m_2dRenderer->drawSprite(m_tableTexture, getWindowWidth() / 2.f, getWindowHeight() / 2.f, getWindowWidth(), getWindowHeight(), 0);
-	//m_2dRenderer->drawSprite(m_testTex, 946, 432, 10, 380, 0);
-
-
 	//#pragma region DrawSpritesForBalls
 	//
 	//m_2dRenderer->drawSprite(m_whiteBallTexture, whiteBall->GetPosition().x, whiteBall->GetPosition().y, whiteBall->GetRadius() * 2, whiteBall->GetRadius() * 2, whiteBall->GetRotation());
@@ -191,7 +146,6 @@ void PhysicsProjectApp::draw() {
 	//	m_2dRenderer->drawSprite(m_maroonStripe15Texture, maroonStripe15->GetPosition().x, maroonStripe15->GetPosition().y, maroonStripe15->GetRadius() * 2, maroonStripe15->GetRadius() * 2, maroonStripe15->GetRotation());
 	//
 	//#pragma endregion
-
 
 		// done drawing sprites
 	m_2dRenderer->end();
@@ -335,13 +289,6 @@ void PhysicsProjectApp::DrawBalls()
 	// Maroon stripe 15
 	maroonStripe15 = new Sphere(glm::vec2(725, 421), glm::vec2(0, 0), m_ballMass, m_ballRadius, glm::vec4(0.55, 0, 0.1, 0));
 
-
-
-
-
-
-	//CreateBall("Len", whiteBall);
-	//GetBall("Len");
 
 #pragma endregion
 
@@ -856,130 +803,3 @@ void PhysicsProjectApp::SetPlayerBallType(PhysicsObject* other)
 
 
 #pragma endregion
-
-
-
-
-//void PhysicsProjectApp::CreateBall(const char* a_name, Sphere* a_ball)
-//{
-//	poolBalls[a_name] = a_ball;
-//}
-//
-//Sphere* PhysicsProjectApp::GetBall(const char* a_name)
-//{
-//	auto ball = poolBalls.find(a_name);
-//
-//	if (ball != poolBalls.end())
-//	{
-//		return (*ball).second;
-//	}
-//	return nullptr;
-//}
-//
-//#pragma region Tests
-//
-//void PhysicsProjectApp::SpringTest(int a_amount)
-//{
-//	Sphere* prev = nullptr;
-//	for (int i = 0; i < a_amount; i++)
-//	{
-//		 This will need to spawn the sphere at the bottom of the pervious one, to
-//		 make a pendulum that is affected by gravity
-//		Sphere* sphere = new Sphere(glm::vec2(i * 3, 30 - i * 5), glm::vec2(0), 10, 2, glm::vec4(0, 0, 1, 1));
-//		if (i == 0)
-//		{
-//			sphere->SetKinematic(true);
-//		}
-//		m_physicsScene->AddActor(sphere);
-//		if (prev)
-//		{
-//			m_physicsScene->AddActor(new Spring(sphere, prev, 10, 500));
-//		}
-//		prev = sphere;
-//	}
-//
-//	Box* box = new Box(glm::vec2(0, -20), glm::vec2(0), 0.3f, 20, 8, 2);
-//	box->SetKinematic(true);
-//	m_physicsScene->AddActor(box);
-//}
-//
-//void PhysicsProjectApp::TriggerTest()
-//{
-//	 Draw trigger before other things
-//	Sphere* ball1 = new Sphere(glm::vec2(10, 0), glm::vec2(0), 4, 4, glm::vec4(0.5, 0, 0, 1));
-//	Sphere* ball2 = new Sphere(glm::vec2(10, -5), glm::vec2(0), 4, 4, glm::vec4(0, 0.5, 0.5, 1));
-//
-//	ball2->SetKinematic(true);
-//	ball2->SetTrigger(true);
-//
-//	m_physicsScene->AddActor(ball1);
-//	m_physicsScene->AddActor(ball2);
-//	m_physicsScene->AddActor(new Plane(glm::vec2(0, 1), -30));
-//	m_physicsScene->AddActor(new Plane(glm::vec2(1, 0), -50));
-//	m_physicsScene->AddActor(new Plane(glm::vec2(-1, 0), -50));
-//	m_physicsScene->AddActor(new Box(glm::vec2(20, 10), glm::vec2(10, 0), 0.5, 4, 8, 4));
-//	m_physicsScene->AddActor(new Box(glm::vec2(-40, 10), glm::vec2(10, 0), 0.5, 4, 8, 4));
-//
-//	ball2->triggerEnter = [=](PhysicsObject* other) {std::cout << "Entered: " << other << std::endl; };
-//	ball2->triggerExit = [=](PhysicsObject* other) {std::cout << "Exited: " << other << std::endl; };
-//
-//
-//
-//}
-//
-//void PhysicsProjectApp::DrawRect()
-//{
-//	m_physicsScene->AddActor(new Sphere(glm::vec2(20, 10), glm::vec2(-10, -17),
-//		1, 3, glm::vec4(1, 0, 0, 0)));
-//	m_physicsScene->AddActor(new Plane(glm::vec2(0, 1), -1));
-//
-//	Box* box1 = new Box(glm::vec2(0, 20), glm::vec2(0, 0), 1, 40, 8, 4,
-//		glm::vec4(1, 1, 0, 1));
-//
-//	Box* box2 = new Box(glm::vec2(0, 50), glm::vec2(0, 0), 10, 40, 8, 4,
-//		glm::vec4(1, 0, 0, 1));
-//
-//
-//	box1->SetRotation(0.5);
-//
-//	m_physicsScene->AddActor(box1);
-//	m_physicsScene->AddActor(box2);
-//
-//	box1->ApplyForce(glm::vec2(30, 0), glm::vec2(0));
-//	box2->ApplyForce(glm::vec2(-15, 0), glm::vec2(0));
-//
-//	Sphere* ball = new Sphere(glm::vec2(5, -10), glm::vec2(0), 1.f, 3, glm::vec4(0, 0, 1, 1));
-//	ball->SetRotation(0.5);
-//	m_physicsScene->AddActor(ball);
-//	ball->SetKinematic(true);
-//
-//
-//}
-//
-//void PhysicsProjectApp::SphereAndPlane()
-//{
-//	Sphere* ball;
-//	ball = new Sphere(glm::vec2(-30, 20), glm::vec2(0, 0), 10.f, 7, glm::vec4(1, 0, 0, 0));
-//	m_physicsScene->AddActor(ball);
-//
-//	Sphere* anotherBall;
-//	anotherBall = new Sphere(glm::vec2(40, 25), glm::vec2(0, 0), 10.f, 6, glm::vec4(0, 1, 0, 0));
-//	m_physicsScene->AddActor(anotherBall);
-//
-//	Sphere* ball2;
-//	ball2 = new Sphere(glm::vec2(0, 60), glm::vec2(0, 1), 3.f, 2, glm::vec4(1, 0, 1, 1));
-//	m_physicsScene->AddActor(ball2);
-//
-//
-//	ball->ApplyForce(glm::vec2(80, 0), glm::vec2(0, 0));
-//	anotherBall->ApplyForce(glm::vec2(30, 0), glm::vec2(0, 0));
-//	ball2->ApplyForce(glm::vec2(2, -30), glm::vec2(0));
-//
-//
-//	Plane* plane;
-//	plane = new Plane({ 1,1 }, 0.f);
-//	m_physicsScene->AddActor(plane);
-//}
-//
-//#pragma endregion
-//
