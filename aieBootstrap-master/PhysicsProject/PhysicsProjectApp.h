@@ -59,6 +59,7 @@ protected:
 	aie::Font* m_ballFont;
 	Sphere* m_ball;
 	PhysicsScene* m_physicsScene;
+	std::string m_text = "as";
 	
 	//const float m_aspectRatio = 16.f / 9.f;
 	//const float m_extents = 100.f;

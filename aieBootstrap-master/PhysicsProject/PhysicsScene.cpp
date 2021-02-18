@@ -78,11 +78,6 @@ void PhysicsScene::Update(float dt)
 		CheckForCollision();
 	}
 
-
-	//Rigidbody* rb = dynamic_cast<Rigidbody*>(m_actors[0]);
-	//Rigidbody* rb2 = dynamic_cast<Rigidbody*>(m_actors[1]);
-
-
 }
 
 void PhysicsScene::Draw()
@@ -145,7 +140,8 @@ void PhysicsScene::ApplyContactForces(Rigidbody* a_actor1, Rigidbody* a_actor2, 
 
 	a_actor1->SetPosition(a_actor1->GetPosition() - body1Factor * a_collisionNorm * a_pen);
 
-	if (a_actor2)
+	if (a_actor2) // Separating the two objects in order to apply forces. Objects have penetrated each other. 
+				  //Move them apart to apply forces to each.
 	{
 		a_actor2->SetPosition(a_actor2->GetPosition() + (1 - body1Factor) * a_collisionNorm * a_pen);
 	}
@@ -266,30 +262,31 @@ bool PhysicsScene::Sphere2Box(PhysicsObject* objSphere, PhysicsObject* objBox)
 	if (box != nullptr && sphere != nullptr)
 	{
 		// Transform the circle into the box's coordinate space
-		glm::vec2 circlePosWorld = sphere->GetPosition() - box->GetPosition();
-		glm::vec2 circlePosBox = glm::vec2(glm::dot(circlePosWorld, box->GetLocalX()),
+		glm::vec2 circlePosWorld = sphere->GetPosition() - box->GetPosition(); // Gives the vector from sphere to box. Makes the box 0,0. Sphere coordinates in relation to box
+		glm::vec2 circlePosBox = glm::vec2(glm::dot(circlePosWorld, box->GetLocalX()), // rotating the box so that its straight. X and Y axis now point vertically and horizontally
 			glm::dot(circlePosWorld, box->GetLocalY()));
 
-		// Find the colsest point to the circle's centre on the box 
+		// Find the closest point to the circle's centre on the box 
 		// by clamping the coordinates in the box-space to the box's extents
 		glm::vec2 closestPointOnTheBox = circlePosBox;
 		glm::vec2 extents = box->GetExtents();
-		if (closestPointOnTheBox.x < -extents.x) closestPointOnTheBox.x = -extents.x;
-		if (closestPointOnTheBox.x > extents.x) closestPointOnTheBox.x = extents.x;
 
+		if (closestPointOnTheBox.x < -extents.x) closestPointOnTheBox.x = -extents.x; // If circle intersecting with box where is the contact point
+		if (closestPointOnTheBox.x > extents.x) closestPointOnTheBox.x = extents.x; // pulls circle to closest point on the box
 		if (closestPointOnTheBox.y < -extents.y) closestPointOnTheBox.y = -extents.y;
 		if (closestPointOnTheBox.y > extents.y) closestPointOnTheBox.y = extents.y;
 
-		glm::vec2 closestPointOnBoxWorld = box->GetPosition() + closestPointOnTheBox.x * box->GetLocalX()
-			+ closestPointOnTheBox.y * box->GetLocalY();
+		// Now convert it back to world coordinates
+		glm::vec2 closestPointOnBoxWorld = box->GetPosition() + closestPointOnTheBox.x * box->GetLocalX() // XYX - 1 inverse paradigm. Now undo space conversion
+			+ closestPointOnTheBox.y * box->GetLocalY(); // rotate and slide back
 
-		glm::vec2 circleToBox = sphere->GetPosition() - closestPointOnBoxWorld;
+		glm::vec2 circleToBox = sphere->GetPosition() - closestPointOnBoxWorld; // vector from circle centre to point on box
 
-		float penetration = sphere->GetRadius() - glm::length(circleToBox);
+		float penetration = sphere->GetRadius() - glm::length(circleToBox); // Find the penetration
 		if (penetration > 0)
 		{
-			glm::vec2 direction = glm::normalize(circleToBox);
-			glm::vec2 contact = closestPointOnBoxWorld;
+			glm::vec2 direction = glm::normalize(circleToBox); // Collision normal
+			glm::vec2 contact = closestPointOnBoxWorld; // Where collision occured
 			box->ResolveCollision(sphere, contact, &direction, penetration);
 		}
 

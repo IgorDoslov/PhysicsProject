@@ -27,18 +27,3 @@ bool Sphere::IsInside(glm::vec2 a_point)
 	return glm::distance(a_point, GetPosition()) <= GetRadius();
 }
 
-//bool Sphere::CheckCollision(PhysicsObject* pOther)
-//{
-//	Sphere* pSphere = dynamic_cast<Sphere*>(pOther);
-//
-//	if (pSphere != nullptr)
-//	{
-//		float dist = glm::distance(GetPosition(), pSphere->GetPosition());
-//		if (GetRadius() + pSphere->GetRadius() > dist)
-//		{
-//			return true;
-//		}
-//	}
-//
-//	return false;
-//}

@@ -101,24 +101,23 @@ void Rigidbody::ResolveCollision(Rigidbody* a_otherActor, glm::vec2 a_contact,
 {
 	// Register that these two objects have overlapped this frame
 	m_objectInsideThisFrame.push_back(a_otherActor);
-	a_otherActor->m_objectInsideThisFrame.push_back(this);
+	a_otherActor->m_objectInsideThisFrame.push_back(this); // for triggers
 
 	// Find the vector between their centres, or use the provided
 	// direction of force and make sure its normalised
 
 	glm::vec2 normal = glm::normalize(a_collisionNormal ?
-		*a_collisionNormal : a_otherActor->GetPosition() - GetPosition());
+		*a_collisionNormal : a_otherActor->GetPosition() - GetPosition()); // if have normal use it, otherwise calculate vector
 
 	// Get the vector perpendicular to the collision normal
 	glm::vec2 perpendicularColNorm(normal.y, -normal.x);
 
 	// These are applied to the radius from axis to the application of force
-	float radius1 = glm::dot(a_contact - m_position, -perpendicularColNorm);
-	float radius2 = glm::dot(a_contact - a_otherActor->GetPosition(),
-		perpendicularColNorm);
+	float radius1 = glm::dot(a_contact - m_position, -perpendicularColNorm); // Finding how far out the force is being applied on the object
+	float radius2 = glm::dot(a_contact - a_otherActor->GetPosition(), perpendicularColNorm); // 
 
 	// Velocity of the contact point on this object
-	float cp_velocity1 = glm::dot(m_velocity, normal) - radius1 * m_angularVelocity;
+	float cp_velocity1 = glm::dot(m_velocity, normal) - radius1 * m_angularVelocity; // How fast is the collision/contact point moving
 
 	// Velocity of contact point of the other object
 	float cp_velocity2 = glm::dot(a_otherActor->GetVelocity(), normal) +
@@ -128,18 +127,18 @@ void Rigidbody::ResolveCollision(Rigidbody* a_otherActor, glm::vec2 a_contact,
 	{
 		// This will calculate the effective mass at the contact point of each
 		// object (How much it will move due to the forces applied)
-		float mass1 = 1.f / (1.f / m_mass + (radius1 * radius1) / GetMoment());
+		float mass1 = 1.f / (1.f / m_mass + (radius1 * radius1) / GetMoment()); // Inertia
 		float mass2 = 1.f / (1.f / a_otherActor->m_mass + (radius2 * radius2)
 			/ a_otherActor->GetMoment());
 
-		float elasticity = (m_elasticity + a_otherActor->GetElasticity()) / 2.f;
+		float elasticity = (m_elasticity + a_otherActor->GetElasticity()) / 2.f; // finding the average elasticity of the two objects
 
 		glm::vec2 impact = (1.f + elasticity) * mass1 * mass2 /
-			(mass1 + mass2) * (cp_velocity1 - cp_velocity2) * normal;
+			(mass1 + mass2) * (cp_velocity1 - cp_velocity2) * normal; // force which is a vector. Inertia * velocity
 
 		if (!m_isTrigger && !a_otherActor->isTrigger())
 		{
-			ApplyForce(-impact, a_contact - m_position);
+			ApplyForce(-impact, a_contact - m_position); // Newtons first law. Equal and opposite reaction. Converting to local space of object. Point at which impact is applied if objects centre is at 0,0. Relative to object
 			a_otherActor->ApplyForce(impact, a_contact - a_otherActor->GetPosition());
 
 			if (m_collisionCallback != nullptr)

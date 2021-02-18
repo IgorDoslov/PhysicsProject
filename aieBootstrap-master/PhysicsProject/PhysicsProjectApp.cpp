@@ -94,15 +94,20 @@ void PhysicsProjectApp::draw() {
 	//aie::Gizmos::add2DLine(glm::vec2(0, 0), glm::vec2(0, 40), glm::vec4(1, 0, 0, 1));
 
 	// X axis = -100 to 100, Y axis = -56.25 to 56.25
-	aie::Gizmos::draw2D(getWindowWidth(), getWindowHeight());//(glm::ortho<float>(-m_extents, m_extents,
+	aie::Gizmos::draw2D((float)getWindowWidth(), (float)getWindowHeight());//(glm::ortho<float>(-m_extents, m_extents,
 		//-m_extents / m_aspectRatio, m_extents / m_aspectRatio, -1.f, 1.f));
 
-	//char fps[32];
-	//sprintf_s(fps, 32, "Power: %i", m_distance);
-	//m_2dRenderer->drawText(m_font, fps, 0, 720 - 12);
+	/*char fps[32];
+	sprintf_s(fps, 32, "Power: %i", getFPS());
+	m_2dRenderer->drawText(m_font, fps, 0, 720 - 12);*/
+
+	/*char text[256];
+	sprintf_s(text, 256, "windowed : %p ", m_text);
+	m_2dRenderer->drawText(m_font, text, 0, 620 - 12);*/
 
 	
 
+	
 
 
 	// output some text, uses the last used colour
@@ -470,6 +475,8 @@ void PhysicsProjectApp::ChangePlayer()
 		m_isPlayer1Turn = false;
 
 		std::cout << "Player 2's turn" << std::endl;
+		
+
 	}
 	else if (m_isPlayer2Turn == true)
 	{
@@ -477,6 +484,8 @@ void PhysicsProjectApp::ChangePlayer()
 		m_isPlayer2Turn = false;
 
 		std::cout << "Player 1's turn" << std::endl;
+		
+
 	}
 }
 
@@ -517,8 +526,8 @@ glm::vec2 PhysicsProjectApp::ScreenToWorld(glm::vec2 a_screenPos)
 	glm::vec2 worldPos = a_screenPos;
 
 	// We will move the centre of the screen to (0, 0)
-	worldPos.x = getWindowWidth() / 2;
-	worldPos.y = getWindowHeight() / 2;
+	worldPos.x = getWindowWidth() / 2.f;
+	worldPos.y = getWindowHeight() / 2.f;
 
 	// Scale this according to the extents
 	//worldPos.x *= 2.f * m_extents / getWindowWidth();
@@ -537,11 +546,11 @@ void PhysicsProjectApp::AimAndShoot(aie::Input* a_input)
 		/*int xScreen, yScreen;
 		a_input->getMouseXY(&xScreen, &yScreen);
 		worldPos = ScreenToWorld(glm::vec2(xScreen, yScreen));*/
-		worldPos.x = a_input->getMouseX();
-		worldPos.y = a_input->getMouseY();
+		worldPos.x = (float)a_input->getMouseX();
+		worldPos.y = (float)a_input->getMouseY();
 
-		aie::Gizmos::add2DCircle(worldPos, 10, 32, glm::vec4(0.3));
-		aie::Gizmos::add2DLine(whiteBall->GetPosition(), worldPos, glm::vec4(1), glm::vec4(1, 0, 0, 1));
+		aie::Gizmos::add2DCircle(worldPos, 10, 32, glm::vec4(0.3f));
+		aie::Gizmos::add2DLine(whiteBall->GetPosition(), worldPos, glm::vec4(1), glm::vec4(1.f, 0.f, 0.f, 1.f));
 		
 
 	}
