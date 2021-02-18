@@ -32,6 +32,9 @@ bool PhysicsProjectApp::startup() {
 	// the following path would be used instead: "./font/consolas.ttf"
 
 	m_font = new aie::Font("../bin/font/consolas.ttf", 32);
+	m_ballFont = new aie::Font("../bin/font/consolas.ttf", 18);
+
+
 	m_tableTexture = new aie::Texture("./textures/Pool_Table_Type_1_BG Wide.png");
 	m_testTex = new aie::Texture("./textures/grass.png");
 	//m_whiteBallTexture = new aie::Texture("./textures/ball1.png");
@@ -135,7 +138,7 @@ void PhysicsProjectApp::draw() {
 	//sprintf_s(fps, 32, "Power: %i", m_distance);
 	//m_2dRenderer->drawText(m_font, fps, 0, 720 - 12);
 
-
+	
 
 
 
@@ -143,6 +146,24 @@ void PhysicsProjectApp::draw() {
 	m_2dRenderer->drawText(m_font, "Press ESC to quit", 0, 0);
 	m_2dRenderer->drawText(m_font, "Player 1", 20, 110);
 	m_2dRenderer->drawText(m_font, "Player 2", 20, 60);
+	m_2dRenderer->drawText(m_ballFont, "1", yellowSolid1->GetPosition().x-5, yellowSolid1->GetPosition().y-5,1);
+	m_2dRenderer->drawText(m_ballFont, "2", blueSolid2->GetPosition().x - 5, blueSolid2->GetPosition().y - 5, 1);
+	m_2dRenderer->drawText(m_ballFont, "3", redSolid3->GetPosition().x - 5, redSolid3->GetPosition().y - 5, 1);
+	m_2dRenderer->drawText(m_ballFont, "4", purpleSolid4->GetPosition().x - 5, purpleSolid4->GetPosition().y - 5, 1);
+	m_2dRenderer->drawText(m_ballFont, "5", orangeSolid5->GetPosition().x - 5, orangeSolid5->GetPosition().y - 5, 1);
+	m_2dRenderer->drawText(m_ballFont, "6", greenSolid6->GetPosition().x - 5, greenSolid6->GetPosition().y - 5, 1);
+	m_2dRenderer->drawText(m_ballFont, "7", maroonSolid7->GetPosition().x - 5, maroonSolid7->GetPosition().y - 5, 1);
+	m_2dRenderer->drawText(m_ballFont, "8", blackBall8->GetPosition().x - 5, blackBall8->GetPosition().y - 5, 1);
+	m_2dRenderer->drawText(m_ballFont, "9", yellowStripe9->GetPosition().x - 5, yellowStripe9->GetPosition().y - 5, 1);
+	m_2dRenderer->drawText(m_ballFont, "10", blueStripe10->GetPosition().x - 10, blueStripe10->GetPosition().y - 5, 1);
+	m_2dRenderer->drawText(m_ballFont, "11", redStripe11->GetPosition().x - 10, redStripe11->GetPosition().y - 5, 1);
+	m_2dRenderer->drawText(m_ballFont, "12", purpleStripe12->GetPosition().x - 10, purpleStripe12->GetPosition().y - 5, 1);
+	m_2dRenderer->drawText(m_ballFont, "13", orangeStripe13->GetPosition().x - 10, orangeStripe13->GetPosition().y - 5, 1);
+	m_2dRenderer->drawText(m_ballFont, "14", greenStripe14->GetPosition().x - 10, greenStripe14->GetPosition().y - 5, 1);
+	m_2dRenderer->drawText(m_ballFont, "15", maroonStripe15->GetPosition().x - 10, maroonStripe15->GetPosition().y - 5, 1);
+
+
+
 
 
 	//m_2dRenderer->drawLine(400, 80, 400, 640, 2, 20);
@@ -319,8 +340,8 @@ void PhysicsProjectApp::DrawBalls()
 
 
 
-	CreateBall("Len", whiteBall);
-	GetBall("Len");
+	//CreateBall("Len", whiteBall);
+	//GetBall("Len");
 
 #pragma endregion
 
@@ -456,6 +477,7 @@ void PhysicsProjectApp::SetBallsLinearDrag()
 }
 
 #pragma endregion
+
 
 
 #pragma region Game Logic

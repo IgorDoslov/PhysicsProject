@@ -56,6 +56,7 @@ protected:
 
 	aie::Renderer2D* m_2dRenderer;
 	aie::Font* m_font;
+	aie::Font* m_ballFont;
 	Sphere* m_ball;
 	Sphere* anotherBall;
 	PhysicsScene* m_physicsScene;
