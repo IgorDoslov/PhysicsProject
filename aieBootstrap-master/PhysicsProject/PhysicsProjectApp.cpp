@@ -35,7 +35,7 @@ bool PhysicsProjectApp::startup() {
 	m_ballFont = new aie::Font("../bin/font/consolas.ttf", 18);
 
 	m_tableTexture = new aie::Texture("./textures/Pool_Table_Type_1_BG Wide.png");
-	m_testTex = new aie::Texture("./textures/grass.png");
+	//m_testTex = new aie::Texture("./textures/grass.png");
 
 	m_physicsScene = new PhysicsScene();
 
@@ -429,7 +429,7 @@ void PhysicsProjectApp::SetBallsLinearDrag()
 
 #pragma region Game Logic
 
-void PhysicsProjectApp::PoolGame(aie::Input* input)
+void PhysicsProjectApp::PoolGame(aie::Input* a_input)
 {
 	if (m_wasFirstShotTaken == true)
 	{
@@ -439,26 +439,26 @@ void PhysicsProjectApp::PoolGame(aie::Input* input)
 			{
 				ChangePlayerCheck();
 				//std::cout << "ball was hit and sunk" << std::endl;
-				AimAndShoot(input);
+				AimAndShoot(a_input);
 			}
 			else if (HaveAllBallsStopped() == true && m_ballWasHit == true && m_wasBallSunk == false)
 			{
 				ChangePlayerCheck();
 				//std::cout << "ball was hit but not sunk" << std::endl;
-				AimAndShoot(input);
+				AimAndShoot(a_input);
 			}
 			if (HaveAllBallsStopped() == true && m_ballWasHit == false)
 			{
 				ChangePlayerCheck();
 				//std::cout << "ball not hit" << std::endl;
-				AimAndShoot(input);
+				AimAndShoot(a_input);
 			}
 
 		}
 	}
 	else if (m_wasFirstShotTaken == false)
 	{
-		AimAndShoot(input);
+		AimAndShoot(a_input);
 	}
 }
 

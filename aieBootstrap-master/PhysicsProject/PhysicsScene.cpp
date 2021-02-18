@@ -38,10 +38,6 @@ PhysicsScene::~PhysicsScene()
 	{
 		delete pActor;
 	}
-	for (auto particle : m_particles)
-	{
-		delete particle;
-	}
 }
 
 void PhysicsScene::AddActor(PhysicsObject* a_actor)
@@ -77,11 +73,6 @@ void PhysicsScene::Update(float dt)
 
 		}
 
-		for (auto pParticles : m_particles)
-		{
-			pParticles->FixedUpdate(m_gravity, m_timeStep);
-		}
-
 		accumulatedTime -= m_timeStep;
 
 		CheckForCollision();
@@ -96,10 +87,6 @@ void PhysicsScene::Update(float dt)
 
 void PhysicsScene::Draw()
 {
-	for (auto pParticle : m_particles)
-	{
-		pParticle->MakeGizmo();
-	}
 	for (auto pActor : m_actors)
 	{
 		pActor->MakeGizmo();

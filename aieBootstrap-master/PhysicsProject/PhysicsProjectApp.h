@@ -46,7 +46,7 @@ public:
 	void ChangePlayer();
 	void ChangePlayerCheck();
 	void PlaceBallNextToPlayer(Sphere* a_ball);
-	void PoolGame(aie::Input* input);
+	void PoolGame(aie::Input* a_input);
 
 	void DrawTable();
 	void DrawBalls();
@@ -59,62 +59,62 @@ protected:
 	aie::Font* m_ballFont;
 	Sphere* m_ball;
 	PhysicsScene* m_physicsScene;
-
-	const float m_aspectRatio = 16.f / 9.f;
-	const float m_extents = 100.f;
-	aie::Texture* m_testTex;
+	
+	//const float m_aspectRatio = 16.f / 9.f;
+	//const float m_extents = 100.f;
+	
 #pragma region Pool Balls
 
 	float m_ballRadius = 14.f;
 	float m_ballMass = 1.f;
 	float m_pBallElasticity = 0.9f;
 	float m_pBallLinearDrag = 0.7f;
-
+	
 	Sphere* whiteBall;
 	aie::Texture* m_whiteBallTexture;
-
+	
 	Sphere* blackBall8;
 	aie::Texture* m_blackBall8Texture;
-
+	
 	Sphere* yellowSolid1;
 	aie::Texture* m_yellowSolid1Texture;
-
+	
 	Sphere* blueSolid2;
 	aie::Texture* m_blueSolid2Texture;
-
+	
 	Sphere* redSolid3;
 	aie::Texture* m_redSolid3Texture;
-
+	
 	Sphere* purpleSolid4;
 	aie::Texture* m_purpleSolid4Texture;
-
+	
 	Sphere* orangeSolid5;
 	aie::Texture* m_orangeSolid5Texture;
-
+	
 	Sphere* greenSolid6;
 	aie::Texture* m_greenSolid6Texture;
-
+	
 	Sphere* maroonSolid7;
 	aie::Texture* m_maroonSolid7Texture;
-
+	
 	Sphere* yellowStripe9;
 	aie::Texture* m_yellowStripe9Texture;
-
+	
 	Sphere* blueStripe10;
 	aie::Texture* m_blueStripe10Texture;
-
+	
 	Sphere* redStripe11;
 	aie::Texture* m_redStripe11Texture;
-
+	
 	Sphere* purpleStripe12;
 	aie::Texture* m_purpleStripe12Texture;
-
+	
 	Sphere* orangeStripe13;
 	aie::Texture* m_orangeStripe13Texture;
-
+	
 	Sphere* greenStripe14;
 	aie::Texture* m_greenStripe14Texture;
-
+	
 	Sphere* maroonStripe15;
 	aie::Texture* m_maroonStripe15Texture;
 
@@ -122,7 +122,7 @@ protected:
 
 
 #pragma region Pockets
-	
+
 	float m_pocketSize = 22.f;
 
 	Sphere* m_topLeft;
@@ -159,7 +159,6 @@ protected:
 	float m_p1sunkPosY = 120.f;
 	float m_p2sunkPosX = 200.f;
 	float m_p2sunkPosY = 70.f;
-	float m_distance;
 
 	bool m_isPlayer1Turn = true;
 	bool m_isPlayer2Turn = false;
@@ -176,9 +175,9 @@ protected:
 	bool m_ballFound = false;
 	bool m_wasFirstShotTaken = false;
 	bool m_hasPlayerBeenChecked = false;
-	
-	int m_p1ShotCount = 1;
-	int m_p2ShotCount = 1;
+
+	//int m_p1ShotCount = 1;
+	//int m_p2ShotCount = 1;
 
 
 	glm::vec2 worldPos;
@@ -186,6 +185,5 @@ protected:
 	std::vector<Sphere*> ballList;
 	std::vector<Sphere*> solidBallList;
 	std::vector<Sphere*> stripeBallList;
-
 	std::vector<Sphere*> pocketList;
 };

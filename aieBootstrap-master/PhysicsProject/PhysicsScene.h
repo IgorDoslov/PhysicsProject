@@ -50,17 +50,10 @@ public:
 	static bool Box2Sphere(PhysicsObject*, PhysicsObject*);
 	static bool Box2Box(PhysicsObject*, PhysicsObject*);
 
-
-
-	//void MoveRigidbody(Rigidbody* rb, int up, int down, int left, int right);
-
-
-
-	std::vector<PhysicsObject*> m_particles;
+	
 protected:
 	glm::vec2 m_gravity;
 	float m_timeStep;
-
 	std::vector<PhysicsObject*> m_actors;
 };
 
