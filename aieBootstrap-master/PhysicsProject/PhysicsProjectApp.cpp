@@ -31,10 +31,10 @@ bool PhysicsProjectApp::startup() {
 	// TODO: remember to change this when redistributing a build!
 	// the following path would be used instead: "./font/consolas.ttf"
 
-	m_font = new aie::Font("../bin/font/consolas.ttf", 32);
-	m_ballFont = new aie::Font("../bin/font/consolas.ttf", 18);
+	m_font = new aie::Font("bin/font/consolas.ttf", 32);
+	m_ballFont = new aie::Font("bin/font/consolas.ttf", 18);
 
-	m_tableTexture = new aie::Texture("./textures/Pool_Table_Type_1_BG Wide.png");
+	//m_tableTexture = new aie::Texture("./textures/Pool_Table_Type_1_BG Wide.png");
 	//m_testTex = new aie::Texture("./textures/grass.png");
 
 	m_physicsScene = new PhysicsScene();
@@ -97,16 +97,16 @@ void PhysicsProjectApp::draw() {
 	aie::Gizmos::draw2D((float)getWindowWidth(), (float)getWindowHeight());//(glm::ortho<float>(-m_extents, m_extents,
 		//-m_extents / m_aspectRatio, m_extents / m_aspectRatio, -1.f, 1.f));
 
-	/*char fps[32];
+	char fps[32];
 	sprintf_s(fps, 32, "Power: %i", getFPS());
-	m_2dRenderer->drawText(m_font, fps, 0, 720 - 12);*/
+	m_2dRenderer->drawText(m_font, m_text.c_str(), 380, 730);
 
 	/*char text[256];
 	sprintf_s(text, 256, "windowed : %p ", m_text);
 	m_2dRenderer->drawText(m_font, text, 0, 620 - 12);*/
 
 	
-
+	
 	
 
 
@@ -475,7 +475,7 @@ void PhysicsProjectApp::ChangePlayer()
 		m_isPlayer1Turn = false;
 
 		std::cout << "Player 2's turn" << std::endl;
-		
+		m_text = "Player 2's turn";
 
 	}
 	else if (m_isPlayer2Turn == true)
@@ -484,7 +484,8 @@ void PhysicsProjectApp::ChangePlayer()
 		m_isPlayer2Turn = false;
 
 		std::cout << "Player 1's turn" << std::endl;
-		
+		m_text = "Player 1's turn";
+
 
 	}
 }

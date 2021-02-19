@@ -141,7 +141,7 @@ void PhysicsScene::ApplyContactForces(Rigidbody* a_actor1, Rigidbody* a_actor2, 
 	a_actor1->SetPosition(a_actor1->GetPosition() - body1Factor * a_collisionNorm * a_pen);
 
 	if (a_actor2) // Separating the two objects in order to apply forces. Objects have penetrated each other. 
-				  //Move them apart to apply forces to each.
+				  //Move them apart to apply forces to each. Making offset proportional to the mass of each object
 	{
 		a_actor2->SetPosition(a_actor2->GetPosition() + (1 - body1Factor) * a_collisionNorm * a_pen);
 	}
@@ -180,12 +180,12 @@ bool PhysicsScene::Plane2Box(PhysicsObject* objPlane, PhysicsObject* objBox)
 				glm::vec2 p = box->GetPosition() + x * box->GetLocalX() + y * box->GetLocalY();
 				float distFromPlane = glm::dot(p - planeOrigin, plane->GetNormal());
 
-				// this is the total velocity of the points in world space
+				// this is the total velocity of the current point in world space
 				glm::vec2 displacement = x * box->GetLocalX() + y * box->GetLocalY();
 				glm::vec2 pointVelocity = box->GetVelocity() + box->GetAngularVelocity() *
-					glm::vec2(-displacement.y, displacement.x);
+					glm::vec2(-displacement.y, displacement.x); // negative normal
 
-				// this is the amount of the point velocity inot the plane
+				// this is the amount of the point's velocity into the plane
 				float velocityIntoPlane = glm::dot(pointVelocity, plane->GetNormal());
 
 				// Moving further in, we need to resolve the collision
@@ -200,7 +200,7 @@ bool PhysicsScene::Plane2Box(PhysicsObject* objPlane, PhysicsObject* objBox)
 		// If we hit it will normally result as one or two corners touching a plane...
 		if (numContacts > 0)
 		{
-			plane->ResolveCollision(box, contact / (float)numContacts);
+			plane->ResolveCollision(box, contact / (float)numContacts); // finding the average contact point
 			return true;
 		}
 	}
@@ -217,9 +217,9 @@ bool PhysicsScene::Sphere2Plane(PhysicsObject* objSphere, PhysicsObject* objPlan
 	if (sphere != nullptr && plane != nullptr)
 	{
 		glm::vec2 collisionNormal = plane->GetNormal();
-		float sphereToPlane = glm::dot(sphere->GetPosition(), collisionNormal) - plane->GetDistance();
-		float intersection = sphere->GetRadius() - sphereToPlane;
-		float velocityOutOfPlane = glm::dot(sphere->GetVelocity(), collisionNormal);
+		float sphereToPlane = glm::dot(sphere->GetPosition(), collisionNormal) - plane->GetDistance(); // perpendicualr distance from plane to centre of circle
+		float intersection = sphere->GetRadius() - sphereToPlane; // penetration
+		float velocityOutOfPlane = glm::dot(sphere->GetVelocity(), collisionNormal); // perpendicular velocity out of the plane
 		if (intersection > 0 && velocityOutOfPlane < 0)
 		{
 			glm::vec2 contact = sphere->GetPosition() + (collisionNormal * -sphere->GetRadius());

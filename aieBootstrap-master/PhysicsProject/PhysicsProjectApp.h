@@ -59,7 +59,8 @@ protected:
 	aie::Font* m_ballFont;
 	Sphere* m_ball;
 	PhysicsScene* m_physicsScene;
-	std::string m_text = "as";
+	std::string m_text = "Player 1's turn";
+	
 	
 	//const float m_aspectRatio = 16.f / 9.f;
 	//const float m_extents = 100.f;
@@ -71,53 +72,23 @@ protected:
 	float m_pBallElasticity = 0.9f;
 	float m_pBallLinearDrag = 0.7f;
 	
-	Sphere* whiteBall;
-	aie::Texture* m_whiteBallTexture;
+	Sphere* whiteBall = nullptr;
+	Sphere* blackBall8 = nullptr;
+	Sphere* yellowSolid1 = nullptr;
+	Sphere* blueSolid2 = nullptr;
+	Sphere* redSolid3 = nullptr;
+	Sphere* purpleSolid4 = nullptr;
+	Sphere* orangeSolid5 = nullptr;
+	Sphere* greenSolid6 = nullptr;
+	Sphere* maroonSolid7 = nullptr;
+	Sphere* yellowStripe9 = nullptr;
+	Sphere* blueStripe10 = nullptr;
+	Sphere* redStripe11 = nullptr;
+	Sphere* purpleStripe12 = nullptr;
+	Sphere* orangeStripe13 = nullptr;
+	Sphere* greenStripe14 = nullptr;
+	Sphere* maroonStripe15 = nullptr;
 	
-	Sphere* blackBall8;
-	aie::Texture* m_blackBall8Texture;
-	
-	Sphere* yellowSolid1;
-	aie::Texture* m_yellowSolid1Texture;
-	
-	Sphere* blueSolid2;
-	aie::Texture* m_blueSolid2Texture;
-	
-	Sphere* redSolid3;
-	aie::Texture* m_redSolid3Texture;
-	
-	Sphere* purpleSolid4;
-	aie::Texture* m_purpleSolid4Texture;
-	
-	Sphere* orangeSolid5;
-	aie::Texture* m_orangeSolid5Texture;
-	
-	Sphere* greenSolid6;
-	aie::Texture* m_greenSolid6Texture;
-	
-	Sphere* maroonSolid7;
-	aie::Texture* m_maroonSolid7Texture;
-	
-	Sphere* yellowStripe9;
-	aie::Texture* m_yellowStripe9Texture;
-	
-	Sphere* blueStripe10;
-	aie::Texture* m_blueStripe10Texture;
-	
-	Sphere* redStripe11;
-	aie::Texture* m_redStripe11Texture;
-	
-	Sphere* purpleStripe12;
-	aie::Texture* m_purpleStripe12Texture;
-	
-	Sphere* orangeStripe13;
-	aie::Texture* m_orangeStripe13Texture;
-	
-	Sphere* greenStripe14;
-	aie::Texture* m_greenStripe14Texture;
-	
-	Sphere* maroonStripe15;
-	aie::Texture* m_maroonStripe15Texture;
 
 #pragma endregion
 
