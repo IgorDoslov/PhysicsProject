@@ -40,10 +40,10 @@ public:
 
 protected:
 	ShapeType m_shapeID;
-	bool m_isKinematic;
-	float m_elasticity;
+	bool m_isKinematic = false;
+	float m_elasticity = 0.f;
 
-	glm::vec2 m_physObjPosition;
+	glm::vec2 m_physObjPosition = glm::vec2(0);
 	
 
 	PhysicsObject(ShapeType a_shapeID) : m_shapeID(a_shapeID){}

@@ -54,11 +54,11 @@ public:
 
 protected:
 
-	aie::Renderer2D* m_2dRenderer;
-	aie::Font* m_font;
-	aie::Font* m_ballFont;
-	Sphere* m_ball;
-	PhysicsScene* m_physicsScene;
+	aie::Renderer2D* m_2dRenderer = nullptr;
+	aie::Font* m_font = nullptr;
+	aie::Font* m_ballFont = nullptr;
+	Sphere* m_ball = nullptr;
+	PhysicsScene* m_physicsScene = nullptr;
 	std::string m_text = "Player 1's turn";
 	
 	
