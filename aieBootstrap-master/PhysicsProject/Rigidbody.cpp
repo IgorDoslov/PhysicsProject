@@ -29,7 +29,7 @@ void Rigidbody::FixedUpdate(glm::vec2 a_gravity, float a_timeStep)
 	{
 		m_angularVelocity = 0.f;
 	}*/
-
+	
 	// Checks if it is a trigger
 	if (m_isTrigger)
 	{
