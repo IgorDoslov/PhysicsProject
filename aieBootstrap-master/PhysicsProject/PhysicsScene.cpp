@@ -101,7 +101,7 @@ void PhysicsScene::DebugScene()
 
 void PhysicsScene::CheckForCollision()
 {
-	int actorCount = m_actors.size();
+	int actorCount = (int)m_actors.size();
 
 	for (int outer = 0; outer < actorCount - 1; outer++)
 	{
@@ -138,7 +138,10 @@ void PhysicsScene::ApplyContactForces(Rigidbody* a_actor1, Rigidbody* a_actor2, 
 	float body2Mass = a_actor2 ? a_actor2->GetMass() : INT_MAX;
 	float body1Factor = body2Mass / (a_actor1->GetMass() + body2Mass);
 
-	a_actor1->SetPosition(a_actor1->GetPosition() - body1Factor * a_collisionNorm * a_pen);
+	if (a_actor1)
+	{
+		a_actor1->SetPosition(a_actor1->GetPosition() - body1Factor * a_collisionNorm * a_pen);
+	}
 
 	if (a_actor2) // Separating the two objects in order to apply forces. Objects have penetrated each other. 
 				  //Move them apart to apply forces to each. Making offset proportional to the mass of each object

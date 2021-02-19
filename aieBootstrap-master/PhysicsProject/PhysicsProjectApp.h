@@ -97,33 +97,32 @@ protected:
 
 	float m_pocketSize = 22.f;
 
-	Sphere* m_topLeft;
-	Sphere* m_topCentre;
-	Sphere* m_topRight;
-	Sphere* m_bottomLeft;
-	Sphere* m_bottomCentre;
-	Sphere* m_bottomRight;
+	Sphere* m_topLeft = nullptr;
+	Sphere* m_topCentre = nullptr;
+	Sphere* m_topRight = nullptr;
+	Sphere* m_bottomLeft = nullptr;
+	Sphere* m_bottomCentre = nullptr;
+	Sphere* m_bottomRight = nullptr;
 
 #pragma endregion
 
 
 #pragma region Table
 
-	aie::Texture* m_tableTexture;
 
-	Box* m_topLeftBox;
-	Box* m_topRightBox;
-	Box* m_bottomLeftBox;
-	Box* m_bottomRightBox;
-	Box* m_leftSideBox;
-	Box* m_rightSideBox;
-
-	Box* m_topLeftBox2;
-	Box* m_topRightBox2;
-	Box* m_bottomLeftBox2;
-	Box* m_bottomRightBox2;
-	Box* m_leftSideBox2;
-	Box* m_rightSideBox2;
+	Box* m_topLeftBox = nullptr;
+	Box* m_topRightBox = nullptr;
+	Box* m_bottomLeftBox = nullptr;
+	Box* m_bottomRightBox = nullptr;
+	Box* m_leftSideBox = nullptr;
+	Box* m_rightSideBox = nullptr;
+	
+	Box* m_topLeftBox2 = nullptr;
+	Box* m_topRightBox2	= nullptr;
+	Box* m_bottomLeftBox2 = nullptr;
+	Box* m_bottomRightBox2 = nullptr;
+	Box* m_leftSideBox2 = nullptr;
+	Box* m_rightSideBox2 = nullptr;
 
 #pragma endregion
 
@@ -152,7 +151,7 @@ protected:
 	//int m_p2ShotCount = 1;
 
 
-	glm::vec2 worldPos;
+	glm::vec2 worldPos = glm::vec2(0);
 
 	std::vector<Sphere*> ballList;
 	std::vector<Sphere*> solidBallList;
