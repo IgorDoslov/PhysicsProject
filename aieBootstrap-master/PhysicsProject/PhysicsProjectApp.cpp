@@ -70,7 +70,7 @@ void PhysicsProjectApp::update(float deltaTime) {
 	m_physicsScene->Update(deltaTime);
 	m_physicsScene->Draw();
 
-	
+
 	PoolGame(input);
 
 	// exit the application
@@ -101,20 +101,12 @@ void PhysicsProjectApp::draw() {
 	sprintf_s(fps, 32, "Power: %i", getFPS());
 	m_2dRenderer->drawText(m_font, m_text.c_str(), 380, 730);
 
-	/*char text[256];
-	sprintf_s(text, 256, "windowed : %p ", m_text);
-	m_2dRenderer->drawText(m_font, text, 0, 620 - 12);*/
 
-	
-	
-	
-
-
-	// output some text, uses the last used colour
 	m_2dRenderer->drawText(m_font, "Press ESC to quit", 0, 0);
+	m_2dRenderer->drawText(m_font, "Press r to reset", 740, 0);
 	m_2dRenderer->drawText(m_font, "Player 1", 20, 110);
 	m_2dRenderer->drawText(m_font, "Player 2", 20, 60);
-	m_2dRenderer->drawText(m_ballFont, "1", yellowSolid1->GetPosition().x-5, yellowSolid1->GetPosition().y-5,1);
+	m_2dRenderer->drawText(m_ballFont, "1", yellowSolid1->GetPosition().x - 5, yellowSolid1->GetPosition().y - 5, 1);
 	m_2dRenderer->drawText(m_ballFont, "2", blueSolid2->GetPosition().x - 5, blueSolid2->GetPosition().y - 5, 1);
 	m_2dRenderer->drawText(m_ballFont, "3", redSolid3->GetPosition().x - 5, redSolid3->GetPosition().y - 5, 1);
 	m_2dRenderer->drawText(m_ballFont, "4", purpleSolid4->GetPosition().x - 5, purpleSolid4->GetPosition().y - 5, 1);
@@ -465,6 +457,7 @@ void PhysicsProjectApp::PoolGame(aie::Input* a_input)
 	{
 		AimAndShoot(a_input);
 	}
+	ResetGame(a_input);
 }
 
 void PhysicsProjectApp::ChangePlayer()
@@ -515,7 +508,7 @@ void PhysicsProjectApp::ChangePlayerCheck()
 			if (m_wasBallSunk == false)
 			{
 				ChangePlayer();
-				
+
 			}
 		}
 		m_hasPlayerBeenChecked = true;
@@ -552,7 +545,7 @@ void PhysicsProjectApp::AimAndShoot(aie::Input* a_input)
 
 		aie::Gizmos::add2DCircle(worldPos, 10, 32, glm::vec4(0.3f));
 		aie::Gizmos::add2DLine(whiteBall->GetPosition(), worldPos, glm::vec4(1), glm::vec4(1.f, 0.f, 0.f, 1.f));
-		
+
 
 	}
 	if (a_input->wasMouseButtonReleased(0))
@@ -568,14 +561,10 @@ void PhysicsProjectApp::AimAndShoot(aie::Input* a_input)
 		{
 			pocket->triggerEnter = [=](PhysicsObject* other)
 			{
-				if (m_isFirstBallSunk == false)
+				// Sink white ball on the break and nothing else
+				if (other == whiteBall)
 				{
-					// Sink white ball on the break and nothing else
-					if (other == whiteBall)
-					{
-						if (WasWhiteBallSunk(other) == true)
-							ChangePlayer();
-					}
+					WasWhiteBallSunk(other);
 				}
 			};
 			pocket->triggerExit = [=](PhysicsObject* other) {std::cout << "Exited: " << other << std::endl; };
@@ -708,7 +697,7 @@ void PhysicsProjectApp::BallSunk()
 
 		pocket->triggerExit = [=](PhysicsObject* other) {std::cout << "Exited: " << other << std::endl; };
 	}
-	
+
 }
 
 void PhysicsProjectApp::PlaceBallNextToPlayer(Sphere* a_ball)
@@ -813,3 +802,39 @@ void PhysicsProjectApp::SetPlayerBallType(PhysicsObject* other)
 
 
 #pragma endregion
+
+
+void PhysicsProjectApp::ResetGame(aie::Input* a_input)
+{
+	if (a_input->wasKeyPressed(82))
+	{
+		for (auto pBall : ballList)
+		{
+			if (pBall != nullptr)
+			{
+				ballList.pop_back();
+				m_physicsScene->RemoveActor(pBall);
+
+				delete pBall;
+			}
+		}
+		m_isPlayer1Turn = true;
+		m_isPlayer2Turn = false;
+		m_isFirstBallSunk = false;
+		m_areAllBallsSunk = false;
+		m_wasBallSunk = false;
+		m_ballWasHit = false;
+		m_player1Solid = false;
+		m_player2Solid = false;
+		m_player1Stripe = false;
+		m_player2Stripe = false;
+		m_solidFound = false;
+		m_stripeFound = false;
+		m_ballFound = false;
+		m_wasFirstShotTaken = false;
+		m_hasPlayerBeenChecked = false;
+		m_text = "Player 1's turn";
+		DrawBalls();
+
+	}
+}

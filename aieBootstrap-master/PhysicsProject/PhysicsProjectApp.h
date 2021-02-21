@@ -43,6 +43,7 @@ public:
 	void BallHit(PhysicsObject* other);
 	void CheckBallType(PhysicsObject* other, std::vector<Sphere*> a_list);
 	void SetPlayerBallType(PhysicsObject* other);
+	void ResetGame(aie::Input* a_input);
 	void ChangePlayer();
 	void ChangePlayerCheck();
 	void PlaceBallNextToPlayer(Sphere* a_ball);
@@ -65,6 +66,7 @@ protected:
 	//const float m_aspectRatio = 16.f / 9.f;
 	//const float m_extents = 100.f;
 	
+
 #pragma region Pool Balls
 
 	float m_ballRadius = 14.f;
@@ -91,7 +93,6 @@ protected:
 	
 
 #pragma endregion
-
 
 #pragma region Pockets
 
