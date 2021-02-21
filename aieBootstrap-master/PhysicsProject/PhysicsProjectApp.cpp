@@ -800,10 +800,6 @@ void PhysicsProjectApp::SetPlayerBallType(PhysicsObject* other)
 
 }
 
-
-#pragma endregion
-
-
 void PhysicsProjectApp::ResetGame(aie::Input* a_input)
 {
 	if (a_input->wasKeyPressed(82))
@@ -838,3 +834,6 @@ void PhysicsProjectApp::ResetGame(aie::Input* a_input)
 
 	}
 }
+
+#pragma endregion
+

@@ -43,7 +43,6 @@ public:
 	void BallHit(PhysicsObject* other);
 	void CheckBallType(PhysicsObject* other, std::vector<Sphere*> a_list);
 	void SetPlayerBallType(PhysicsObject* other);
-	void ResetGame(aie::Input* a_input);
 	void ChangePlayer();
 	void ChangePlayerCheck();
 	void PlaceBallNextToPlayer(Sphere* a_ball);
@@ -52,6 +51,7 @@ public:
 	void DrawTable();
 	void DrawBalls();
 	void DrawPockets();
+	void ResetGame(aie::Input* a_input);
 
 protected:
 
